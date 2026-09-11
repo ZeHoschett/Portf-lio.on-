@@ -2,6 +2,7 @@
  * Entry point (loaded as type="module", so it runs after the HTML is parsed).
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
+import { initCobolTerminal } from './animations/cobol-terminal.js';
 import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
 import { initPythonBlob } from './animations/python-blob.js';
@@ -59,4 +60,5 @@ whenIdle(() => {
   safeInit('hero-orb', initHeroOrb);
   safeInit('java-network', initJavaNetwork);
   safeInit('python-blob', initPythonBlob);
+  safeInit('cobol-terminal', initCobolTerminal);
 });

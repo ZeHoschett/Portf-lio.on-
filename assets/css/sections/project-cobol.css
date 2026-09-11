@@ -1,3 +1,185 @@
-/* COBOL subsection (#projetos-cobol): CRT aesthetic — implemented in phase 6. */
+/*
+ * COBOL subsection (#projetos-cobol): mainframe monitor aesthetic.
+ * Phosphor green VT323 text with glow, scanlines, vignette, glass reflection and a very subtle
+ * flicker over the whole subsection; ISPF/3270 panel details; typing terminal
+ * (animations/cobol-terminal.js).
+ */
 @layer sections {
+  .project-stack--cobol {
+    color: var(--stack-cobol);
+    background: var(--crt-backdrop), var(--color-terminal-bg);
+  }
+
+  /* ---------- CRT overlays (decorative, never block interaction) ---------- */
+  .project-stack--cobol::before,
+  .project-stack--cobol::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-front);
+    pointer-events: none;
+  }
+
+  .project-stack--cobol::before {
+    background-image: var(--crt-scanlines);
+    opacity: var(--crt-scanline-opacity);
+  }
+
+  .project-stack--cobol::after {
+    background: var(--crt-glass), var(--crt-vignette);
+    animation: crt-flicker var(--crt-flicker-dur) linear infinite;
+  }
+
+  .project-stack--cobol .project-stack__inner {
+    gap: var(--space-7);
+  }
+
+  /* ---------- Typography in phosphor ---------- */
+  .project-stack--cobol .project-stack__title {
+    font-family: var(--font-terminal);
+    font-weight: var(--fw-regular);
+    letter-spacing: var(--ls-normal);
+    color: var(--stack-cobol);
+    text-shadow: var(--glow-phosphor-text);
+  }
+
+  .project-stack--cobol .project-stack__eyebrow {
+    text-shadow: var(--glow-phosphor);
+  }
+
+  .project-stack--cobol .project-stack__lead {
+    font-family: var(--font-terminal);
+    font-size: var(--fs-lg);
+    color: var(--color-phosphor-muted);
+    text-shadow: var(--glow-phosphor);
+  }
+
+  /* ---------- ISPF / 3270 panel ---------- */
+  .ispf,
+  .ispf__footer {
+    font-family: var(--font-terminal);
+    font-size: var(--fs-md);
+    line-height: var(--lh-snug);
+    text-transform: uppercase;
+    color: var(--stack-cobol);
+    text-shadow: var(--glow-phosphor);
+  }
+
+  .ispf {
+    display: grid;
+    gap: var(--space-1);
+    padding-block-end: var(--space-3);
+    border-bottom: var(--border-thin) dashed var(--stack-cobol-dim);
+  }
+
+  .ispf__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .ispf__row:first-child {
+    color: var(--color-phosphor-bright);
+  }
+
+  .ispf__input {
+    flex: 1;
+    min-width: var(--space-8);
+    height: 1em;
+    border-bottom: var(--border-thin) solid var(--stack-cobol-dim);
+  }
+
+  .ispf__footer {
+    padding-block-start: var(--space-3);
+    color: var(--color-phosphor-muted);
+    border-top: var(--border-thin) dashed var(--stack-cobol-dim);
+  }
+
+  /* ---------- Terminal screen ---------- */
+  .cobol-terminal {
+    position: relative;
+    overflow: hidden;
+    background: var(--crt-screen);
+    border: var(--border-thin) solid color-mix(in srgb, var(--stack-cobol) var(--tint-border), transparent);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--crt-screen-shadow);
+  }
+
+  /* Inverse-video title bar, like an ISPF edit session */
+  .cobol-terminal__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-1) var(--space-5);
+    font-family: var(--font-terminal);
+    font-size: var(--fs-md);
+    text-transform: uppercase;
+    color: var(--color-terminal-bg);
+    background: var(--stack-cobol);
+    box-shadow: var(--glow-phosphor);
+  }
+
+  /* The column ruler is dropped on phones so the bar stays on one line */
+  .cobol-terminal__bar span + span {
+    display: none;
+  }
+
+  @media (min-width: 480px) {
+    .cobol-terminal__bar span + span {
+      display: inline;
+    }
+  }
+
+  .cobol-terminal__screen {
+    position: relative;
+  }
+
+  /* base.css gives <code> the mono stack: keep VT323 so the typing overlay matches it exactly */
+  .cobol-terminal__code code {
+    font: inherit;
+  }
+
+  .cobol-terminal__code {
+    margin: 0;
+    padding: var(--space-5);
+    font-family: var(--font-terminal);
+    font-size: var(--fs-cobol-code);
+    line-height: var(--lh-snug);
+    white-space: pre;
+    color: var(--stack-cobol);
+    text-shadow: var(--glow-phosphor-text);
+  }
+
+  /* Typing overlay: same metrics as the real code underneath */
+  .cobol-terminal__typed {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .cobol-terminal.is-typing .cobol-terminal__code:not(.cobol-terminal__typed) {
+    color: transparent;
+    text-shadow: none;
+  }
+
+  .cobol-terminal__cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-inline-start: 0.1em;
+    vertical-align: text-bottom;
+    background: currentColor;
+    box-shadow: var(--glow-phosphor);
+    animation: blink 1.06s steps(1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-stack--cobol::after,
+    .cobol-terminal__cursor {
+      animation: none;
+    }
+  }
 }

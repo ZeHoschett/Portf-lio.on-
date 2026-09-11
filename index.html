@@ -343,6 +343,11 @@
             <!-- Source of truth for the typing animation: the full text stays in the DOM for assistive tech -->
             <figure class="cobol-terminal" data-cobol-terminal>
               <figcaption class="visually-hidden">Programa COBOL de apresentação</figcaption>
+              <div class="cobol-terminal__bar" aria-hidden="true">
+                <span>EDIT — PORTFOLIO.CBL</span>
+                <span>COLUMNS 00001 00072</span>
+              </div>
+              <div class="cobol-terminal__screen">
 <pre class="cobol-terminal__code"><code>       IDENTIFICATION DIVISION.
        PROGRAM-ID. PORTFOLIO.
        AUTHOR. JOSE-HOSCHETT.
@@ -350,6 +355,7 @@
            DISPLAY 'COBOL | CICS | DB2 | Z/OS'.
            DISPLAY 'STATUS: DISPONIVEL PARA NOVOS PROJETOS'.
            STOP RUN.</code></pre>
+              </div>
             </figure>
 
             <ul class="project-grid" role="list" data-projects="cobol"></ul>

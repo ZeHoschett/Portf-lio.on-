@@ -27,11 +27,13 @@ export function createAnimationLoop({ target, onFrame }) {
   let elapsed = 0;
 
   const tick = (now) => {
+    frameId = 0;
     const delta = lastTime ? Math.min(now - lastTime, MAX_FRAME_MS) : 0;
     lastTime = now;
     elapsed += delta;
     onFrame(elapsed, delta);
-    frameId = requestAnimationFrame(tick);
+    // onFrame may have stopped the loop (destroy/setEnabled) or already scheduled a frame
+    if (enabled && inView && pageVisible && !frameId) frameId = requestAnimationFrame(tick);
   };
 
   const sync = () => {
