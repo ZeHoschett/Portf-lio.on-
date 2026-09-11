@@ -1,3 +1,95 @@
-/* Components: buttons, tags, cards, mockups, modal, toast — implemented in phase 2+. */
+/* Components: buttons, tags, cards, mockups, modal, toast. */
 @layer components {
+  /* ============================== Buttons ============================== */
+  .btn {
+    --btn-bg: transparent;
+    --btn-color: var(--color-text);
+    --btn-border: transparent;
+    --btn-shadow: none;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-snug);
+    color: var(--btn-color);
+    text-decoration: none;
+    white-space: nowrap;
+    background: var(--btn-bg);
+    border: var(--border-thin) solid var(--btn-border);
+    border-radius: var(--radius-full);
+    box-shadow: var(--btn-shadow);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform var(--dur-base) var(--ease-out-expo),
+      box-shadow var(--dur-base) var(--ease-out-quart),
+      border-color var(--dur-fast) var(--ease-out-quart),
+      color var(--dur-fast) var(--ease-out-quart);
+  }
+
+  .btn .icon {
+    width: var(--icon-scale);
+    height: var(--icon-scale);
+  }
+
+  .btn:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .btn--primary {
+    --btn-bg: var(--gradient-button);
+    --btn-color: var(--color-on-accent);
+    --btn-shadow: var(--shadow-inset-highlight);
+  }
+
+  .btn--secondary {
+    --btn-bg: var(--color-glass);
+    --btn-border: var(--color-border-strong);
+  }
+
+  .btn--whatsapp {
+    --btn-bg: var(--color-whatsapp);
+    --btn-color: var(--color-on-whatsapp);
+  }
+
+  .btn--sm {
+    padding-inline: var(--space-4);
+  }
+
+  .btn--icon {
+    --btn-border: var(--color-border-strong);
+
+    width: var(--tap-min);
+    padding: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn--primary:hover {
+      --btn-shadow: var(--shadow-inset-highlight), var(--glow-accent-strong);
+    }
+
+    .btn--secondary:hover,
+    .btn--icon:hover {
+      --btn-border: var(--color-accent);
+      --btn-shadow: var(--glow-accent);
+    }
+
+    .btn--whatsapp:hover {
+      --btn-shadow: var(--glow-whatsapp);
+    }
+  }
+
+  .btn.is-disabled,
+  .btn[aria-disabled='true'] {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }

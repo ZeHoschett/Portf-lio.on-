@@ -3,6 +3,8 @@
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
 import { applyConfigBindings } from './modules/config-bindings.js';
+import { initNav } from './modules/nav.js';
+import { initScrollProgress } from './modules/scroll-progress.js';
 
 /**
  * Runs an initializer and contains any error it throws.
@@ -26,3 +28,5 @@ function setCurrentYear() {
 
 safeInit('config-bindings', () => applyConfigBindings());
 safeInit('current-year', setCurrentYear);
+safeInit('nav', initNav);
+safeInit('scroll-progress', initScrollProgress);

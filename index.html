@@ -85,19 +85,11 @@
     <header class="site-header" data-header>
       <div class="site-header__inner container container--wide">
         <a class="site-header__logo" href="#inicio">
-          <span aria-hidden="true">JH</span>
+          <span class="site-header__monogram" aria-hidden="true">JH</span>
           <span class="visually-hidden">José Hoschett — início</span>
         </a>
 
         <nav class="site-nav" aria-label="Principal" data-nav>
-          <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu" data-nav-toggle>
-            <span class="site-nav__toggle-icon" aria-hidden="true">
-              <span class="site-nav__toggle-line"></span>
-              <span class="site-nav__toggle-line"></span>
-            </span>
-            <span class="visually-hidden" data-nav-toggle-label>Abrir menu</span>
-          </button>
-
           <div class="site-nav__menu" id="site-nav-menu" data-nav-menu>
             <ul class="site-nav__list" role="list">
               <li><a class="site-nav__link" href="#inicio">Início</a></li>
@@ -113,6 +105,15 @@
         </nav>
 
         <a class="btn btn--primary btn--sm site-header__cta" href="#contato" data-magnetic>Fale comigo</a>
+
+        <!-- After the CTA so the tab order matches the mobile layout: logo → CTA → menu button -->
+        <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu" data-nav-toggle>
+          <span class="site-nav__toggle-icon" aria-hidden="true">
+            <span class="site-nav__toggle-line"></span>
+            <span class="site-nav__toggle-line"></span>
+          </span>
+          <span class="visually-hidden" data-nav-toggle-label>Abrir menu</span>
+        </button>
       </div>
     </header>
 

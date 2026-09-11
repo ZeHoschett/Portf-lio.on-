@@ -1,6 +1,7 @@
 @layer base {
   html {
     background-color: var(--color-bg);
+    scrollbar-gutter: stable; /* no layout shift when the mobile menu locks scrolling */
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--header-h) + var(--space-4));
   }
@@ -141,6 +142,11 @@
 
   .mono {
     font-family: var(--font-mono);
+  }
+
+  /* Set on <html> while the mobile menu (or a modal) is open */
+  .is-scroll-locked {
+    overflow: hidden;
   }
 
   /* Global safety net: pages must stay complete and static with reduced motion. */
