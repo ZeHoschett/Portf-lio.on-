@@ -148,6 +148,25 @@
     --scroll-line-h: 3rem;
     --scroll-line-dur: 2200ms;
 
+    /* ---------- About ---------- */
+    --about-photo-max: 26rem;
+    --about-frame-offset: var(--space-4);
+
+    /* ---------- Stack: marquee, chips, tags ---------- */
+    --fs-marquee: clamp(2.5rem, 1.4rem + 5vw, 7rem);
+    --marquee-gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    --marquee-mask: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    --marquee-stroke: rgba(201, 204, 214, 0.55);
+    --marquee-separator-scale: 0.3em;
+    --chip-dot: 0.5rem;
+    --tint-subtle: 10%; /* color-mix share for tinted backgrounds */
+    --tint-border: 35%;
+    --tint-glow: 22%;
+
+    /* ---------- Reveal ---------- */
+    --reveal-distance: 2rem;
+    --reveal-blur: 6px;
+
     /* ---------- Cursor glow ---------- */
     --cursor-glow-size: 32rem;
     --cursor-glow: radial-gradient(

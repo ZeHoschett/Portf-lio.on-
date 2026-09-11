@@ -219,21 +219,22 @@
 
         <!-- Decorative: the same technologies are listed accessibly in the groups below -->
         <div class="marquee" aria-hidden="true" data-marquee>
+          <!-- Even item counts + outline as a class: the filled/outline rhythm survives the clones -->
           <div class="marquee__row marquee__row--left">
             <ul class="marquee__track" role="list">
               <li class="marquee__item">COBOL</li>
-              <li class="marquee__item">CICS</li>
+              <li class="marquee__item marquee__item--outline">CICS</li>
               <li class="marquee__item">DB2</li>
-              <li class="marquee__item">z/OS</li>
+              <li class="marquee__item marquee__item--outline">z/OS</li>
               <li class="marquee__item">Java</li>
+              <li class="marquee__item marquee__item--outline">Spring Boot</li>
             </ul>
           </div>
           <div class="marquee__row marquee__row--right">
             <ul class="marquee__track" role="list">
-              <li class="marquee__item">Spring Boot</li>
-              <li class="marquee__item">Python</li>
+              <li class="marquee__item marquee__item--outline">Python</li>
               <li class="marquee__item">HTML</li>
-              <li class="marquee__item">CSS</li>
+              <li class="marquee__item marquee__item--outline">CSS</li>
               <li class="marquee__item">JavaScript</li>
             </ul>
           </div>
@@ -242,6 +243,7 @@
         <div class="container">
           <ul class="stack__groups" role="list">
             <li class="stack-group" data-stack="cobol" data-reveal>
+              <p class="stack-group__meta"><span class="stack-group__index" aria-hidden="true">01</span><span>4 tecnologias</span></p>
               <h3 class="stack-group__title">Mainframe</h3>
               <ul class="tag-list" role="list">
                 <li class="tag">COBOL</li>
@@ -251,6 +253,7 @@
               </ul>
             </li>
             <li class="stack-group" data-stack="java" data-reveal>
+              <p class="stack-group__meta"><span class="stack-group__index" aria-hidden="true">02</span><span>2 tecnologias</span></p>
               <h3 class="stack-group__title">Java</h3>
               <ul class="tag-list" role="list">
                 <li class="tag">Java</li>
@@ -258,12 +261,14 @@
               </ul>
             </li>
             <li class="stack-group" data-stack="python" data-reveal>
+              <p class="stack-group__meta"><span class="stack-group__index" aria-hidden="true">03</span><span>1 tecnologia</span></p>
               <h3 class="stack-group__title">Python</h3>
               <ul class="tag-list" role="list">
                 <li class="tag">Python</li>
               </ul>
             </li>
             <li class="stack-group" data-stack="web" data-reveal>
+              <p class="stack-group__meta"><span class="stack-group__index" aria-hidden="true">04</span><span>3 tecnologias</span></p>
               <h3 class="stack-group__title">Web</h3>
               <ul class="tag-list" role="list">
                 <li class="tag">HTML</li>

@@ -1,3 +1,77 @@
-/* About (#sobre) — implemented in phase 4. */
+/* About (#sobre): portrait + text, stacked on mobile (text first), two columns from 1024px. */
 @layer sections {
+  .about__inner {
+    display: grid;
+    align-items: center;
+    gap: var(--space-stack);
+  }
+
+  /* ---------- Portrait with glow and offset frame ---------- */
+  .about__media {
+    position: relative;
+    isolation: isolate;
+    order: 1; /* text first on phones: the hero already opens with the portrait */
+    justify-self: center;
+    width: min(100%, var(--about-photo-max));
+  }
+
+  .about__media::before,
+  .about__media::after {
+    content: '';
+    position: absolute;
+    z-index: var(--z-below);
+    border-radius: var(--radius-xl);
+    pointer-events: none;
+  }
+
+  .about__media::before {
+    inset: var(--space-6);
+    background: var(--gradient-accent);
+    opacity: 0.35;
+    filter: blur(var(--blur-lg));
+  }
+
+  .about__media::after {
+    inset: 0;
+    border: var(--border-thin) solid color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+    translate: var(--about-frame-offset) var(--about-frame-offset);
+  }
+
+  .about__photo {
+    width: 100%;
+    aspect-ratio: var(--hero-photo-ratio);
+    object-fit: cover;
+    background: var(--color-surface);
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+  }
+
+  /* ---------- Text ---------- */
+  .about__content {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .about__content .section__header {
+    margin-block-end: 0;
+  }
+
+  .about__bio {
+    max-width: var(--measure);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-normal);
+    color: var(--color-text);
+  }
+
+  @media (min-width: 1024px) {
+    .about__inner {
+      grid-template-columns: 5fr 7fr;
+      gap: var(--space-9);
+    }
+
+    .about__media {
+      order: 0;
+      justify-self: stretch;
+    }
+  }
 }

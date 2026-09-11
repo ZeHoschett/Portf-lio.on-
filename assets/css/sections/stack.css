@@ -1,3 +1,166 @@
-/* Stack (#stack): marquee and groups — implemented in phase 4. */
+/* Stack (#stack): two-way infinite marquee + technology groups (no skill percentages). */
 @layer sections {
+  .stack {
+    overflow-x: clip;
+  }
+
+  /* ============================== Marquee ============================== */
+  .marquee {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-end: var(--space-stack);
+    padding-block: var(--space-4);
+    border-block: var(--border-thin) solid var(--color-border);
+    -webkit-mask-image: var(--marquee-mask);
+    mask-image: var(--marquee-mask);
+  }
+
+  .marquee__row {
+    overflow: hidden;
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    list-style: none;
+    animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+  }
+
+  .marquee__row--right .marquee__track {
+    animation-name: marquee-right;
+  }
+
+  .marquee:hover .marquee__track,
+  .marquee.is-paused .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__item {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--marquee-gap);
+    padding-inline-end: var(--marquee-gap);
+    font-family: var(--font-display);
+    font-size: var(--fs-marquee);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
+
+  .marquee__item::after {
+    content: '✦';
+    font-size: var(--marquee-separator-scale);
+    color: var(--color-accent);
+    -webkit-text-stroke: 0;
+  }
+
+  .marquee__item--outline {
+    color: transparent;
+    -webkit-text-stroke: var(--border-thin) var(--marquee-stroke);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+
+  /* ============================== Groups ============================== */
+  .stack__groups {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+  }
+
+  .stack-group {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur-base) var(--ease-out-quart),
+      box-shadow var(--dur-base) var(--ease-out-quart),
+      translate var(--dur-base) var(--ease-out-expo);
+  }
+
+  /* Identity line on top (Python: blue → yellow) */
+  .stack-group::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--border-thick);
+    background: linear-gradient(90deg, var(--stack-color), var(--stack-color-2, transparent));
+    box-shadow: 0 0 var(--space-5) var(--stack-color);
+  }
+
+  .stack-group::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-below);
+    background: radial-gradient(
+      80% 60% at 50% 0%,
+      color-mix(in srgb, var(--stack-color) var(--tint-glow), transparent) 0%,
+      transparent 70%
+    );
+    opacity: 0.5;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+  }
+
+  .stack-group__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .stack-group__index {
+    color: var(--stack-text);
+  }
+
+  .stack-group__title {
+    font-size: var(--fs-xl);
+    letter-spacing: var(--ls-tight);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .stack-group:hover {
+      border-color: color-mix(in srgb, var(--stack-color) var(--tint-border), transparent);
+      box-shadow: 0 var(--space-5) var(--space-8) calc(var(--space-6) * -1)
+        color-mix(in srgb, var(--stack-color) var(--tint-glow), transparent);
+      translate: 0 calc(var(--space-1) * -1);
+    }
+
+    .stack-group:hover::after {
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .stack__groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .stack__groups {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
 }

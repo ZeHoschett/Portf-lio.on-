@@ -1,5 +1,80 @@
 /* Components: buttons, tags, cards, mockups, modal, toast. */
 @layer components {
+  /* ============================== Stack identity ============================== */
+  /* Any element with data-stack exposes its identity colors to descendants */
+  [data-stack='java'] {
+    --stack-color: var(--stack-java);
+    --stack-text: var(--stack-java);
+  }
+
+  [data-stack='python'] {
+    --stack-color: var(--stack-python-a);
+    --stack-color-2: var(--stack-python-b);
+    --stack-text: var(--stack-python-text);
+  }
+
+  [data-stack='cobol'] {
+    --stack-color: var(--stack-cobol);
+    --stack-text: var(--stack-cobol);
+  }
+
+  [data-stack='web'] {
+    --stack-color: var(--stack-web);
+    --stack-text: var(--stack-web-text);
+  }
+
+  /* ============================== Chips ============================== */
+  .chip-list,
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-full);
+  }
+
+  .chip::before {
+    content: '';
+    flex-shrink: 0;
+    width: var(--chip-dot);
+    height: var(--chip-dot);
+    background: var(--stack-color, var(--color-accent));
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 var(--space-3) var(--stack-color, var(--color-accent));
+  }
+
+  /* ============================== Tags ============================== */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-normal);
+    color: var(--stack-text, var(--color-text-muted));
+    background: color-mix(
+      in srgb,
+      var(--stack-color, var(--color-text-muted)) var(--tint-subtle),
+      transparent
+    );
+    border: var(--border-thin) solid
+      color-mix(in srgb, var(--stack-color, var(--color-text-muted)) var(--tint-border), transparent);
+    border-radius: var(--radius-full);
+  }
+
   /* ============================== Buttons ============================== */
   .btn {
     --btn-bg: transparent;
