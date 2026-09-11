@@ -167,6 +167,31 @@
     --reveal-distance: 2rem;
     --reveal-blur: 6px;
 
+    /* ---------- Projects: cards, mockups, code, modal ---------- */
+    --card-media-ratio: 16 / 11;
+    --card-glow-size: 22rem;
+    --card-image-zoom: 1.04;
+    --mockup-dot: 0.5rem;
+    --phone-ratio: 9 / 19.5;
+    --phone-bezel: 0.4rem;
+    --phone-radius: 1.6rem;
+    --phone-frame: linear-gradient(145deg, #2b2b3a 0%, #0d0d13 100%);
+    --phone-button: #23232f;
+    --phone-button-w: 0.2rem;
+    --phone-island: #000000;
+    --phone-island-w: 34%;
+    --phone-island-h: 0.8rem;
+    --phone-island-top: 0.45rem;
+    --screen-reflection: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, transparent 38%);
+    --code-string: #9ee6b8;
+    --code-number: #ffb86b;
+    --color-terminal-bg: #020a04;
+    --color-phosphor-bright: #b8ffcb;
+    --glow-phosphor: 0 0 6px rgba(51, 255, 102, 0.45);
+    --modal-max: 64rem;
+    --modal-media-ratio: 16 / 9;
+    --modal-enter-scale: 0.97;
+
     /* ---------- Cursor glow ---------- */
     --cursor-glow-size: 32rem;
     --cursor-glow: radial-gradient(

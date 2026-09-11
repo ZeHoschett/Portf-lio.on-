@@ -10,8 +10,11 @@ import { initMagnetic } from './modules/magnetic.js';
 import { initMarquee } from './modules/marquee.js';
 import { initNav } from './modules/nav.js';
 import { initParallax } from './modules/parallax.js';
+import { initProjectsTabs } from './modules/projects-tabs.js';
+import { renderProjects } from './modules/render-projects.js';
 import { initReveal } from './modules/reveal.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
+import { initTilt } from './modules/tilt.js';
 import { whenIdle } from './utils/animation-loop.js';
 
 /**
@@ -38,6 +41,10 @@ safeInit('config-bindings', () => applyConfigBindings());
 safeInit('current-year', setCurrentYear);
 safeInit('nav', initNav);
 safeInit('scroll-progress', initScrollProgress);
+// Data-driven content first, so reveal/tilt see the rendered cards
+safeInit('projects', () => renderProjects());
+safeInit('projects-tabs', initProjectsTabs);
+safeInit('tilt', initTilt);
 safeInit('reveal', initReveal);
 safeInit('marquee', initMarquee);
 safeInit('hero-title', initHeroTitle);

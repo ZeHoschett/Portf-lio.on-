@@ -18,6 +18,8 @@
  * @property {string[]} tags                              e.g. ['Java 17', 'Spring Boot', 'PostgreSQL']
  * @property {ProjectImage[]} [images]
  * @property {string} [codeSnippet]                       optional code for terminal mockups
+ * @property {string} [fileName]                          terminal title (default: id + extension)
+ * @property {{challenge: string, solution: string}[]} [challenges]  shown in the modal
  * @property {string} [repo]                              repository URL (hidden when empty)
  * @property {string} [demo]                              live demo URL (hidden when empty)
  * @property {number} [year]

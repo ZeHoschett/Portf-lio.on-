@@ -90,6 +90,10 @@ Tudo fica em **`assets/js/config.js`**:
     { src: 'assets/img/projects/api-pagamentos/01.webp', alt: 'Tela de ...', width: 1600, height: 1000 },
   ],
   codeSnippet: '',                    // opcional: código exibido no mockup de terminal
+  fileName: '',                       // opcional: nome na barra do terminal (padrão: id + extensão)
+  challenges: [                       // opcional: exibido no modal
+    { challenge: 'O problema enfrentado', solution: 'Como foi resolvido' },
+  ],
   repo: 'https://github.com/...',     // vazio = botão não aparece
   demo: '',                           // vazio = botão não aparece
   year: 2026,
