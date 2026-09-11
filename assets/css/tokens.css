@@ -196,7 +196,11 @@
     /* Canvas fades towards the content side so text and cards stay the focus */
     --stack-canvas-mask: radial-gradient(ellipse 90% 80% at 75% 30%, #000 0%, transparent 80%);
     --stack-canvas-mask-mobile: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+    --stack-canvas-opacity-mobile: 0.75;
     --java-backdrop: radial-gradient(60% 45% at 85% 10%, rgba(242, 159, 61, 0.08) 0%, transparent 70%);
+    --python-backdrop:
+      radial-gradient(55% 45% at 80% 20%, rgba(55, 118, 171, 0.12) 0%, transparent 70%),
+      radial-gradient(40% 35% at 65% 65%, rgba(255, 212, 59, 0.05) 0%, transparent 70%);
 
     /* ---------- Cursor glow ---------- */
     --cursor-glow-size: 32rem;

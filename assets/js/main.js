@@ -4,6 +4,7 @@
  */
 import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
+import { initPythonBlob } from './animations/python-blob.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
 import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
@@ -57,4 +58,5 @@ safeInit('cursor-glow', initCursorGlow);
 whenIdle(() => {
   safeInit('hero-orb', initHeroOrb);
   safeInit('java-network', initJavaNetwork);
+  safeInit('python-blob', initPythonBlob);
 });

@@ -1,3 +1,21 @@
-/* Python subsection (#projetos-python) — implemented in phase 6. */
+/* Python subsection (#projetos-python): morphing blob + particles (animations/python-blob.js). */
 @layer sections {
+  .project-stack--python {
+    background: var(--python-backdrop);
+  }
+
+  /* On phones the text sits over the canvas: tone the blob down to keep it legible */
+  .project-stack--python .project-stack__canvas {
+    opacity: var(--stack-canvas-opacity-mobile);
+    -webkit-mask-image: var(--stack-canvas-mask-mobile);
+    mask-image: var(--stack-canvas-mask-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .project-stack--python .project-stack__canvas {
+      opacity: 1;
+      -webkit-mask-image: var(--stack-canvas-mask);
+      mask-image: var(--stack-canvas-mask);
+    }
+  }
 }
