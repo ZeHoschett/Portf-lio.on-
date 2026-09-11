@@ -1,3 +1,19 @@
-/* Java subsection (#projetos-java) — implemented in phase 6. */
+/* Java subsection (#projetos-java): honeycomb network canvas (animations/java-network.js). */
 @layer sections {
+  .project-stack--java {
+    background: var(--java-backdrop);
+  }
+
+  /* The network fades out towards the content so cards and text stay readable */
+  .project-stack--java .project-stack__canvas {
+    -webkit-mask-image: var(--stack-canvas-mask-mobile);
+    mask-image: var(--stack-canvas-mask-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .project-stack--java .project-stack__canvas {
+      -webkit-mask-image: var(--stack-canvas-mask);
+      mask-image: var(--stack-canvas-mask);
+    }
+  }
 }

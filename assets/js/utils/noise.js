@@ -15,9 +15,18 @@ const GRAD3 = new Float32Array([
 ]);
 
 /**
- * Deterministic PRNG (mulberry32) so the orb looks the same on every visit.
+ * Deterministic PRNG (mulberry32): animations look the same on every visit and their
+ * reduced-motion frames are stable.
  * @param {number} seed
  * @returns {() => number} values in [0, 1)
+ */
+export function createRandom(seed) {
+  return mulberry32(seed);
+}
+
+/**
+ * @param {number} seed
+ * @returns {() => number}
  */
 function mulberry32(seed) {
   let state = seed >>> 0;

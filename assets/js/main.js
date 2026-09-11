@@ -3,6 +3,7 @@
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
 import { initHeroOrb } from './animations/hero-orb.js';
+import { initJavaNetwork } from './animations/java-network.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
 import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
@@ -53,4 +54,7 @@ safeInit('magnetic', initMagnetic);
 safeInit('cursor-glow', initCursorGlow);
 
 // Canvas animations start when the main thread is idle: they never block the first render
-whenIdle(() => safeInit('hero-orb', initHeroOrb));
+whenIdle(() => {
+  safeInit('hero-orb', initHeroOrb);
+  safeInit('java-network', initJavaNetwork);
+});

@@ -192,6 +192,12 @@
     --modal-media-ratio: 16 / 9;
     --modal-enter-scale: 0.97;
 
+    /* ---------- Stack subsection backgrounds (phase 6) ---------- */
+    /* Canvas fades towards the content side so text and cards stay the focus */
+    --stack-canvas-mask: radial-gradient(ellipse 90% 80% at 75% 30%, #000 0%, transparent 80%);
+    --stack-canvas-mask-mobile: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+    --java-backdrop: radial-gradient(60% 45% at 85% 10%, rgba(242, 159, 61, 0.08) 0%, transparent 70%);
+
     /* ---------- Cursor glow ---------- */
     --cursor-glow-size: 32rem;
     --cursor-glow: radial-gradient(
