@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!--
+    Source of og-image.png (1200×630). To regenerate the PNG, open this file in a
+    browser at 1200×630 and take a screenshot (see README.md → "Imagem de compartilhamento").
+    TODO(jose): quando houver foto/print, considere uma arte final com sua foto.
+  -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;family=Space+Grotesk:wght@500;700&amp;display=block');
+    .display { font-family: 'Space Grotesk', 'Segoe UI', Roboto, sans-serif; font-weight: 700; }
+    .role { font-family: 'Space Grotesk', 'Segoe UI', Roboto, sans-serif; font-weight: 500; }
+    .mono { font-family: 'JetBrains Mono', Consolas, monospace; font-weight: 500; letter-spacing: .2em; }
+  </style>
+  <defs>
+    <radialGradient id="orb" cx="0.35" cy="0.3" r="0.75">
+      <stop offset="0" stop-color="#C9CCD6"/>
+      <stop offset=".25" stop-color="#7C5CFF"/>
+      <stop offset=".65" stop-color="#4F7BFF" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#07070A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset=".5" stop-color="#4F7BFF"/>
+      <stop offset="1" stop-color="#C9CCD6"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".55" stop-color="#C9CCD6"/>
+      <stop offset="1" stop-color="#8A8CA0"/>
+    </linearGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="#07070A"/>
+  <circle cx="930" cy="250" r="260" fill="url(#orb)" filter="url(#blur)" opacity=".9"/>
+  <text x="80" y="92" class="mono" font-size="16" fill="#9A9AB0">PORTFÓLIO — 2026</text>
+  <text x="1120" y="92" class="mono" font-size="16" fill="#9A9AB0" text-anchor="end">COBOL · JAVA</text>
+  <text x="84" y="330" class="mono" font-size="34" fill="#C9CCD6">JOSÉ</text>
+  <text x="72" y="470" class="display" font-size="176" letter-spacing="-6" fill="url(#silver)">HOSCHETT</text>
+  <rect x="80" y="515" width="64" height="3" fill="url(#accent)"/>
+  <text x="164" y="526" class="role" font-size="30" fill="#EDEDF2">Desenvolvedor COBOL · Java</text>
+</svg>

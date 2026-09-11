@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Neutral portrait placeholder (4:5). Replace via config.photo. -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#1A1A26"/>
+      <stop offset="1" stop-color="#07070A"/>
+    </radialGradient>
+    <linearGradient id="figure" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C5CFF" stop-opacity=".6"/>
+      <stop offset=".55" stop-color="#4F7BFF" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#C9CCD6" stop-opacity=".15"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset=".55" stop-color="#07070A" stop-opacity="0"/>
+      <stop offset="1" stop-color="#07070A"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="370" r="150" fill="url(#figure)"/>
+  <path d="M110 1000c0-235 130-395 290-395s290 160 290 395z" fill="url(#figure)"/>
+  <rect width="800" height="1000" fill="url(#fade)"/>
+  <g fill="none" stroke="#C9CCD6" stroke-opacity=".35" stroke-width="2">
+    <path d="M40 90V40h50M710 40h50v50M760 910v50h-50M90 960H40v-50"/>
+  </g>
+</svg>

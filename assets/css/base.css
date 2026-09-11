@@ -1,0 +1,157 @@
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  }
+
+  body {
+    overflow-x: clip;
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-normal);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Film grain over the whole page */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-grain);
+    pointer-events: none;
+    background-image: var(--texture-grain);
+    background-size: var(--grain-size);
+    opacity: var(--grain-opacity);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-snug);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-decoration-thickness: var(--border-thin);
+    text-underline-offset: 0.2em;
+  }
+
+  :where(a:not([class])) {
+    color: var(--color-accent-text);
+    transition: color var(--dur-fast) var(--ease-out-quart);
+  }
+
+  :where(a:not([class])):hover {
+    color: var(--color-text);
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--font-mono);
+  }
+
+  /* Code keeps its column layout (COBOL!) and scrolls inside its own box instead of the page */
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  ::selection {
+    color: var(--color-text);
+    background-color: var(--color-accent);
+  }
+
+  :focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer utilities {
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: var(--z-skip);
+    padding: var(--space-3) var(--space-5);
+    font-weight: var(--fw-semibold);
+    color: var(--color-bg);
+    text-decoration: none;
+    background: var(--color-text);
+    border-radius: var(--radius-full);
+    transform: translateY(calc(-100% - var(--space-6)));
+    transition: transform var(--dur-base) var(--ease-out-expo);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  .icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+
+  .text-gradient {
+    color: transparent;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Global safety net: pages must stay complete and static with reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

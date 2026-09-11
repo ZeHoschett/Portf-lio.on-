@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <!-- Neutral project screenshot placeholder (16:10). -->
+  <defs>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0v80" fill="none" stroke="#FFFFFF" stroke-opacity=".05" stroke-width="2"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7C5CFF" stop-opacity=".45"/>
+      <stop offset=".6" stop-color="#4F7BFF" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#07070A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset=".5" stop-color="#4F7BFF"/>
+      <stop offset="1" stop-color="#C9CCD6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="#0D0D13"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <ellipse cx="800" cy="500" rx="620" ry="420" fill="url(#glow)"/>
+  <path d="m690 400-110 100 110 100M910 400l110 100-110 100M850 360l-100 280" fill="none" stroke="url(#stroke)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

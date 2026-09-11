@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Dev tooling (optional, never required to run the site)
+node_modules/
+*.log
+.lighthouseci/
+.env

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO(jose): após publicar, descomente e aponte para a URL final
+# Sitemap: https://SEU-DOMINIO/sitemap.xml

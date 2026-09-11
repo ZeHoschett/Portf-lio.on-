@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>José Hoschett — Desenvolvedor COBOL · Java</title>
+    <meta name="description" content="Portfólio de José Hoschett, desenvolvedor COBOL e Java: mainframe (COBOL, CICS, DB2, z/OS), back-end com Java e Spring Boot, Python e desenvolvimento web.">
+    <meta name="author" content="José Hoschett">
+    <meta name="theme-color" content="#07070A">
+    <meta name="color-scheme" content="dark">
+
+    <!-- TODO(jose): após publicar, descomente e use a URL final (a mesma de config.siteUrl) -->
+    <!-- <link rel="canonical" href="https://SEU-DOMINIO/"> -->
+
+    <!-- Open Graph / Twitter Card -->
+    <!-- TODO(jose): após publicar, troque og:image/twitter:image por URLs absolutas e descomente og:url -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="José Hoschett">
+    <meta property="og:title" content="José Hoschett — Desenvolvedor COBOL · Java">
+    <meta property="og:description" content="Do mainframe à nuvem: projetos em COBOL, Java, Python e Web.">
+    <meta property="og:image" content="assets/img/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="José Hoschett — Desenvolvedor COBOL · Java">
+    <!-- <meta property="og:url" content="https://SEU-DOMINIO/"> -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="José Hoschett — Desenvolvedor COBOL · Java">
+    <meta name="twitter:description" content="Do mainframe à nuvem: projetos em COBOL, Java, Python e Web.">
+    <meta name="twitter:image" content="assets/img/og-image.png">
+
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+
+    <!-- Fonts: only the weights in use -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;700&amp;family=VT323&amp;display=swap">
+
+    <!-- Styles (cascade layers declared in reset.css) -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/sections/header.css">
+    <link rel="stylesheet" href="assets/css/sections/hero.css">
+    <link rel="stylesheet" href="assets/css/sections/about.css">
+    <link rel="stylesheet" href="assets/css/sections/stack.css">
+    <link rel="stylesheet" href="assets/css/sections/projects.css">
+    <link rel="stylesheet" href="assets/css/sections/project-java.css">
+    <link rel="stylesheet" href="assets/css/sections/project-python.css">
+    <link rel="stylesheet" href="assets/css/sections/project-cobol.css">
+    <link rel="stylesheet" href="assets/css/sections/project-web.css">
+    <link rel="stylesheet" href="assets/css/sections/education.css">
+    <link rel="stylesheet" href="assets/css/sections/certificates.css">
+    <link rel="stylesheet" href="assets/css/sections/resume.css">
+    <link rel="stylesheet" href="assets/css/sections/contact.css">
+    <link rel="stylesheet" href="assets/css/sections/footer.css">
+
+    <script type="module" src="assets/js/main.js"></script>
+
+    <!-- TODO(jose): quando tiver GitHub e URL final, adicione-os em "sameAs" e "url" -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "José Hoschett",
+        "jobTitle": "Desenvolvedor COBOL · Java",
+        "email": "mailto:dev.jose841@gmail.com",
+        "sameAs": ["https://www.linkedin.com/in/josehoschett/"],
+        "knowsAbout": ["COBOL", "CICS", "DB2", "z/OS", "Java", "Spring Boot", "Python", "HTML", "CSS", "JavaScript"]
+      }
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="scroll-progress" aria-hidden="true" data-scroll-progress>
+      <span class="scroll-progress__bar"></span>
+    </div>
+
+    <!-- ============================== HEADER ============================== -->
+    <header class="site-header" data-header>
+      <div class="site-header__inner container container--wide">
+        <a class="site-header__logo" href="#inicio">
+          <span aria-hidden="true">JH</span>
+          <span class="visually-hidden">José Hoschett — início</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Principal" data-nav>
+          <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu" data-nav-toggle>
+            <span class="site-nav__toggle-icon" aria-hidden="true">
+              <span class="site-nav__toggle-line"></span>
+              <span class="site-nav__toggle-line"></span>
+            </span>
+            <span class="visually-hidden" data-nav-toggle-label>Abrir menu</span>
+          </button>
+
+          <div class="site-nav__menu" id="site-nav-menu" data-nav-menu>
+            <ul class="site-nav__list" role="list">
+              <li><a class="site-nav__link" href="#inicio">Início</a></li>
+              <li><a class="site-nav__link" href="#sobre">Sobre</a></li>
+              <li><a class="site-nav__link" href="#stack">Stack</a></li>
+              <li><a class="site-nav__link" href="#projetos">Projetos</a></li>
+              <li><a class="site-nav__link" href="#formacao">Formação</a></li>
+              <li><a class="site-nav__link" href="#certificados">Certificados</a></li>
+              <li><a class="site-nav__link" href="#curriculo">Currículo</a></li>
+              <li><a class="site-nav__link" href="#contato">Contato</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <a class="btn btn--primary btn--sm site-header__cta" href="#contato" data-magnetic>Fale comigo</a>
+      </div>
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <!-- ============================== HERO ============================== -->
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <canvas class="hero__orb" data-hero-orb aria-hidden="true" role="presentation"></canvas>
+
+        <div class="hero__inner container container--wide">
+          <p class="hero__side-label" aria-hidden="true">Portfólio — <span data-current-year>2026</span></p>
+
+          <ul class="hero__corners" role="list" aria-hidden="true">
+            <li class="hero__corner hero__corner--tl">N° 01 / Portfólio</li>
+            <li class="hero__corner hero__corner--tr">Mainframe ↔ Cloud</li>
+            <li class="hero__corner hero__corner--br">COBOL · Java · Python · Web</li>
+          </ul>
+
+          <div class="hero__content" data-parallax="0.15">
+            <h1 class="hero__title" id="hero-title">
+              <span class="hero__title-first">José</span>
+              <span class="hero__title-last">Hoschett</span>
+            </h1>
+
+            <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
+            <!-- TODO(jose): a frase vem de config.tagline -->
+            <p class="hero__tagline" data-bind="tagline">Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.</p>
+
+            <div class="hero__actions cluster">
+              <a class="btn btn--primary" href="#projetos" data-magnetic>
+                <span>Ver projetos</span>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-arrow"></use></svg>
+              </a>
+              <a class="btn btn--secondary" data-link="resume" data-link-fallback="#curriculo" download>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
+                <span>Baixar currículo</span>
+              </a>
+              <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
+                <span>WhatsApp</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="hero__photo" data-parallax="0.3">
+            <!-- TODO(jose): a foto vem de config.photo; o placeholder é decorativo (alt vazio) -->
+            <img class="hero__photo-img" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" fetchpriority="high" decoding="async">
+          </div>
+
+          <a class="hero__scroll" href="#sobre">
+            <span class="hero__scroll-text">Role para baixo</span>
+            <span class="hero__scroll-line" aria-hidden="true"></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============================== SOBRE ============================== -->
+      <section class="section about" id="sobre" aria-labelledby="about-title">
+        <div class="container about__inner">
+          <div class="about__media" data-reveal>
+            <img class="about__photo" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" loading="lazy" decoding="async">
+          </div>
+
+          <div class="about__content">
+            <header class="section__header" data-reveal>
+              <p class="section__eyebrow">01 — Sobre</p>
+              <h2 class="section__title" id="about-title">Sobre mim</h2>
+            </header>
+
+            <!-- TODO(jose): a bio vem de config.bio; este texto é só o padrão enquanto ela estiver vazia -->
+            <p class="about__bio" data-bind="bio" data-reveal>Desenvolvedor COBOL e Java, com foco em sistemas mainframe (CICS, DB2 e z/OS), back-end com Spring Boot, Python e desenvolvimento web.</p>
+
+            <ul class="chip-list" role="list" aria-label="Destaques" data-reveal>
+              <li class="chip" data-stack="cobol">Mainframe z/OS</li>
+              <li class="chip" data-stack="java">Back-end Java</li>
+              <li class="chip" data-stack="python">Automação com Python</li>
+              <li class="chip" data-stack="web">Desenvolvimento Web</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== STACK ============================== -->
+      <section class="section stack" id="stack" aria-labelledby="stack-title">
+        <div class="container">
+          <header class="section__header" data-reveal>
+            <p class="section__eyebrow">02 — Stack</p>
+            <h2 class="section__title" id="stack-title">Tecnologias</h2>
+            <p class="section__lead">Do mainframe ao navegador: as ferramentas com que construo sistemas.</p>
+          </header>
+        </div>
+
+        <!-- Decorative: the same technologies are listed accessibly in the groups below -->
+        <div class="marquee" aria-hidden="true" data-marquee>
+          <div class="marquee__row marquee__row--left">
+            <ul class="marquee__track" role="list">
+              <li class="marquee__item">COBOL</li>
+              <li class="marquee__item">CICS</li>
+              <li class="marquee__item">DB2</li>
+              <li class="marquee__item">z/OS</li>
+              <li class="marquee__item">Java</li>
+            </ul>
+          </div>
+          <div class="marquee__row marquee__row--right">
+            <ul class="marquee__track" role="list">
+              <li class="marquee__item">Spring Boot</li>
+              <li class="marquee__item">Python</li>
+              <li class="marquee__item">HTML</li>
+              <li class="marquee__item">CSS</li>
+              <li class="marquee__item">JavaScript</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="container">
+          <ul class="stack__groups" role="list">
+            <li class="stack-group" data-stack="cobol" data-reveal>
+              <h3 class="stack-group__title">Mainframe</h3>
+              <ul class="tag-list" role="list">
+                <li class="tag">COBOL</li>
+                <li class="tag">CICS</li>
+                <li class="tag">DB2</li>
+                <li class="tag">z/OS</li>
+              </ul>
+            </li>
+            <li class="stack-group" data-stack="java" data-reveal>
+              <h3 class="stack-group__title">Java</h3>
+              <ul class="tag-list" role="list">
+                <li class="tag">Java</li>
+                <li class="tag">Spring Boot</li>
+              </ul>
+            </li>
+            <li class="stack-group" data-stack="python" data-reveal>
+              <h3 class="stack-group__title">Python</h3>
+              <ul class="tag-list" role="list">
+                <li class="tag">Python</li>
+              </ul>
+            </li>
+            <li class="stack-group" data-stack="web" data-reveal>
+              <h3 class="stack-group__title">Web</h3>
+              <ul class="tag-list" role="list">
+                <li class="tag">HTML</li>
+                <li class="tag">CSS</li>
+                <li class="tag">JavaScript</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============================== PROJETOS ============================== -->
+      <section class="projects" id="projetos" aria-labelledby="projects-title">
+        <div class="container projects__intro">
+          <header class="section__header" data-reveal>
+            <p class="section__eyebrow">03 — Projetos</p>
+            <h2 class="section__title" id="projects-title">Projetos</h2>
+            <p class="section__lead">Cada stack tem seu próprio ambiente — e só os projetos que pertencem a ele.</p>
+          </header>
+        </div>
+
+        <!-- In-page anchors (not an ARIA tablist): all four subsections stay visible on the page -->
+        <nav class="projects-tabs" aria-label="Projetos por stack" data-projects-tabs>
+          <ul class="projects-tabs__list container" role="list">
+            <li><a class="projects-tabs__link" href="#projetos-java" data-stack="java">Java</a></li>
+            <li><a class="projects-tabs__link" href="#projetos-python" data-stack="python">Python</a></li>
+            <li><a class="projects-tabs__link" href="#projetos-cobol" data-stack="cobol">COBOL</a></li>
+            <li><a class="projects-tabs__link" href="#projetos-web" data-stack="web">Web</a></li>
+          </ul>
+        </nav>
+
+        <!-- ---------- Java ---------- -->
+        <section class="project-stack project-stack--java" id="projetos-java" aria-labelledby="projetos-java-title" data-stack="java">
+          <canvas class="project-stack__canvas" data-animation="java-network" aria-hidden="true" role="presentation"></canvas>
+          <div class="container project-stack__inner">
+            <header class="project-stack__header" data-reveal>
+              <p class="project-stack__eyebrow">Stack 01 · Enterprise</p>
+              <h3 class="project-stack__title" id="projetos-java-title">Java</h3>
+              <p class="project-stack__lead">Back-end com Java e Spring Boot.</p>
+            </header>
+            <ul class="project-grid" role="list" data-projects="java"></ul>
+          </div>
+        </section>
+
+        <!-- ---------- Python ---------- -->
+        <section class="project-stack project-stack--python" id="projetos-python" aria-labelledby="projetos-python-title" data-stack="python">
+          <canvas class="project-stack__canvas" data-animation="python-blob" aria-hidden="true" role="presentation"></canvas>
+          <div class="container project-stack__inner">
+            <header class="project-stack__header" data-reveal>
+              <p class="project-stack__eyebrow">Stack 02 · Dados</p>
+              <h3 class="project-stack__title" id="projetos-python-title">Python</h3>
+              <p class="project-stack__lead">Automação, dados e scripts com Python.</p>
+            </header>
+            <ul class="project-grid" role="list" data-projects="python"></ul>
+          </div>
+        </section>
+
+        <!-- ---------- COBOL ---------- -->
+        <section class="project-stack project-stack--cobol" id="projetos-cobol" aria-labelledby="projetos-cobol-title" data-stack="cobol">
+          <div class="container project-stack__inner">
+            <div class="ispf" aria-hidden="true">
+              <p class="ispf__row"><span>COMMAND ===&gt;</span><span class="ispf__input"></span><span>SCROLL ===&gt; PAGE</span></p>
+              <p class="ispf__row"><span>PORTFOLIO.PROJETOS.COBOL</span><span>ROW 000001</span></p>
+            </div>
+
+            <header class="project-stack__header" data-reveal>
+              <p class="project-stack__eyebrow">Stack 03 · Mainframe</p>
+              <h3 class="project-stack__title" id="projetos-cobol-title">COBOL</h3>
+              <p class="project-stack__lead">Mainframe com COBOL, CICS, DB2 e z/OS.</p>
+            </header>
+
+            <!-- Source of truth for the typing animation: the full text stays in the DOM for assistive tech -->
+            <figure class="cobol-terminal" data-cobol-terminal>
+              <figcaption class="visually-hidden">Programa COBOL de apresentação</figcaption>
+<pre class="cobol-terminal__code"><code>       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PORTFOLIO.
+       AUTHOR. JOSE-HOSCHETT.
+       PROCEDURE DIVISION.
+           DISPLAY 'COBOL | CICS | DB2 | Z/OS'.
+           DISPLAY 'STATUS: DISPONIVEL PARA NOVOS PROJETOS'.
+           STOP RUN.</code></pre>
+            </figure>
+
+            <ul class="project-grid" role="list" data-projects="cobol"></ul>
+
+            <p class="ispf__footer" aria-hidden="true">PF1=HELP&nbsp;&nbsp;PF3=EXIT&nbsp;&nbsp;PF7=UP&nbsp;&nbsp;PF8=DOWN</p>
+          </div>
+        </section>
+
+        <!-- ---------- Web ---------- -->
+        <section class="project-stack project-stack--web" id="projetos-web" aria-labelledby="projetos-web-title" data-stack="web">
+          <canvas class="project-stack__canvas" data-animation="web-dotgrid" aria-hidden="true" role="presentation"></canvas>
+          <div class="container project-stack__inner">
+            <header class="project-stack__header" data-reveal>
+              <p class="project-stack__eyebrow">Stack 04 · Front-end</p>
+              <h3 class="project-stack__title" id="projetos-web-title">Web</h3>
+              <p class="project-stack__lead">Interfaces com HTML, CSS e JavaScript.</p>
+            </header>
+            <ul class="project-grid" role="list" data-projects="web"></ul>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============================== FORMAÇÃO ============================== -->
+      <section class="section education" id="formacao" aria-labelledby="education-title">
+        <div class="container">
+          <header class="section__header" data-reveal>
+            <p class="section__eyebrow">04 — Formação</p>
+            <h2 class="section__title" id="education-title">Formação acadêmica</h2>
+          </header>
+          <ol class="timeline" role="list" data-education></ol>
+        </div>
+      </section>
+
+      <!-- ============================== CERTIFICADOS ============================== -->
+      <section class="section certificates" id="certificados" aria-labelledby="certificates-title">
+        <div class="container">
+          <header class="section__header" data-reveal>
+            <p class="section__eyebrow">05 — Certificados</p>
+            <h2 class="section__title" id="certificates-title">Certificados</h2>
+          </header>
+          <ul class="cert-grid" role="list" data-certificates></ul>
+        </div>
+      </section>
+
+      <!-- ============================== CURRÍCULO ============================== -->
+      <section class="section resume" id="curriculo" aria-labelledby="resume-title">
+        <div class="container">
+          <div class="resume-card" data-reveal>
+            <div class="resume-card__content">
+              <p class="section__eyebrow">06 — Currículo</p>
+              <h2 class="section__title" id="resume-title">Currículo</h2>
+              <p class="resume-card__text">Experiência, formação e stack completa em um único PDF.</p>
+              <p class="resume-card__status" data-requires-missing="resume">Currículo disponível em breve.</p>
+            </div>
+            <div class="resume-card__actions cluster">
+              <a class="btn btn--primary" data-link="resume" data-link-empty="disable" download>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
+                <span>Baixar PDF</span>
+              </a>
+              <a class="btn btn--secondary" data-link="resume" data-link-empty="disable" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-external"></use></svg>
+                <span>Visualizar</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== CONTATO ============================== -->
+      <section class="section contact" id="contato" aria-labelledby="contact-title">
+        <div class="container">
+          <header class="section__header contact__header" data-reveal>
+            <p class="section__eyebrow">07 — Contato</p>
+            <h2 class="contact__title" id="contact-title">Vamos conversar?</h2>
+            <p class="section__lead">Aberto a oportunidades e novos projetos. Escolha o canal que preferir.</p>
+          </header>
+
+          <ul class="contact-list" role="list">
+            <li class="contact-item contact-item--email" data-reveal>
+              <span class="contact-item__label">E-mail</span>
+              <a class="contact-item__link" href="mailto:dev.jose841@gmail.com" data-link="email">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-mail"></use></svg>
+                <span data-bind="email">dev.jose841@gmail.com</span>
+              </a>
+              <button class="btn btn--icon" type="button" data-copy-email>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-copy"></use></svg>
+                <span class="visually-hidden">Copiar e-mail</span>
+              </button>
+            </li>
+            <li class="contact-item" data-requires="linkedin" data-reveal>
+              <span class="contact-item__label">LinkedIn</span>
+              <a class="contact-item__link" href="https://www.linkedin.com/in/josehoschett/" data-link="linkedin" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-linkedin"></use></svg>
+                <span>Perfil no LinkedIn</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
+              </a>
+            </li>
+            <li class="contact-item" data-requires="github" data-reveal hidden>
+              <span class="contact-item__label">GitHub</span>
+              <a class="contact-item__link" data-link="github" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-github"></use></svg>
+                <span>Perfil no GitHub</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
+              </a>
+            </li>
+            <li class="contact-item contact-item--whatsapp" data-requires="whatsapp" data-reveal hidden>
+              <span class="contact-item__label">WhatsApp</span>
+              <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
+                <span>Conversar no WhatsApp</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================== FOOTER ============================== -->
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <a class="site-footer__logo" href="#inicio">
+          <span aria-hidden="true">JH</span>
+          <span class="visually-hidden">José Hoschett — início</span>
+        </a>
+
+        <p class="site-footer__copy">© <span data-current-year>2026</span> José Hoschett</p>
+
+        <ul class="site-footer__social cluster" role="list">
+          <li data-requires="linkedin">
+            <a class="icon-link" href="https://www.linkedin.com/in/josehoschett/" data-link="linkedin" target="_blank" rel="noopener noreferrer">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-linkedin"></use></svg>
+              <span class="visually-hidden">LinkedIn (abre em nova aba)</span>
+            </a>
+          </li>
+          <li data-requires="github" hidden>
+            <a class="icon-link" data-link="github" target="_blank" rel="noopener noreferrer">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-github"></use></svg>
+              <span class="visually-hidden">GitHub (abre em nova aba)</span>
+            </a>
+          </li>
+          <li>
+            <a class="icon-link" href="mailto:dev.jose841@gmail.com" data-link="email">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-mail"></use></svg>
+              <span class="visually-hidden">E-mail</span>
+            </a>
+          </li>
+        </ul>
+
+        <p class="site-footer__made">Feito com HTML, CSS e JavaScript</p>
+
+        <a class="site-footer__top" href="#inicio">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-arrow-up"></use></svg>
+          <span>Voltar ao topo</span>
+        </a>
+      </div>
+    </footer>
+
+    <!-- Floating WhatsApp button (shown after the hero in phase 7) -->
+    <a class="whatsapp-float" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
+      <span class="visually-hidden">Conversar no WhatsApp (abre em nova aba)</span>
+    </a>
+
+    <!-- Live region for toasts -->
+    <div class="toast-region" role="status" aria-live="polite" aria-atomic="true" data-toast-region></div>
+  </body>
+</html>
