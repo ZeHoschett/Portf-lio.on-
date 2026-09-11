@@ -1,3 +1,340 @@
-/* Hero (#inicio) — implemented in phase 3. */
+/*
+ * Hero (#inicio): giant title, portrait crossing the title (outlined ghost copy on top),
+ * animated orb canvas and parallax layers. Mobile-first.
+ *
+ * Stacking inside .hero__stage (one grid cell): title (1) < photo (2) < outlined ghost (3).
+ */
 @layer sections {
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: clip;
+  }
+
+  /* ============================== Background layers ============================== */
+  .hero__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-below);
+    background-image:
+      linear-gradient(to right, var(--color-border) var(--border-thin), transparent var(--border-thin)),
+      linear-gradient(to bottom, var(--color-border) var(--border-thin), transparent var(--border-thin));
+    background-size: var(--hero-grid) var(--hero-grid);
+    -webkit-mask-image: var(--hero-grid-mask);
+    mask-image: var(--hero-grid-mask);
+  }
+
+  .hero__orb {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-base);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* ============================== Layout ============================== */
+  .hero__inner {
+    position: relative;
+    z-index: var(--z-raised);
+    display: grid;
+    align-content: end;
+    gap: var(--space-5);
+    min-height: inherit;
+    padding-block: calc(var(--header-h) + var(--space-6)) var(--space-6);
+  }
+
+  .hero__content {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* ============================== Editorial labels ============================== */
+  .hero__side-label,
+  .hero__corner {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero__side-label {
+    position: absolute;
+    top: 50%;
+    left: var(--space-3);
+    display: none;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .hero__corners {
+    list-style: none;
+  }
+
+  /* Hidden on phones: they would sit on the brightest part of the orb */
+  .hero__corner {
+    position: absolute;
+    top: calc(var(--header-h) + var(--space-4));
+    display: none;
+  }
+
+  .hero__corner--tl {
+    left: var(--space-gutter);
+  }
+
+  .hero__corner--tr,
+  .hero__corner--br {
+    right: var(--space-gutter);
+  }
+
+  .hero__corner--br {
+    top: auto;
+    bottom: calc(var(--space-6) + var(--space-3));
+  }
+
+  /* ============================== Title + portrait stage ============================== */
+  .hero__stage {
+    display: grid;
+    grid-template-areas: 'stack';
+    align-items: end;
+  }
+
+  .hero__stage > * {
+    grid-area: stack;
+  }
+
+  .hero__title {
+    position: relative;
+    z-index: var(--z-raised);
+    display: grid;
+    font-family: var(--font-display);
+    font-size: var(--fs-hero);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-none);
+    letter-spacing: var(--ls-tighter);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Chromium applies text-transform to the accessible name: keep "José Hoschett" as written */
+  .hero__title .visually-hidden {
+    text-transform: none;
+  }
+
+  .hero__title--ghost {
+    z-index: var(--z-front);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero__title-first {
+    justify-self: start;
+    margin-block-end: var(--hero-first-gap);
+    padding-inline-start: var(--hero-first-indent);
+    font-size: var(--hero-first-scale);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wider);
+    color: var(--color-silver);
+  }
+
+  .hero__title-last {
+    --line-offset: 4; /* starts after the 4 letters of "José" */
+  }
+
+  /* Letter-by-letter entrance (pre-split in the HTML: no JS, no flash of unanimated text) */
+  .hero__title .char {
+    display: inline-block;
+    /* Glyphs overflow their box with negative tracking; the bleed keeps the clipped gradient
+       painted under the overflow (padding and negative margin cancel out in layout) */
+    margin-inline: calc(var(--char-bleed) * -1);
+    padding-inline: var(--char-bleed);
+    animation: char-rise var(--dur-slow) var(--ease-out-expo) both;
+    animation-delay: calc(
+      var(--hero-delay) + (var(--line-offset, 0) + var(--i, 0)) * var(--char-stagger)
+    );
+  }
+
+  .hero__title .char:nth-child(2) { --i: 1; }
+  .hero__title .char:nth-child(3) { --i: 2; }
+  .hero__title .char:nth-child(4) { --i: 3; }
+  .hero__title .char:nth-child(5) { --i: 4; }
+  .hero__title .char:nth-child(6) { --i: 5; }
+  .hero__title .char:nth-child(7) { --i: 6; }
+  .hero__title .char:nth-child(8) { --i: 7; }
+
+  /* Metallic fill per letter (background-clip on the animated parent breaks in Chromium) */
+  .hero__title-last .char {
+    color: transparent;
+    background: var(--gradient-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero__title--ghost .char {
+    color: transparent;
+    background: none;
+    -webkit-text-stroke: var(--border-thin) var(--color-ghost-stroke);
+  }
+
+  .hero__photo {
+    position: relative;
+    z-index: var(--z-content);
+    justify-self: end;
+    width: var(--hero-photo-w);
+    aspect-ratio: var(--hero-photo-ratio);
+    margin-block-end: calc(var(--fs-hero) * var(--hero-photo-lift));
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    -webkit-mask-image: var(--hero-photo-mask);
+    mask-image: var(--hero-photo-mask);
+    animation: rise-in var(--dur-intro) var(--ease-out-expo) both;
+  }
+
+  .hero__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .hero__photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: var(--photo-img-scale); /* room for the mouse parallax */
+  }
+
+  /* ============================== Meta: role, tagline, CTAs ============================== */
+  .hero__meta {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .hero__intro {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .hero__intro,
+  .hero__actions,
+  .hero__scroll {
+    animation: fade-up var(--dur-slow) var(--ease-out-expo) both;
+    animation-delay: var(--hero-meta-delay);
+  }
+
+  .hero__actions {
+    --cluster-gap: var(--space-3);
+
+    animation-delay: calc(var(--hero-meta-delay) + var(--stagger-step));
+  }
+
+  /* Both CTAs share one row from 360px */
+  .hero__actions .btn {
+    padding-inline: var(--space-4);
+  }
+
+  @media (min-width: 480px) {
+    .hero__actions .btn {
+      padding-inline: var(--space-5);
+    }
+  }
+
+  .hero__role {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .hero__role::before {
+    content: '';
+    width: var(--eyebrow-line);
+    height: var(--border-thin);
+    background: var(--gradient-accent);
+  }
+
+  .hero__tagline {
+    max-width: var(--measure-narrow);
+    font-size: var(--fs-md);
+    line-height: var(--lh-snug);
+    color: var(--color-text-muted);
+  }
+
+  /* ============================== Scroll indicator ============================== */
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--space-3);
+    min-height: var(--tap-min);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out-quart);
+    animation-delay: calc(var(--hero-meta-delay) + var(--stagger-step) * 2);
+  }
+
+  .hero__scroll-line {
+    position: relative;
+    order: -1;
+    width: var(--border-thin);
+    height: var(--scroll-line-h);
+    overflow: hidden;
+    background: var(--color-border-strong);
+  }
+
+  .hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, var(--color-accent-text));
+    animation: scroll-line var(--scroll-line-dur) var(--ease-in-out) infinite;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__scroll:hover {
+      color: var(--color-text);
+    }
+  }
+
+  /* ============================== Tablet ============================== */
+  @media (min-width: 768px) {
+    .hero__corner--tl,
+    .hero__corner--tr {
+      display: block;
+    }
+
+    .hero__meta {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+  }
+
+  /* ============================== Desktop ============================== */
+  @media (min-width: 1024px) {
+    .hero__side-label,
+    .hero__corner--br {
+      display: block;
+    }
+
+    .hero__photo {
+      width: var(--hero-photo-w-lg);
+      margin-inline-end: var(--hero-photo-offset-lg);
+    }
+  }
 }

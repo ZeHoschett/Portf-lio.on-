@@ -2,9 +2,15 @@
  * Entry point (loaded as type="module", so it runs after the HTML is parsed).
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
+import { initHeroOrb } from './animations/hero-orb.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
+import { initCursorGlow } from './modules/cursor.js';
+import { initHeroTitle } from './modules/hero-title.js';
+import { initMagnetic } from './modules/magnetic.js';
 import { initNav } from './modules/nav.js';
+import { initParallax } from './modules/parallax.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
+import { whenIdle } from './utils/animation-loop.js';
 
 /**
  * Runs an initializer and contains any error it throws.
@@ -30,3 +36,10 @@ safeInit('config-bindings', () => applyConfigBindings());
 safeInit('current-year', setCurrentYear);
 safeInit('nav', initNav);
 safeInit('scroll-progress', initScrollProgress);
+safeInit('hero-title', initHeroTitle);
+safeInit('parallax', initParallax);
+safeInit('magnetic', initMagnetic);
+safeInit('cursor-glow', initCursorGlow);
+
+// Canvas animations start when the main thread is idle: they never block the first render
+whenIdle(() => safeInit('hero-orb', initHeroOrb));

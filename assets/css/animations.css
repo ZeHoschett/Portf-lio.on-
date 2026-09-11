@@ -1,3 +1,55 @@
-/* Keyframes and reveal utilities — implemented in phase 3. */
+/*
+ * Keyframes and motion utilities.
+ * Entrance keyframes animate the individual `translate`/`scale` properties (not `transform`),
+ * so they compose with JS-driven transforms such as parallax.
+ */
 @layer utilities {
+  @keyframes char-rise {
+    from {
+      opacity: 0;
+      translate: 0 var(--char-rise);
+      rotate: var(--char-tilt);
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+      rotate: 0deg;
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      translate: 0 var(--space-5);
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* No opacity: the portrait may be the LCP element and must paint immediately */
+  @keyframes rise-in {
+    from {
+      translate: 0 var(--space-6);
+      scale: var(--rise-scale);
+    }
+
+    to {
+      translate: 0 0;
+      scale: 1;
+    }
+  }
+
+  @keyframes scroll-line {
+    from {
+      translate: 0 -100%;
+    }
+
+    to {
+      translate: 0 100%;
+    }
+  }
 }

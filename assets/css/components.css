@@ -26,8 +26,10 @@
     border-radius: var(--radius-full);
     box-shadow: var(--btn-shadow);
     cursor: pointer;
+    translate: var(--magnet-x, 0) var(--magnet-y, 0); /* set by modules/magnetic.js */
     -webkit-tap-highlight-color: transparent;
     transition:
+      translate var(--dur-slow) var(--ease-out-expo),
       transform var(--dur-base) var(--ease-out-expo),
       box-shadow var(--dur-base) var(--ease-out-quart),
       border-color var(--dur-fast) var(--ease-out-quart),
@@ -91,5 +93,26 @@
     opacity: var(--opacity-disabled);
     cursor: not-allowed;
     pointer-events: none;
+  }
+
+  /* ============================== Cursor glow (desktop) ============================== */
+  .cursor-glow {
+    position: fixed;
+    top: calc(var(--cursor-glow-size) / -2);
+    left: calc(var(--cursor-glow-size) / -2);
+    z-index: var(--z-cursor);
+    width: var(--cursor-glow-size);
+    height: var(--cursor-glow-size);
+    background: var(--cursor-glow);
+    border-radius: var(--radius-full);
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+    transition: opacity var(--dur-slow) var(--ease-out-quart);
+  }
+
+  .cursor-glow.is-visible {
+    opacity: 1;
+    will-change: transform;
   }
 }

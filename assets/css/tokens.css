@@ -73,7 +73,7 @@
     --fs-2xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
     --fs-3xl: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
     --fs-display: clamp(3rem, 1.5rem + 7.5vw, 8rem);
-    --fs-hero: clamp(3.5rem, 12vw, 11rem);
+    --fs-hero: clamp(3.5rem, 17.5vw, 15rem); /* "HOSCHETT" spans the width, still fits at 360px */
 
     --lh-none: 0.9;
     --lh-tight: 1.05;
@@ -123,6 +123,40 @@
     --toggle-icon-h: 0.5rem;
     --icon-scale: 1.125em;
 
+    /* ---------- Hero ---------- */
+    --gradient-title: linear-gradient(180deg, #ffffff 0%, #c9ccd6 55%, #8a8ca0 100%);
+    --color-ghost-stroke: rgba(237, 237, 242, 0.45);
+    --hero-first-scale: 0.3em; /* "José" relative to the title size */
+    --hero-first-gap: 0.35em;
+    --hero-first-indent: 0.12em;
+    --hero-photo-w: min(62vw, 20rem);
+    --hero-photo-w-lg: clamp(16rem, 24vw, 26rem);
+    --hero-photo-offset-lg: 6%;
+    --hero-photo-ratio: 4 / 5;
+    --hero-photo-lift: 0.18; /* photo bottom sits this × title size above the baseline */
+    --hero-photo-mask: linear-gradient(to bottom, #000 50%, transparent 100%);
+    --hero-grid: 5rem;
+    --hero-grid-mask: radial-gradient(ellipse 80% 70% at 65% 35%, #000 0%, transparent 75%);
+    --photo-img-scale: 1.06;
+    --rise-scale: 1.04;
+    --char-rise: 0.35em;
+    --char-bleed: 0.15em;
+    --char-tilt: 6deg;
+    --hero-delay: 150ms;
+    --char-stagger: 35ms;
+    --hero-meta-delay: 550ms;
+    --scroll-line-h: 3rem;
+    --scroll-line-dur: 2200ms;
+
+    /* ---------- Cursor glow ---------- */
+    --cursor-glow-size: 32rem;
+    --cursor-glow: radial-gradient(
+      circle,
+      rgba(124, 92, 255, 0.14) 0%,
+      rgba(79, 123, 255, 0.06) 35%,
+      transparent 70%
+    );
+
     /* ---------- Borders & radii ---------- */
     --border-thin: 1px;
     --border-thick: 2px;
@@ -158,6 +192,7 @@
     --z-base: 0;
     --z-raised: 1;
     --z-content: 2;
+    --z-front: 3;
     --z-sticky: 100;
     --z-header: 200;
     --z-progress: 250;

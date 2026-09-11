@@ -120,7 +120,9 @@
     <main id="conteudo" tabindex="-1">
       <!-- ============================== HERO ============================== -->
       <section class="hero" id="inicio" aria-labelledby="hero-title">
-        <canvas class="hero__orb" data-hero-orb aria-hidden="true" role="presentation"></canvas>
+        <!-- Parallax layers: backdrop slow (+), content medium (+), orb and portrait fast (−) -->
+        <div class="hero__backdrop" aria-hidden="true" data-parallax="0.35"></div>
+        <canvas class="hero__orb" data-hero-orb data-parallax="-0.1" aria-hidden="true" role="presentation"></canvas>
 
         <div class="hero__inner container container--wide">
           <p class="hero__side-label" aria-hidden="true">Portfólio — <span data-current-year>2026</span></p>
@@ -131,17 +133,30 @@
             <li class="hero__corner hero__corner--br">COBOL · Java · Python · Web</li>
           </ul>
 
-          <div class="hero__content" data-parallax="0.15">
-            <h1 class="hero__title" id="hero-title">
-              <span class="hero__title-first">José</span>
-              <span class="hero__title-last">Hoschett</span>
-            </h1>
+          <div class="hero__content" data-parallax="0.12">
+            <div class="hero__stage">
+              <!-- Letters are pre-split (CSS-only entrance, no flash); screen readers get the name once -->
+              <h1 class="hero__title" id="hero-title" data-hero-title>
+                <span class="visually-hidden">José Hoschett</span>
+                <span class="hero__title-first" aria-hidden="true"><span class="char">J</span><span class="char">o</span><span class="char">s</span><span class="char">é</span></span>
+                <span class="hero__title-last" aria-hidden="true"><span class="char">H</span><span class="char">o</span><span class="char">s</span><span class="char">c</span><span class="char">h</span><span class="char">e</span><span class="char">t</span><span class="char">t</span></span>
+              </h1>
 
-            <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
-            <!-- TODO(jose): a frase vem de config.tagline -->
-            <p class="hero__tagline" data-bind="tagline">Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.</p>
+              <!-- Net scroll speed = content (0.12) + photo (−0.22) = −0.10, same as the orb -->
+              <div class="hero__photo" data-parallax="-0.22">
+                <!-- TODO(jose): a foto vem de config.photo; o placeholder é decorativo (alt vazio) -->
+                <img class="hero__photo-img" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" fetchpriority="high" decoding="async" data-parallax-mouse="14">
+              </div>
+            </div>
 
-            <div class="hero__actions cluster">
+            <div class="hero__meta">
+              <div class="hero__intro">
+                <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
+                <!-- TODO(jose): a frase vem de config.tagline -->
+                <p class="hero__tagline" data-bind="tagline">Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.</p>
+              </div>
+
+              <div class="hero__actions cluster">
               <a class="btn btn--primary" href="#projetos" data-magnetic>
                 <span>Ver projetos</span>
                 <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-arrow"></use></svg>
@@ -155,12 +170,8 @@
                 <span>WhatsApp</span>
                 <span class="visually-hidden">(abre em nova aba)</span>
               </a>
+              </div>
             </div>
-          </div>
-
-          <div class="hero__photo" data-parallax="0.3">
-            <!-- TODO(jose): a foto vem de config.photo; o placeholder é decorativo (alt vazio) -->
-            <img class="hero__photo-img" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" fetchpriority="high" decoding="async">
           </div>
 
           <a class="hero__scroll" href="#sobre">
