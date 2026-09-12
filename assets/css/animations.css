@@ -43,16 +43,6 @@
     }
   }
 
-  @keyframes scroll-line {
-    from {
-      translate: 0 -100%;
-    }
-
-    to {
-      translate: 0 100%;
-    }
-  }
-
   @keyframes marquee-left {
     from {
       translate: 0 0;

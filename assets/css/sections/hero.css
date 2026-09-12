@@ -222,8 +222,7 @@
   }
 
   .hero__intro,
-  .hero__actions,
-  .hero__scroll {
+  .hero__actions {
     animation: fade-up var(--dur-slow) var(--ease-out-expo) both;
     animation-delay: var(--hero-meta-delay);
   }
@@ -269,47 +268,6 @@
     font-size: var(--fs-md);
     line-height: var(--lh-snug);
     color: var(--color-text-muted);
-  }
-
-  /* ============================== Scroll indicator ============================== */
-  .hero__scroll {
-    display: inline-flex;
-    align-items: center;
-    justify-self: start;
-    gap: var(--space-3);
-    min-height: var(--tap-min);
-    font-family: var(--font-mono);
-    font-size: var(--fs-2xs);
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wider);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out-quart);
-    animation-delay: calc(var(--hero-meta-delay) + var(--stagger-step) * 2);
-  }
-
-  .hero__scroll-line {
-    position: relative;
-    order: -1;
-    width: var(--border-thin);
-    height: var(--scroll-line-h);
-    overflow: hidden;
-    background: var(--color-border-strong);
-  }
-
-  .hero__scroll-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent, var(--color-accent-text));
-    animation: scroll-line var(--scroll-line-dur) var(--ease-in-out) infinite;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .hero__scroll:hover {
-      color: var(--color-text);
-    }
   }
 
   /* ============================== Tablet ============================== */

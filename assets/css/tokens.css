@@ -145,8 +145,6 @@
     --hero-delay: 150ms;
     --char-stagger: 35ms;
     --hero-meta-delay: 550ms;
-    --scroll-line-h: 3rem;
-    --scroll-line-dur: 2200ms;
 
     /* ---------- About ---------- */
     --about-photo-max: 26rem;
