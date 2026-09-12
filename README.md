@@ -6,7 +6,8 @@ interativa, com uma animação própria para cada stack (Java, Python, COBOL e W
 - **Stack do site:** HTML5, CSS3 (cascade layers, custom properties) e JavaScript moderno (ES Modules).
 - **Zero frameworks, zero dependências, sem etapa de build.** É só publicar os arquivos.
 
-> Status: em construção por fases. Veja o histórico com `git log --oneline`.
+> Status: todas as seções implementadas. Falta preencher os dados pessoais — veja
+> [TODOs pendentes](#todos-pendentes-josé) no fim deste arquivo.
 
 ---
 
