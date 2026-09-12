@@ -218,16 +218,31 @@ Todos os caminhos são relativos, então o site funciona na raiz de um domínio 
 
 ## TODOs pendentes (José)
 
-Procure por `TODO(jose)` no projeto para ver todos.
+Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 
-- [ ] Bio (`config.js → bio`)
-- [ ] Foto (`config.js → photo`)
-- [x] URL do GitHub (`config.js → github` e JSON-LD no `index.html`)
-- [x] Número do WhatsApp (`config.js → whatsapp.number`)
-- [ ] Revisar a frase de apoio (`config.js → tagline`)
-- [ ] PDF do currículo em `assets/docs/` + `config.js → resumeUrl`
-- [ ] Projetos (`data/projects.js`) e prints/links do próprio portfólio
-- [x] Formação (`data/education.js`)
-- [ ] Certificados (`data/certificates.js`)
-- [ ] og-image final (opcional, com foto)
-- [ ] URL final: `siteUrl`, `canonical`, `og:url`, `og:image` absoluta, `robots.txt`
+### Já preenchido
+
+- [x] **GitHub** — `config.js → github`, e também no `sameAs` do JSON-LD
+- [x] **WhatsApp** — `config.js → whatsapp.number` (o número nunca aparece como texto)
+- [x] **Formação** — `data/education.js`
+
+### Falta preencher
+
+| Pendência | Onde | O que precisa | Como está hoje |
+| --- | --- | --- | --- |
+| **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
+| **Foto** | `config.js → photo` | retrato 4:5 (ex.: 800×1000), `.webp`, em `assets/img/` | placeholder em SVG, no hero e no Sobre |
+| **Currículo** | PDF em `assets/docs/` + `config.js → resumeUrl` | o arquivo | seção mostra "disponível em breve", botões desabilitados |
+| **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` | só o próprio portfólio, sem print nem links; Java, Python e COBOL exibem estado vazio |
+| **Certificados** | `data/certificates.js` | nome, emissor, data e imagem | lista vazia, exibe estado vazio |
+| **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python." |
+| **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
+| **URL final** | `config.js → siteUrl`, `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
+
+### Ordem sugerida
+
+1. **Bio e foto.** É o que o recrutador vê primeiro, e a foto aparece em dois lugares.
+2. **Publicar no GitHub Pages**, mesmo com pendências. Rende a URL para `siteUrl` e Open Graph, e
+   permite preencher `repo` e `demo` do próprio portfólio em `data/projects.js`.
+3. **PDF do currículo** — provavelmente o segundo clique de quem está contratando.
+4. **Projetos reais e certificados**, conforme forem ficando prontos.
