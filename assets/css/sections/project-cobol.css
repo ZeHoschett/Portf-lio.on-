@@ -55,35 +55,36 @@
   }
 
   /*
-   * ASCII dinosaur, the section's background art — the counterpart of the canvases the other
-   * stacks use. It sits behind the content (z-index below the section's own stacking context)
-   * and to the right of the header, which is capped at --container-narrow. Hidden on phones:
-   * a <pre> cannot reflow, so it would force horizontal scroll.
+   * T. rex silhouette: this section's background art, the counterpart of the canvases the other
+   * stacks use. The SVG is a mask, not an <img>, so the shape comes from the file while the
+   * colour comes from --stack-cobol and the glow from a drop-shadow — it reads as burnt into the
+   * phosphor instead of pasted on top. It sits behind the content, to the right of the header,
+   * which is capped at --container-narrow and therefore leaves that band free.
    */
   .cobol-dino {
     position: absolute;
     top: var(--space-8);
     right: var(--space-gutter);
     z-index: var(--z-below);
-    display: none;
-    margin: 0;
-    font-family: var(--font-terminal);
-    font-size: var(--fs-dino);
-    line-height: var(--lh-tight);
-    color: var(--stack-cobol);
-    text-shadow: var(--glow-phosphor-text);
-    white-space: pre;
-    opacity: var(--dino-opacity);
+    width: var(--dino-w);
+    aspect-ratio: var(--dino-ratio);
+    background: var(--stack-cobol);
+    -webkit-mask-image: url('../../img/trex.svg');
+    mask-image: url('../../img/trex.svg');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    opacity: var(--dino-opacity-mobile);
+    filter: drop-shadow(var(--dino-glow));
     pointer-events: none;
-  }
-
-  .cobol-dino__eye {
-    animation: eye-blink var(--dino-blink-dur) steps(1, end) infinite;
   }
 
   @media (min-width: 768px) {
     .cobol-dino {
-      display: block;
+      opacity: var(--dino-opacity);
     }
   }
 

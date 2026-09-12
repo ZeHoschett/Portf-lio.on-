@@ -74,7 +74,7 @@ assets/
     modules/               navegação, projetos, formação, certificados, modal, toast, copiar e-mail…
     animations/            animações de canvas por seção
     utils/                 helpers (DOM seguro, motion, canvas…)
-  img/  placeholders/ · projects/ · certificates/ · og-image.png (+ og-image.svg, fonte)
+  img/  placeholders/ · projects/ · certificates/ · trex.svg · og-image.png (+ og-image.svg, fonte)
   icons/ sprite.svg · favicon.svg
   docs/  curriculo-jose-hoschett.pdf (a adicionar)
 ```
@@ -213,6 +213,20 @@ Todos os caminhos são relativos, então o site funciona na raiz de um domínio 
 1. <https://app.netlify.com/start> → importe o repositório.
 2. Build command: vazio; publish directory: `.` → **Deploy**.
    (Ou arraste a pasta do projeto em <https://app.netlify.com/drop>.)
+
+---
+
+## Créditos
+
+Nenhum destes exige atribuição, mas fica o registro de onde vieram:
+
+| Recurso | Onde | Licença |
+| --- | --- | --- |
+| Logos de tecnologias e ferramentas | `assets/icons/sprite.svg` | [Simple Icons](https://simpleicons.org), CC0 |
+| Silhueta de T. rex | `assets/img/trex.svg` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Tyrannosaurus_silhouette.svg), CC0 / domínio público |
+
+Os ícones de COBOL, CICS, DB2, z/OS e SQL são desenhos originais deste projeto: essas tecnologias
+não têm logo de marca que possa ser usado.
 
 ---
 
