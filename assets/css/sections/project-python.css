@@ -1,10 +1,10 @@
-/* Python subsection (#projetos-python): morphing blob + particles (animations/python-blob.js). */
+/* Python subsection (#projetos-python): the two snakes of the logo (animations/python-snakes.js). */
 @layer sections {
   .project-stack--python {
     background: var(--python-backdrop);
   }
 
-  /* On phones the text sits over the canvas: tone the blob down to keep it legible */
+  /* On phones the text sits over the canvas: tone the snakes down to keep it legible */
   .project-stack--python .project-stack__canvas {
     opacity: var(--stack-canvas-opacity-mobile);
     -webkit-mask-image: var(--stack-canvas-mask-mobile);

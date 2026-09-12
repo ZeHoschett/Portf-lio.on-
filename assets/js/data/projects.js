@@ -39,7 +39,7 @@ export const projects = [
     summary:
       'Este site: página única responsiva e interativa, feita com HTML, CSS e JavaScript puros, sem frameworks.',
     description:
-      'Animações em Canvas com identidade por stack (rede hexagonal para Java, blob orgânico para Python, terminal CRT para COBOL e grade interativa para Web), foco em acessibilidade (WCAG 2.1 AA), performance e código modular com ES Modules.',
+      'Animações em Canvas com identidade por stack (rede hexagonal para Java, serpentes entrelaçadas para Python, terminal CRT para COBOL e grade interativa para Web), foco em acessibilidade (WCAG 2.1 AA), performance e código modular com ES Modules.',
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Acessibilidade'],
     images: [], // TODO(jose): print do site publicado
     repo: '', // TODO(jose): link do repositório
