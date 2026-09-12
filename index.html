@@ -101,12 +101,20 @@
               <li><a class="site-nav__link" href="#curriculo">Currículo</a></li>
               <li><a class="site-nav__link" href="#contato">Contato</a></li>
             </ul>
+
+            <!-- One DOM node for both layouts: stacked inside the overlay below 1280px, a row in the bar above it -->
+            <div class="site-nav__actions" data-nav-actions>
+              <a class="btn btn--secondary btn--sm" href="#projetos">Ver projetos</a>
+              <a class="btn btn--secondary btn--sm" data-link="resume" data-link-fallback="#curriculo" download>
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
+                <span><span class="visually-hidden">Baixar </span>Currículo</span>
+              </a>
+              <a class="btn btn--primary btn--sm" href="#contato" data-magnetic>Fale comigo</a>
+            </div>
           </div>
         </nav>
 
-        <a class="btn btn--primary btn--sm site-header__cta" href="#contato" data-magnetic>Fale comigo</a>
-
-        <!-- After the CTA so the tab order matches the mobile layout: logo → CTA → menu button -->
+        <!-- After the menu so the tab order matches the mobile layout: logo → menu → menu button -->
         <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-menu" data-nav-toggle>
           <span class="site-nav__toggle-icon" aria-hidden="true">
             <span class="site-nav__toggle-line"></span>
@@ -156,20 +164,13 @@
                 <p class="hero__tagline" data-bind="tagline">Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.</p>
               </div>
 
+              <!-- The main CTAs live in the fixed header; the hero keeps the WhatsApp button -->
               <div class="hero__actions cluster">
-              <a class="btn btn--primary" href="#projetos" data-magnetic>
-                <span>Ver projetos</span>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-arrow"></use></svg>
-              </a>
-              <a class="btn btn--secondary" data-link="resume" data-link-fallback="#curriculo" download>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
-                <span>Baixar currículo</span>
-              </a>
-              <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
-                <span>WhatsApp</span>
-                <span class="visually-hidden">(abre em nova aba)</span>
-              </a>
+                <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
+                  <span>WhatsApp</span>
+                  <span class="visually-hidden">(abre em nova aba)</span>
+                </a>
               </div>
             </div>
           </div>

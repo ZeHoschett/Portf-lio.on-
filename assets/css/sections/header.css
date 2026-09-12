@@ -1,4 +1,4 @@
-/* Site header, navigation and scroll progress. Mobile-first; desktop nav from 1024px. */
+/* Site header, navigation and scroll progress. Mobile-first; desktop nav from 1280px. */
 @layer sections {
   /* ============================== Reading progress ============================== */
   .scroll-progress {
@@ -87,11 +87,6 @@
     background: var(--gradient-accent);
     -webkit-background-clip: text;
     background-clip: text;
-  }
-
-  .site-header__cta {
-    display: none;
-    margin-inline-start: auto;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -242,46 +237,62 @@
     display: none;
   }
 
+  /*
+   * Header CTAs. One DOM node serving both layouts: stacked inside the overlay on mobile
+   * (entering after the links, hence --i set by nav.js), a row in the bar from 1280px.
+   */
+  .site-nav__actions {
+    display: grid;
+    gap: var(--space-3);
+    margin-block-start: var(--space-7);
+    opacity: 0;
+    transform: translateY(var(--space-5));
+    transition:
+      opacity var(--dur-slow) var(--ease-out-expo),
+      transform var(--dur-slow) var(--ease-out-expo);
+  }
+
+  .is-menu-open .site-nav__actions {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--dur-fast) + var(--i, 0) * var(--stagger-step));
+  }
+
+  .site-nav__actions .btn {
+    width: 100%;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .site-nav__link:hover {
       color: var(--color-text);
     }
   }
 
-  /* ============================== Tablet: CTA fits in the bar ============================== */
-  @media (min-width: 480px) {
-    .site-header__cta {
-      display: inline-flex;
-    }
-
-    .site-nav__toggle {
-      margin-inline-start: 0;
-    }
-  }
-
-  /* ============================== Desktop navigation ============================== */
-  @media (min-width: 1024px) {
+  /*
+   * Desktop navigation. 1280px, not 1024px: the bar holds 8 links plus 3 buttons, which do not
+   * fit in 1024px without overflowing horizontally.
+   */
+  @media (min-width: 1280px) {
     .site-header__inner {
       gap: var(--space-5);
     }
 
     .site-nav {
-      margin-inline: auto;
+      flex: 1;
+      min-width: 0;
     }
 
     .site-nav__toggle {
       display: none;
     }
 
-    .site-header__cta {
-      margin-inline-start: 0;
-    }
-
     .site-nav__menu {
       position: relative;
       inset: auto;
       z-index: auto;
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
       padding: 0;
       overflow: visible;
       background: none;
@@ -290,9 +301,24 @@
       transition: none;
     }
 
+    /* auto margins centre the links in the free space; the CTAs stay pinned to the end */
     .site-nav__list {
       display: flex;
       gap: 0;
+      margin-inline: auto;
+    }
+
+    .site-nav__actions {
+      display: flex;
+      gap: var(--space-3);
+      margin-block-start: 0;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .site-nav__actions .btn {
+      width: auto;
     }
 
     .site-nav__list > li {

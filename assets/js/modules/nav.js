@@ -9,7 +9,7 @@ import { onScrollFrame } from '../utils/scroll.js';
 import { createScrollspy } from './scrollspy.js';
 
 const SCROLLED_THRESHOLD_PX = 40;
-const DESKTOP_QUERY = '(min-width: 1024px)';
+const DESKTOP_QUERY = '(min-width: 1280px)';
 const LABELS = { open: 'Abrir menu', close: 'Fechar menu' };
 
 /**
@@ -70,8 +70,12 @@ function initMobileMenu({ header, menu, toggle, label, links }) {
   /** @type {HTMLElement[]} */
   let inertElements = [];
 
-  // Cascade index for the entrance animation
+  // Cascade index for the entrance animation; the CTA block enters after the links
   links.forEach((link, index) => link.parentElement?.style.setProperty('--i', String(index)));
+  qs('[data-nav-actions]', menu)?.style.setProperty('--i', String(links.length));
+
+  /** Everything focusable inside the overlay (links + CTAs), in DOM order, plus the toggle. */
+  const getFocusables = () => [...qsa('a[href], button', menu), toggle];
 
   /** Everything except the menu and its toggle becomes inert while the menu is open. */
   const getBackground = () => {
@@ -91,7 +95,7 @@ function initMobileMenu({ header, menu, toggle, label, links }) {
     }
     if (event.key !== 'Tab') return;
 
-    const focusables = [...links, toggle];
+    const focusables = getFocusables();
     const first = focusables[0];
     const last = focusables[focusables.length - 1];
 
@@ -135,8 +139,9 @@ function initMobileMenu({ header, menu, toggle, label, links }) {
   }
 
   toggle.addEventListener('click', () => setOpen(!isOpen));
-  // Closing synchronously lifts the scroll lock before the browser follows the anchor
-  links.forEach((link) => link.addEventListener('click', () => setOpen(false)));
+  // Closing synchronously lifts the scroll lock before the browser follows the anchor.
+  // Every anchor in the overlay closes it, CTAs included.
+  qsa('a[href]', menu).forEach((link) => link.addEventListener('click', () => setOpen(false)));
   watchMedia(DESKTOP_QUERY, (isDesktop) => {
     if (isDesktop) setOpen(false);
   });
