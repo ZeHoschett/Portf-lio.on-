@@ -262,6 +262,14 @@
     width: 100%;
   }
 
+  /*
+   * WhatsApp in the bar is desktop only: below 1280px the hero already carries its own button
+   * (plus the floating one), and the bar has no room for a fourth control.
+   */
+  .site-nav__whatsapp {
+    display: none;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .site-nav__link:hover {
       color: var(--color-text);
@@ -322,6 +330,13 @@
       width: auto;
     }
 
+    .site-nav__whatsapp {
+      --btn-border: transparent;
+
+      display: inline-flex;
+      width: var(--tap-min); /* restores the square shape .btn--icon gives it */
+    }
+
     .site-nav__list > li {
       opacity: 1;
       transform: none;
@@ -330,7 +345,8 @@
 
     .site-nav__link {
       align-items: center;
-      padding-inline: var(--space-3);
+      /* Tighter between 1280 and 1536px, where 8 links plus 4 buttons leave little slack */
+      padding-inline: var(--space-2);
       font-family: var(--font-body);
       font-size: var(--fs-sm);
       font-weight: var(--fw-medium);
@@ -367,6 +383,13 @@
       transition:
         transform var(--dur-slow) var(--ease-out-expo),
         opacity var(--dur-base) var(--ease-out-quart);
+    }
+  }
+
+  /* Room to breathe again once the bar is wide enough */
+  @media (min-width: 1536px) {
+    .site-nav__link {
+      padding-inline: var(--space-3);
     }
   }
 }

@@ -74,8 +74,12 @@ function initMobileMenu({ header, menu, toggle, label, links }) {
   links.forEach((link, index) => link.parentElement?.style.setProperty('--i', String(index)));
   qs('[data-nav-actions]', menu)?.style.setProperty('--i', String(links.length));
 
-  /** Everything focusable inside the overlay (links + CTAs), in DOM order, plus the toggle. */
-  const getFocusables = () => [...qsa('a[href], button', menu), toggle];
+  /**
+   * Everything focusable inside the overlay (links + CTAs), in DOM order, plus the toggle.
+   * Hidden controls are dropped: some CTAs only exist at one breakpoint.
+   */
+  const getFocusables = () =>
+    [...qsa('a[href], button', menu), toggle].filter((node) => node.getClientRects().length > 0);
 
   /** Everything except the menu and its toggle becomes inert while the menu is open. */
   const getBackground = () => {

@@ -295,4 +295,14 @@
       margin-inline-end: var(--hero-photo-offset-lg);
     }
   }
+
+  /*
+   * From 1280px every CTA lives in the fixed header, WhatsApp included, so the hero row would be
+   * an empty box drifting with the parallax across the corner labels.
+   */
+  @media (min-width: 1280px) {
+    .hero__actions {
+      display: none;
+    }
+  }
 }
