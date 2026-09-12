@@ -20,7 +20,7 @@ e **dados** nos arquivos de `assets/js/data/`.
 | --- | --- | --- |
 | Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp |
 | Sobre | `config.js` → `bio` | com a bio vazia, aparece o texto padrão do HTML |
-| Stack | `index.html` | marquee infinito + 4 grupos, sem porcentagens |
+| Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens |
 | Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
 | Formação | `data/education.js` | timeline vertical |
 | Certificados | `data/certificates.js` | grade, com ampliação em lightbox |
