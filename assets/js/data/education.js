@@ -13,14 +13,14 @@
 
 /** @type {Education[]} */
 export const education = [
-  // TODO(jose): substituir este placeholder pela sua formação real (ou apagar para exibir o estado vazio)
   {
-    id: 'education-placeholder',
+    id: 'analise-desenvolvimento-sistemas',
+    // TODO(jose): nome da instituição (o item não renderiza sem este campo)
     institution: 'Instituição de ensino',
-    course: 'Nome do curso',
-    degree: 'Graduação',
-    period: 'Período a definir',
-    status: 'in-progress',
+    course: 'Análise e Desenvolvimento de Sistemas',
+    degree: '', // TODO(jose): ex.: 'Tecnólogo' ou 'Bacharelado'. Vazio = não é exibido
+    period: 'Período a definir', // TODO(jose): ex.: '2023 — 2025'
+    status: 'in-progress', // TODO(jose): 'completed' se já concluiu
     description: 'Detalhes da formação serão adicionados em breve.',
   },
 ];

@@ -25,9 +25,9 @@ export const config = {
   photo: '', // TODO(jose): caminho da foto, ex.: 'assets/img/jose.webp' (retrato 4:5, ex.: 800×1000)
   email: 'dev.jose841@gmail.com',
   linkedin: 'https://www.linkedin.com/in/josehoschett/',
-  github: '', // TODO(jose): URL do GitHub
+  github: 'https://github.com/ZeHoschett',
   whatsapp: {
-    number: '', // TODO(jose): só dígitos com DDI+DDD, ex.: '5511999999999'
+    number: '5511952170800', // (11) 95217-0800 — nunca exibido como texto na página
     message: 'Olá José! Vi seu portfólio e gostaria de conversar.',
   },
   // TODO(jose): coloque o PDF em assets/docs/ e preencha: 'assets/docs/curriculo-jose-hoschett.pdf'

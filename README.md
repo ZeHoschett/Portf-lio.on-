@@ -222,8 +222,8 @@ Procure por `TODO(jose)` no projeto para ver todos.
 
 - [ ] Bio (`config.js → bio`)
 - [ ] Foto (`config.js → photo`)
-- [ ] URL do GitHub (`config.js → github` e JSON-LD no `index.html`)
-- [ ] Número do WhatsApp (`config.js → whatsapp.number`)
+- [x] URL do GitHub (`config.js → github` e JSON-LD no `index.html`)
+- [x] Número do WhatsApp (`config.js → whatsapp.number`)
 - [ ] Revisar a frase de apoio (`config.js → tagline`)
 - [ ] PDF do currículo em `assets/docs/` + `config.js → resumeUrl`
 - [ ] Projetos (`data/projects.js`) e prints/links do próprio portfólio
