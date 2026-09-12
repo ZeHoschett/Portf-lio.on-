@@ -1,3 +1,37 @@
-/* Web subsection (#projetos-web) — implemented in phase 6. */
+/* Web subsection (#projetos-web): interactive dot grid canvas (animations/web-dotgrid.js). */
 @layer sections {
+  .project-stack--web {
+    background: var(--web-backdrop);
+  }
+
+  /*
+   * Resting dots are a CSS pattern on the canvas element itself: composited for free, and
+   * visible without JS. web-dotgrid.js aligns it (--dotgrid-spacing/offset-x/offset-y) and only
+   * paints the dots lit by the wave or the cursor on top of it.
+   * On phones the text sits over the grid, so the whole layer is toned down.
+   */
+  .project-stack--web .project-stack__canvas {
+    --dotgrid-size: var(--dotgrid-spacing, var(--dotgrid-spacing-default));
+
+    background-image: radial-gradient(
+      circle,
+      var(--dotgrid-dot-color) var(--dotgrid-dot-radius),
+      transparent calc(var(--dotgrid-dot-radius) + var(--dotgrid-dot-feather))
+    );
+    background-position:
+      calc(var(--dotgrid-offset-x, 0px) - var(--dotgrid-size) / 2)
+      calc(var(--dotgrid-offset-y, 0px) - var(--dotgrid-size) / 2);
+    background-size: var(--dotgrid-size) var(--dotgrid-size);
+    opacity: var(--stack-canvas-opacity-mobile);
+    -webkit-mask-image: var(--stack-canvas-mask-mobile);
+    mask-image: var(--stack-canvas-mask-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .project-stack--web .project-stack__canvas {
+      opacity: 1;
+      -webkit-mask-image: var(--stack-canvas-mask);
+      mask-image: var(--stack-canvas-mask);
+    }
+  }
 }

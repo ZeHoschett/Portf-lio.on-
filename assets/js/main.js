@@ -6,6 +6,7 @@ import { initCobolTerminal } from './animations/cobol-terminal.js';
 import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
 import { initPythonBlob } from './animations/python-blob.js';
+import { initWebDotgrid } from './animations/web-dotgrid.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
 import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
@@ -61,4 +62,5 @@ whenIdle(() => {
   safeInit('java-network', initJavaNetwork);
   safeInit('python-blob', initPythonBlob);
   safeInit('cobol-terminal', initCobolTerminal);
+  safeInit('web-dotgrid', initWebDotgrid);
 });
