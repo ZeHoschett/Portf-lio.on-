@@ -11,6 +11,39 @@ interativa, com uma animação própria para cada stack (Java, Python, COBOL e W
 
 ---
 
+## O que está pronto
+
+Todas as seções estão implementadas. O conteúdo vem de dois lugares: **texto fixo** no `index.html`
+e **dados** nos arquivos de `assets/js/data/`.
+
+| Seção | Conteúdo vem de | Observação |
+| --- | --- | --- |
+| Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp |
+| Sobre | `config.js` → `bio` | com a bio vazia, aparece o texto padrão do HTML |
+| Stack | `index.html` | marquee infinito + 4 grupos, sem porcentagens |
+| Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
+| Formação | `data/education.js` | timeline vertical |
+| Certificados | `data/certificates.js` | grade, com ampliação em lightbox |
+| Currículo | `config.js` → `resumeUrl` | sem PDF, mostra "disponível em breve" |
+| Contato | `config.js` | e-mail com botão copiar, LinkedIn, GitHub e WhatsApp |
+
+**Links vazios nunca aparecem.** Se `github`, `whatsapp.number`, `repo` ou `demo` estiverem em
+branco, o botão correspondente não é criado — nada de link quebrado para o recrutador.
+
+### Como o topo se comporta
+
+O header é fixo e leva três botões: **Ver projetos · Currículo · Fale comigo**.
+
+- **A partir de 1280px:** logo à esquerda, os 8 links centralizados e os três botões à direita,
+  tudo em uma linha.
+- **Abaixo de 1280px:** aparece o menu hambúrguer, e os mesmos três botões ficam dentro dele,
+  abaixo dos links. São os mesmos elementos, não uma cópia.
+
+O corte é 1280px, e não 1024px, porque 8 links mais 3 botões não cabem numa tela de 1024px sem
+criar rolagem horizontal.
+
+---
+
 ## Rodar localmente
 
 ES Modules não funcionam abrindo o `index.html` direto (`file://`). Use um servidor local, com
@@ -38,7 +71,7 @@ assets/
     main.js                ponto de entrada (type="module")
     config.js              ← SEUS DADOS E LINKS (único lugar para editar)
     data/                  ← projects.js · education.js · certificates.js
-    modules/               funcionalidades (navegação, modal, renderização…)
+    modules/               navegação, projetos, formação, certificados, modal, toast, copiar e-mail…
     animations/            animações de canvas por seção
     utils/                 helpers (DOM seguro, motion, canvas…)
   img/  placeholders/ · projects/ · certificates/ · og-image.png (+ og-image.svg, fonte)
@@ -134,6 +167,22 @@ regenerar após editar o SVG (com o site rodando em `localhost:5500`):
 chrome --headless=new --hide-scrollbars --window-size=1200,630 --virtual-time-budget=5000 \
   --screenshot=assets/img/og-image.png http://localhost:5500/assets/img/og-image.svg
 ```
+
+---
+
+## Verificação antes de publicar
+
+Já conferido no código: contraste AA em todos os textos, hierarquia de títulos sem pulos, nenhum
+id duplicado, links vazios não renderizados e animações que pausam fora da tela.
+
+Vale conferir no navegador depois de preencher seus dados:
+
+- [ ] Console sem erros (F12 → Console)
+- [ ] Larguras 360, 390, 768, 1024, 1280 e 1920px, sem rolagem horizontal
+- [ ] Navegação só pelo teclado (Tab, Shift+Tab, Enter, Esc) no menu, nas abas de projetos, nos
+      cards, no modal e no carrossel
+- [ ] Com "reduzir movimento" ativo no sistema, o site fica estático, completo e bonito
+- [ ] Lighthouse mobile (F12 → Lighthouse) nas 4 categorias
 
 ---
 
