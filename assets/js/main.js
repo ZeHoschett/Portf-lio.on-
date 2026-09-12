@@ -7,6 +7,7 @@ import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
 import { initPythonBlob } from './animations/python-blob.js';
 import { initWebDotgrid } from './animations/web-dotgrid.js';
+import { initClipboard } from './modules/clipboard.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
 import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
@@ -15,10 +16,13 @@ import { initMarquee } from './modules/marquee.js';
 import { initNav } from './modules/nav.js';
 import { initParallax } from './modules/parallax.js';
 import { initProjectsTabs } from './modules/projects-tabs.js';
+import { renderCertificates } from './modules/render-certificates.js';
+import { renderEducation } from './modules/render-education.js';
 import { renderProjects } from './modules/render-projects.js';
 import { initReveal } from './modules/reveal.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
 import { initTilt } from './modules/tilt.js';
+import { initWhatsappFloat } from './modules/whatsapp-float.js';
 import { whenIdle } from './utils/animation-loop.js';
 
 /**
@@ -47,6 +51,8 @@ safeInit('nav', initNav);
 safeInit('scroll-progress', initScrollProgress);
 // Data-driven content first, so reveal/tilt see the rendered cards
 safeInit('projects', () => renderProjects());
+safeInit('education', () => renderEducation());
+safeInit('certificates', () => renderCertificates());
 safeInit('projects-tabs', initProjectsTabs);
 safeInit('tilt', initTilt);
 safeInit('reveal', initReveal);
@@ -55,6 +61,8 @@ safeInit('hero-title', initHeroTitle);
 safeInit('parallax', initParallax);
 safeInit('magnetic', initMagnetic);
 safeInit('cursor-glow', initCursorGlow);
+safeInit('clipboard', initClipboard);
+safeInit('whatsapp-float', initWhatsappFloat);
 
 // Canvas animations start when the main thread is idle: they never block the first render
 whenIdle(() => {

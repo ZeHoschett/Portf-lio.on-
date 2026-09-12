@@ -1,3 +1,123 @@
-/* Education (#formacao): timeline — implemented in phase 7. */
+/*
+ * Education (#formacao): vertical timeline rendered from data/education.js.
+ * Each item draws its own line segment (::before) and marker (::after), so the line ends with
+ * the last item and an empty list simply has no line at all.
+ */
 @layer sections {
+  .timeline {
+    display: grid;
+    gap: var(--space-5);
+    list-style: none;
+  }
+
+  .timeline__item {
+    position: relative;
+    padding-inline-start: var(--timeline-gutter);
+  }
+
+  /* Line segment: spans the item and continues into the gap towards the next one */
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    top: var(--timeline-marker-top);
+    left: calc((var(--timeline-marker) - var(--border-thick)) / 2);
+    width: var(--border-thick);
+    height: calc(100% - var(--timeline-marker-top) + var(--space-5));
+    background: var(--timeline-line);
+  }
+
+  .timeline__item:last-child::before {
+    display: none;
+  }
+
+  /* Marker: ring + glowing core */
+  .timeline__item::after {
+    content: '';
+    position: absolute;
+    top: var(--timeline-marker-top);
+    left: 0;
+    width: var(--timeline-marker);
+    height: var(--timeline-marker);
+    background:
+      radial-gradient(
+        circle,
+        var(--color-accent) 0%,
+        var(--color-accent) var(--timeline-marker-core),
+        transparent calc(var(--timeline-marker-core) + var(--space-px))
+      ),
+      var(--color-bg);
+    border: var(--border-thin) solid color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 var(--space-4) color-mix(in srgb, var(--color-accent) var(--tint-glow), transparent);
+    translate: 0 -50%;
+  }
+
+  .timeline__card {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur-base) var(--ease-out-quart),
+      box-shadow var(--dur-base) var(--ease-out-quart);
+  }
+
+  .timeline__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .timeline__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    letter-spacing: var(--ls-normal);
+    text-transform: none;
+    border: var(--border-thin) solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+
+  .timeline__status[data-status='in-progress'] {
+    color: var(--color-accent-text);
+    background: color-mix(in srgb, var(--color-accent) var(--tint-subtle), transparent);
+    border-color: color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+  }
+
+  .timeline__course {
+    font-size: var(--fs-lg);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .timeline__institution {
+    font-weight: var(--fw-medium);
+    color: var(--color-text);
+  }
+
+  .timeline__degree,
+  .timeline__description {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .timeline__description {
+    max-width: var(--measure);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .timeline__card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+      box-shadow: var(--glow-accent);
+    }
+  }
 }

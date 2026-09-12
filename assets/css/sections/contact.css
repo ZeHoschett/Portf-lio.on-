@@ -1,3 +1,99 @@
-/* Contact (#contato) — implemented in phase 7. */
+/*
+ * Contact (#contato): editorial headline plus one card per channel.
+ * The e-mail card spans the full width (it carries the copy button); the others flow in a grid.
+ */
 @layer sections {
+  .contact__header {
+    max-width: var(--container-max);
+  }
+
+  .contact__title {
+    font-size: var(--fs-display);
+    line-height: var(--lh-none);
+    letter-spacing: var(--ls-tighter);
+    text-transform: uppercase;
+    color: transparent;
+    background: var(--gradient-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .contact-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--contact-item-min), 100%), 1fr));
+    gap: var(--space-4);
+    list-style: none;
+  }
+
+  .contact-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+    padding: var(--space-5);
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur-base) var(--ease-out-quart),
+      box-shadow var(--dur-base) var(--ease-out-quart);
+  }
+
+  .contact-item--email {
+    grid-column: 1 / -1;
+  }
+
+  .contact-item__label {
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .contact-item__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--tap-min);
+    min-width: 0;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-medium);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out-quart);
+  }
+
+  /* A long e-mail must never push the card wider than its column */
+  .contact-item__link > span:not(.visually-hidden) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-item__link .icon {
+    --icon-size: var(--icon-scale);
+
+    color: var(--color-accent-text);
+  }
+
+  /* The WhatsApp card holds a button, which already carries its own colour */
+  .contact-item--whatsapp .btn {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contact-item:hover {
+      border-color: color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+      box-shadow: var(--glow-accent);
+    }
+
+    .contact-item__link:hover {
+      color: var(--color-accent-text);
+    }
+  }
 }

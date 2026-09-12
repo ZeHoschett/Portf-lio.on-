@@ -1,3 +1,187 @@
-/* Certificates (#certificados) — implemented in phase 7. */
+/*
+ * Certificates (#certificados): card grid rendered from data/certificates.js.
+ * Cards with an image open it enlarged in the shared modal (variant "lightbox").
+ * Card a11y follows the project cards: the title is the single main control and its ::after
+ * covers the card; the credential link sits above it.
+ */
 @layer sections {
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--cert-min), 1fr));
+    gap: var(--space-5);
+    list-style: none;
+  }
+
+  .cert-card {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur-base) var(--ease-out-quart),
+      box-shadow var(--dur-base) var(--ease-out-quart);
+  }
+
+  .cert-card__media {
+    display: grid;
+    place-items: center;
+    aspect-ratio: var(--cert-ratio);
+    overflow: hidden;
+    background:
+      radial-gradient(
+        120% 90% at 50% 0%,
+        color-mix(in srgb, var(--color-accent) var(--tint-glow), transparent) 0%,
+        transparent 65%
+      ),
+      var(--color-bg);
+    border-bottom: var(--border-thin) solid var(--color-border);
+  }
+
+  .cert-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: scale var(--dur-slow) var(--ease-out-expo);
+  }
+
+  /* No image: neutral award mark instead of a broken frame */
+  .cert-card__placeholder {
+    --icon-size: var(--fs-3xl);
+
+    color: var(--color-text-faint);
+  }
+
+  .cert-card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-5);
+  }
+
+  .cert-card__name {
+    font-size: var(--fs-md);
+    letter-spacing: var(--ls-snug);
+  }
+
+  .cert-card__trigger {
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    color: inherit;
+  }
+
+  .cert-card__trigger::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-content);
+  }
+
+  .cert-card__trigger:focus-visible {
+    outline: none;
+  }
+
+  .cert-card:has(.cert-card__trigger:focus-visible) {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  @supports not selector(:has(*)) {
+    .cert-card__trigger:focus-visible {
+      outline: var(--focus-width) solid var(--color-focus);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  .cert-card__issuer {
+    font-size: var(--fs-sm);
+    color: var(--color-text);
+  }
+
+  .cert-card__date {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Above the stretched trigger */
+  .cert-card__link {
+    position: relative;
+    z-index: var(--z-front);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    margin-block-start: var(--space-1);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-accent-text);
+    text-decoration: none;
+    justify-self: start;
+    transition: color var(--dur-fast) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cert-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
+      box-shadow: var(--glow-accent);
+    }
+
+    .cert-card:hover .cert-card__image {
+      scale: var(--card-image-zoom);
+    }
+
+    .cert-card__link:hover {
+      color: var(--color-text);
+    }
+  }
+
+  /* ============================== Lightbox (inside the modal) ============================== */
+  .modal[data-variant='lightbox'] .modal__panel {
+    background: var(--color-bg);
+  }
+
+  .lightbox {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: var(--space-6);
+  }
+
+  .lightbox__image {
+    width: 100%;
+    max-height: var(--lightbox-image-max-h);
+    object-fit: contain;
+    background: var(--color-bg-elev);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .lightbox__caption {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .lightbox__title {
+    font-size: var(--fs-xl);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .lightbox__meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
 }
