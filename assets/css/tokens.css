@@ -220,6 +220,7 @@
     --dotgrid-dot-color: rgba(201, 204, 214, 0.16);
     --dotgrid-dot-radius: 0.8px;
     --dotgrid-dot-feather: 0.6px;
+    --snake-tongue: #e0533d; /* only the flicking tongue in animations/python-snakes.js */
     --python-backdrop:
       radial-gradient(55% 45% at 80% 20%, rgba(55, 118, 171, 0.12) 0%, transparent 70%),
       radial-gradient(40% 35% at 65% 65%, rgba(255, 212, 59, 0.05) 0%, transparent 70%);

@@ -9,6 +9,10 @@
  * The body is sampled from the path at fixed time offsets behind the head, so the whole shape is
  * a pure function of time: no history buffer, no drift when frames are dropped, and the
  * reduced-motion frame is simply one fixed t.
+ *
+ * Volume is faked with three disc chains (base, belly shadow, spine highlight) plus dorsal
+ * blotches, each issued as a single path — the union of overlapping discs fills without seams, so
+ * a whole layer costs one fill() instead of one per segment.
  */
 import { createAnimationLoop } from '../utils/animation-loop.js';
 import { readCssVar, setupCanvas, withAlpha } from '../utils/canvas.js';
@@ -23,7 +27,7 @@ const TAU = Math.PI * 2;
 
 // Path: a 1:2 Lissajous figure — one horizontal swing per two vertical ones, which draws a
 // figure eight that crosses itself in the middle.
-const LOOP_MS = 21000;
+const LOOP_MS = 34000;
 const FREQ = { x: 1, y: 2 };
 const WOBBLE = { amplitude: 0.09, speed: 0.00004 }; // slow organic drift over the perfect curve
 
@@ -32,17 +36,27 @@ const PLACEMENT = {
   desktop: { x: 0.72, y: 0.44, w: 0.2, h: 0.3 },
   mobile: { x: 0.6, y: 0.24, w: 0.3, h: 0.18 },
 };
-const AMPLITUDE_LIMITS = { min: 60, max: 250 };
+const AMPLITUDE_LIMITS = { min: 60, max: 260 };
 
 // Body
-const SEGMENTS = { high: 56, low: 34 };
-const SEGMENT_MS = 110; // time between segments: sets how long the snake is
-const HEAD_RADIUS = { desktop: 10, mobile: 7 };
-const TAIL_SHARE = 0.1; // tail thickness as a share of the head
+const SEGMENTS = { high: 58, low: 36 };
+const SEGMENT_MS = 170; // time between segments: sets how long the snake is
+const HEAD_RADIUS = { desktop: 16, mobile: 11 };
+const TAIL_SHARE = 0.08; // tail thickness as a share of the neck
 const TAPER = 0.6;
-const BODY_ALPHA = 0.85;
-const HALO = { grow: 2.4, alpha: 0.09 };
-const EYE = { forward: 0.3, side: 0.4, radius: 0.22 };
+const BODY_ALPHA = 0.9;
+const HALO = { grow: 1.8, alpha: 0.08 };
+
+// Shading: radii and offsets are shares of the local body radius, offsets along the normal
+const BELLY = { radius: 0.62, offset: 0.34, alpha: 0.26 };
+const SPINE = { radius: 0.44, offset: -0.3, alpha: 0.14 };
+const BLOTCH = { step: 4, first: 3, radius: 0.66, wobble: 0.12, alpha: 0.3 };
+
+// Head and face, in head-local units (x forward, y across)
+const HEAD = { forward: 0.5, length: 1.7, width: 1.15 };
+const EYE = { x: 0.35, y: 0.5, radius: 0.3, pupilX: 0.3, pupilY: 0.72, alpha: 0.95 };
+const BROW = { back: -0.9, outer: 0.95, front: 1.15, inner: 0.1, width: 0.55, alpha: 0.75 };
+const TONGUE = { length: 0.5, fork: 0.55, width: 0.16, speed: 0.0016, threshold: 0.72 };
 
 const STATIC_TIME_MS = 5200;
 
@@ -53,11 +67,21 @@ export function initPythonSnakes() {
   const noise3D = createNoise3D(SEED);
   const count = isLowPowerDevice() ? SEGMENTS.low : SEGMENTS.high;
 
+  const bg = readCssVar('--color-bg');
+  const text = readCssVar('--color-text');
   const paint = [readCssVar('--stack-python-a'), readCssVar('--stack-python-b')].map((color) => ({
     body: withAlpha(color, BODY_ALPHA),
     halo: withAlpha(color, HALO.alpha),
   }));
-  const eyeColor = readCssVar('--color-bg');
+  const shade = {
+    belly: withAlpha(bg, BELLY.alpha),
+    spine: withAlpha(text, SPINE.alpha),
+    blotch: withAlpha(bg, BLOTCH.alpha),
+    brow: withAlpha(bg, BROW.alpha),
+    eye: withAlpha(text, EYE.alpha),
+    pupil: bg,
+    tongue: readCssVar('--snake-tongue'),
+  };
 
   const snakes = [0, 1].map((index) => ({
     index,
@@ -66,6 +90,8 @@ export function initPythonSnakes() {
     x: new Float32Array(count),
     y: new Float32Array(count),
     r: new Float32Array(count),
+    nx: new Float32Array(count), // unit normal, for the shading offsets
+    ny: new Float32Array(count),
   }));
 
   /** @type {import('../utils/canvas.js').CanvasSurface | null} */
@@ -78,8 +104,7 @@ export function initPythonSnakes() {
     if (!view) return;
     const mobile = view.width < MOBILE_BREAKPOINT;
     const placement = mobile ? PLACEMENT.mobile : PLACEMENT.desktop;
-    const clamp = (value) =>
-      Math.min(AMPLITUDE_LIMITS.max, Math.max(AMPLITUDE_LIMITS.min, value));
+    const clamp = (value) => Math.min(AMPLITUDE_LIMITS.max, Math.max(AMPLITUDE_LIMITS.min, value));
 
     loop.x = view.width * placement.x;
     loop.y = view.height * placement.y;
@@ -104,47 +129,137 @@ export function initPythonSnakes() {
       const share = i / (count - 1);
       snake.r[i] = loop.head * (TAIL_SHARE + (1 - TAIL_SHARE) * (1 - share) ** TAPER);
     }
+
+    // Normal at each segment, taken from the tangent between its neighbours
+    for (let i = 0; i < count; i++) {
+      const before = Math.max(0, i - 1);
+      const after = Math.min(count - 1, i + 1);
+      const dx = snake.x[before] - snake.x[after];
+      const dy = snake.y[before] - snake.y[after];
+      const length = Math.hypot(dx, dy) || 1;
+      snake.nx[i] = -dy / length;
+      snake.ny[i] = dx / length;
+    }
   }
 
   /**
-   * Overlapping discs issued as ONE path: the union fills without seams, and the whole body
-   * costs a single fill() instead of one per segment.
+   * A chain of overlapping discs as ONE path. `radiusScale` thins it and `offsetShare` slides it
+   * sideways along the normal — that is what turns a flat tube into a shaded one.
    */
-  function traceBody(ctx, snake, grow) {
+  function traceChain(ctx, snake, radiusScale, offsetShare) {
     ctx.beginPath();
     for (let i = 0; i < count; i++) {
-      const radius = snake.r[i] * grow;
-      ctx.moveTo(snake.x[i] + radius, snake.y[i]);
-      ctx.arc(snake.x[i], snake.y[i], radius, 0, TAU);
+      const radius = snake.r[i] * radiusScale;
+      const x = snake.x[i] + snake.nx[i] * snake.r[i] * offsetShare;
+      const y = snake.y[i] + snake.ny[i] * snake.r[i] * offsetShare;
+      ctx.moveTo(x + radius, y);
+      ctx.arc(x, y, radius, 0, TAU);
     }
   }
 
-  function drawSnake(ctx, snake) {
-    traceBody(ctx, snake, HALO.grow);
-    ctx.fillStyle = paint[snake.index].halo;
-    ctx.fill();
+  /** Dorsal blotches, alternating side to side like the markings of a real python. */
+  function traceBlotches(ctx, snake) {
+    ctx.beginPath();
+    for (let i = BLOTCH.first; i < count; i += BLOTCH.step) {
+      const radius = snake.r[i] * BLOTCH.radius;
+      const side = (i / BLOTCH.step) % 2 < 1 ? 1 : -1;
+      const x = snake.x[i] + snake.nx[i] * snake.r[i] * BLOTCH.wobble * side;
+      const y = snake.y[i] + snake.ny[i] * snake.r[i] * BLOTCH.wobble * side;
+      ctx.moveTo(x + radius, y);
+      ctx.arc(x, y, radius, 0, TAU);
+    }
+  }
 
-    traceBody(ctx, snake, 1);
+  /** Wedge-shaped head with brow ridges, slit pupils and a flicking forked tongue. */
+  function drawHead(ctx, snake, time) {
+    const r = snake.r[0];
+    const angle = Math.atan2(snake.y[0] - snake.y[1], snake.x[0] - snake.x[1]);
+
+    ctx.save();
+    ctx.translate(snake.x[0], snake.y[0]);
+    ctx.rotate(angle);
+
+    const length = HEAD.length * r;
+    const width = HEAD.width * r;
+    const centre = HEAD.forward * r;
+
+    ctx.beginPath();
+    ctx.ellipse(centre, 0, length, width, 0, 0, TAU);
     ctx.fillStyle = paint[snake.index].body;
     ctx.fill();
 
-    // Eyes: without them the shape reads as a stray trail rather than as a snake
-    const dx = snake.x[0] - snake.x[1];
-    const dy = snake.y[0] - snake.y[1];
-    const length = Math.hypot(dx, dy) || 1;
-    const forwardX = dx / length;
-    const forwardY = dy / length;
-    const head = snake.r[0];
+    const eyeX = centre + EYE.x * length;
+    const eyeY = EYE.y * width;
+    const eyeR = EYE.radius * width;
 
     ctx.beginPath();
     for (const side of [-1, 1]) {
-      const eyeX = snake.x[0] + forwardX * head * EYE.forward - forwardY * side * head * EYE.side;
-      const eyeY = snake.y[0] + forwardY * head * EYE.forward + forwardX * side * head * EYE.side;
-      ctx.moveTo(eyeX + head * EYE.radius, eyeY);
-      ctx.arc(eyeX, eyeY, head * EYE.radius, 0, TAU);
+      ctx.moveTo(eyeX + eyeR, side * eyeY);
+      ctx.ellipse(eyeX, side * eyeY, eyeR, eyeR * 0.85, 0, 0, TAU);
     }
-    ctx.fillStyle = eyeColor;
+    ctx.fillStyle = shade.eye;
     ctx.fill();
+
+    ctx.beginPath();
+    for (const side of [-1, 1]) {
+      ctx.moveTo(eyeX + eyeR * EYE.pupilX, side * eyeY);
+      ctx.ellipse(eyeX, side * eyeY, eyeR * EYE.pupilX, eyeR * EYE.pupilY, 0, 0, TAU);
+    }
+    ctx.fillStyle = shade.pupil;
+    ctx.fill();
+
+    // The angry part: a heavy ridge running from behind and outside the eye down to the snout
+    ctx.beginPath();
+    for (const side of [-1, 1]) {
+      ctx.moveTo(eyeX + BROW.back * eyeR, side * (eyeY + BROW.outer * eyeR));
+      ctx.lineTo(eyeX + BROW.front * eyeR, side * (eyeY - BROW.inner * eyeR));
+    }
+    ctx.strokeStyle = shade.brow;
+    ctx.lineWidth = BROW.width * eyeR;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    const flick = Math.sin(time * TONGUE.speed + snake.index * Math.PI);
+    if (flick > TONGUE.threshold) {
+      const snout = centre + length;
+      const reach = TONGUE.length * length * ((flick - TONGUE.threshold) / (1 - TONGUE.threshold));
+      ctx.beginPath();
+      ctx.moveTo(snout, 0);
+      ctx.lineTo(snout + reach, 0);
+      for (const side of [-1, 1]) {
+        ctx.moveTo(snout + reach, 0);
+        ctx.lineTo(snout + reach * 1.5, side * reach * TONGUE.fork);
+      }
+      ctx.strokeStyle = shade.tongue;
+      ctx.lineWidth = TONGUE.width * r;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function drawSnake(ctx, snake, time) {
+    traceChain(ctx, snake, HALO.grow, 0);
+    ctx.fillStyle = paint[snake.index].halo;
+    ctx.fill();
+
+    traceChain(ctx, snake, 1, 0);
+    ctx.fillStyle = paint[snake.index].body;
+    ctx.fill();
+
+    traceChain(ctx, snake, BELLY.radius, BELLY.offset);
+    ctx.fillStyle = shade.belly;
+    ctx.fill();
+
+    traceChain(ctx, snake, SPINE.radius, SPINE.offset);
+    ctx.fillStyle = shade.spine;
+    ctx.fill();
+
+    traceBlotches(ctx, snake);
+    ctx.fillStyle = shade.blotch;
+    ctx.fill();
+
+    drawHead(ctx, snake, time);
   }
 
   function draw(time) {
@@ -153,7 +268,7 @@ export function initPythonSnakes() {
     ctx.clearRect(0, 0, width, height);
     for (const snake of snakes) {
       updateSnake(snake, time);
-      drawSnake(ctx, snake);
+      drawSnake(ctx, snake, time);
     }
   }
 
