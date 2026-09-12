@@ -291,6 +291,7 @@
       inset: auto;
       z-index: auto;
       display: flex;
+      flex-direction: row; /* the overlay base sets column */
       align-items: center;
       gap: var(--space-5);
       padding: 0;
