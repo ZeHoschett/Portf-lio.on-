@@ -227,7 +227,7 @@ Procure por `TODO(jose)` no projeto para ver todos.
 - [ ] Revisar a frase de apoio (`config.js → tagline`)
 - [ ] PDF do currículo em `assets/docs/` + `config.js → resumeUrl`
 - [ ] Projetos (`data/projects.js`) e prints/links do próprio portfólio
-- [ ] Formação (`data/education.js`)
+- [x] Formação (`data/education.js`)
 - [ ] Certificados (`data/certificates.js`)
 - [ ] og-image final (opcional, com foto)
 - [ ] URL final: `siteUrl`, `canonical`, `og:url`, `og:image` absoluta, `robots.txt`

@@ -8,19 +8,17 @@
  * @property {string} degree                          e.g. 'Graduação', 'Tecnólogo', 'Pós-graduação'
  * @property {string} period                          e.g. '2022 — 2025'
  * @property {'completed'|'in-progress'} status
- * @property {string} [description]
+ * @property {string} [description]                   optional; omit it and nothing is rendered
  */
 
 /** @type {Education[]} */
 export const education = [
   {
     id: 'analise-desenvolvimento-sistemas',
-    // TODO(jose): nome da instituição (o item não renderiza sem este campo)
-    institution: 'Instituição de ensino',
+    institution: 'Faculdade Estácio de Sá — São Paulo',
     course: 'Análise e Desenvolvimento de Sistemas',
-    degree: '', // TODO(jose): ex.: 'Tecnólogo' ou 'Bacharelado'. Vazio = não é exibido
-    period: 'Período a definir', // TODO(jose): ex.: '2023 — 2025'
-    status: 'in-progress', // TODO(jose): 'completed' se já concluiu
-    description: 'Detalhes da formação serão adicionados em breve.',
+    degree: 'Tecnólogo',
+    period: '2025 — 2027',
+    status: 'in-progress',
   },
 ];
