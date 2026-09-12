@@ -196,8 +196,8 @@
   }
 
   .project-empty__icon {
-    width: var(--fs-2xl);
-    height: var(--fs-2xl);
+    --icon-size: var(--fs-2xl);
+
     color: var(--stack-text);
   }
 

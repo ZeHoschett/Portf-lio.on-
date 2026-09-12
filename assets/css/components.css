@@ -112,8 +112,7 @@
   }
 
   .btn .icon {
-    width: var(--icon-scale);
-    height: var(--icon-scale);
+    --icon-size: var(--icon-scale);
   }
 
   .btn:active {

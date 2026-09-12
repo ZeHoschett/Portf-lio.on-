@@ -127,9 +127,13 @@
     transform: translateY(0);
   }
 
+  /*
+   * This utility is in the LAST layer, so a width/height from components or sections would never
+   * win against it. Consumers size their icons by setting --icon-size instead.
+   */
   .icon {
-    width: 1em;
-    height: 1em;
+    width: var(--icon-size, 1em);
+    height: var(--icon-size, 1em);
     flex-shrink: 0;
   }
 
