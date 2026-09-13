@@ -1,21 +1,32 @@
-/* Python subsection (#projetos-python): the two snakes of the logo (animations/python-snakes.js). */
+/*
+ * Python subsection (#projetos-python): a neon sign of the language logo as background art.
+ * The image is lit artwork on black, so it is composited with `screen` — the black plate
+ * disappears into the section and only the light survives, the way a real sign would read.
+ */
 @layer sections {
   .project-stack--python {
     background: var(--python-backdrop);
   }
 
-  /* On phones the text sits over the canvas: tone the snakes down to keep it legible */
-  .project-stack--python .project-stack__canvas {
-    opacity: var(--stack-canvas-opacity-mobile);
-    -webkit-mask-image: var(--stack-canvas-mask-mobile);
-    mask-image: var(--stack-canvas-mask-mobile);
+  .python-neon {
+    position: absolute;
+    top: 50%;
+    right: var(--space-gutter);
+    z-index: var(--z-below);
+    width: var(--python-neon-w);
+    height: auto;
+    translate: 0 -50%;
+    opacity: var(--python-neon-opacity-mobile);
+    mix-blend-mode: screen;
+    -webkit-mask-image: var(--python-neon-mask);
+    mask-image: var(--python-neon-mask);
+    filter: drop-shadow(var(--python-neon-glow));
+    pointer-events: none;
   }
 
   @media (min-width: 768px) {
-    .project-stack--python .project-stack__canvas {
-      opacity: 1;
-      -webkit-mask-image: var(--stack-canvas-mask);
-      mask-image: var(--stack-canvas-mask);
+    .python-neon {
+      opacity: var(--python-neon-opacity);
     }
   }
 }

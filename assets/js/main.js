@@ -5,7 +5,6 @@
 import { initCobolTerminal } from './animations/cobol-terminal.js';
 import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
-import { initPythonSnakes } from './animations/python-snakes.js';
 import { initWebDotgrid } from './animations/web-dotgrid.js';
 import { initClipboard } from './modules/clipboard.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
@@ -68,7 +67,6 @@ safeInit('whatsapp-float', initWhatsappFloat);
 whenIdle(() => {
   safeInit('hero-orb', initHeroOrb);
   safeInit('java-network', initJavaNetwork);
-  safeInit('python-snakes', initPythonSnakes);
   safeInit('cobol-terminal', initCobolTerminal);
   safeInit('web-dotgrid', initWebDotgrid);
 });

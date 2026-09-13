@@ -55,28 +55,29 @@
   }
 
   /*
-   * T. rex silhouette: this section's background art, the counterpart of the canvases the other
-   * stacks use. The SVG is a mask, not an <img>, so the shape comes from the file while the
-   * colour comes from --stack-cobol and the glow from a drop-shadow — it reads as burnt into the
-   * phosphor instead of pasted on top. It sits behind the content, to the right of the header,
-   * which is capped at --container-narrow and therefore leaves that band free.
+   * T. rex head: this section's background art, the counterpart of the canvases the other stacks
+   * use. The file is an alpha mask, not an <img>, so the shape and its shading come from the
+   * image while the colour comes from --stack-cobol and the glow from a drop-shadow — it reads as
+   * burnt into the phosphor instead of pasted on top. It sits behind the content, to the right of
+   * the header, which is capped at --container-narrow and therefore leaves that band free; the
+   * scanline overlay above it finishes the CRT look.
    */
   .cobol-dino {
     position: absolute;
-    top: var(--space-8);
+    top: 0;
     right: var(--space-gutter);
     z-index: var(--z-below);
     width: var(--dino-w);
     aspect-ratio: var(--dino-ratio);
     background: var(--stack-cobol);
-    -webkit-mask-image: url('../../img/trex.svg');
-    mask-image: url('../../img/trex.svg');
+    -webkit-mask-image: url('../../img/trex-head.webp');
+    mask-image: url('../../img/trex-head.webp');
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-size: contain;
     mask-size: contain;
-    -webkit-mask-position: center;
-    mask-position: center;
+    -webkit-mask-position: top center;
+    mask-position: top center;
     opacity: var(--dino-opacity-mobile);
     filter: drop-shadow(var(--dino-glow));
     pointer-events: none;

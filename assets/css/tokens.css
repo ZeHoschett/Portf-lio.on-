@@ -214,21 +214,27 @@
     --crt-screen: radial-gradient(120% 90% at 50% 40%, rgba(51, 255, 102, 0.06) 0%, transparent 70%), #010703;
     --crt-screen-shadow: inset 0 0 4rem rgba(0, 0, 0, 0.85), 0 0 2rem rgba(51, 255, 102, 0.12);
     --fs-cobol-code: clamp(1rem, 0.8rem + 1vw, 1.5rem);
-    --dino-w: clamp(11rem, 26vw, 26rem);
-    --dino-ratio: 202 / 72; /* intrinsic ratio of assets/img/trex.svg */
-    --dino-opacity: 0.4;
-    --dino-opacity-mobile: 0.16; /* it sits behind the text on phones */
-    --dino-glow: 0 0 1.5rem rgba(51, 255, 102, 0.35);
+    --dino-w: clamp(12rem, 34vw, 30rem);
+    --dino-ratio: 677 / 851; /* intrinsic ratio of assets/img/trex-head.webp */
+    --dino-opacity: 0.42;
+    --dino-opacity-mobile: 0.14; /* it sits behind the text on phones */
+    --dino-glow: 0 0 2.5rem rgba(51, 255, 102, 0.4);
     --java-backdrop: radial-gradient(60% 45% at 85% 10%, rgba(242, 159, 61, 0.08) 0%, transparent 70%);
     --web-backdrop: radial-gradient(60% 45% at 80% 15%, rgba(124, 92, 255, 0.1) 0%, transparent 70%);
     --dotgrid-spacing-default: 28px; /* matches SPACING.desktop in web-dotgrid.js */
     --dotgrid-dot-color: rgba(201, 204, 214, 0.16);
     --dotgrid-dot-radius: 0.8px;
     --dotgrid-dot-feather: 0.6px;
-    --snake-tongue: #e0533d; /* only the flicking tongue in animations/python-snakes.js */
     --python-backdrop:
-      radial-gradient(55% 45% at 80% 20%, rgba(55, 118, 171, 0.12) 0%, transparent 70%),
-      radial-gradient(40% 35% at 65% 65%, rgba(255, 212, 59, 0.05) 0%, transparent 70%);
+      radial-gradient(55% 45% at 78% 30%, rgba(55, 118, 171, 0.16) 0%, transparent 70%),
+      radial-gradient(45% 40% at 78% 70%, rgba(255, 143, 45, 0.09) 0%, transparent 70%),
+      linear-gradient(180deg, #05070c 0%, #04050a 100%);
+    --python-neon-w: clamp(13rem, 36vw, 32rem);
+    --python-neon-opacity: 0.9;
+    --python-neon-opacity-mobile: 0.4; /* the text sits over it on phones */
+    --python-neon-glow: 0 0 5rem rgba(55, 118, 171, 0.35);
+    /* The art is a lit sign on black: fade its edges so the plate never shows as a square */
+    --python-neon-mask: radial-gradient(closest-side, #000 55%, transparent 100%);
 
     /* ---------- Education timeline (phase 7) ---------- */
     --timeline-gutter: 2.5rem; /* space reserved for the line and its marker */

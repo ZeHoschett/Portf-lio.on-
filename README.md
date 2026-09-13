@@ -50,11 +50,11 @@ Cada subseção de projetos tem arte de fundo própria, feita para lembrar a tec
 | Subseção | Arte de fundo |
 | --- | --- |
 | **Java** | rede hexagonal de nós, com pulsos âmbar viajando pelas arestas |
-| **Python** | duas serpentes nas cores oficiais percorrendo o mesmo laço, uma girada 180° da outra — a simetria do logo |
-| **COBOL** | a seção inteira vira um monitor CRT (scanlines, vinheta, flicker, verde fósforo), com o programa sendo digitado e uma silhueta de T. rex ao fundo |
+| **Python** | o logo da linguagem como um letreiro de neon aceso, composto em `screen` sobre o fundo escuro da seção |
+| **COBOL** | a seção inteira vira um monitor CRT (scanlines, vinheta, flicker, verde fósforo), com o programa sendo digitado e uma cabeça de T. rex rugindo ao fundo, queimada no fósforo |
 | **Web** | grade de pontos que reage ao cursor; sem mouse, uma onda percorre a grade sozinha |
 
-Tudo em Canvas 2D ou CSS, sem imagem pesada. As animações **pausam sozinhas** quando saem da tela
+Java e Web em Canvas 2D; Python e COBOL em CSS, sobre duas imagens leves (37 KB e 74 KB). As animações **pausam sozinhas** quando saem da tela
 ou quando a aba perde o foco, e com "reduzir movimento" ativo no sistema todas exibem um quadro
 estático — nada fica piscando para quem tem sensibilidade a movimento.
 
@@ -90,7 +90,7 @@ assets/
     modules/               navegação, projetos, formação, certificados, modal, toast, copiar e-mail…
     animations/            animações de canvas por seção
     utils/                 helpers (DOM seguro, motion, canvas…)
-  img/  placeholders/ · projects/ · certificates/ · trex.svg · og-image.png (+ og-image.svg, fonte)
+  img/  placeholders/ · projects/ · certificates/ · trex-head.webp · python-neon.webp · og-image.png
   icons/ sprite.svg · favicon.svg
   docs/  curriculo-jose-hoschett.pdf (a adicionar)
 ```
@@ -239,7 +239,8 @@ Nenhum destes exige atribuição, mas fica o registro de onde vieram:
 | Recurso | Onde | Licença |
 | --- | --- | --- |
 | Logos de tecnologias e ferramentas | `assets/icons/sprite.svg` | [Simple Icons](https://simpleicons.org), CC0 |
-| Silhueta de T. rex | `assets/img/trex.svg` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Tyrannosaurus_silhouette.svg), CC0 / domínio público |
+| Cabeça de T. rex (máscara alfa) | `assets/img/trex-head.webp` | arte fornecida por José para este portfólio |
+| Letreiro de neon do logo Python | `assets/img/python-neon.webp` | arte fornecida por José para este portfólio |
 
 Os ícones de COBOL, CICS, DB2, z/OS e SQL são desenhos originais deste projeto: essas tecnologias
 não têm logo de marca que possa ser usado.
