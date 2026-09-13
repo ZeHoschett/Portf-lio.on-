@@ -1,7 +1,7 @@
 # Portfólio — José Hoschett
 
 Portfólio pessoal de **José Hoschett — Desenvolvedor COBOL · Java**. Página única, dark, responsiva e
-interativa, com uma animação própria para cada stack (Java, Python, COBOL e Web).
+interativa, com uma identidade visual própria para cada stack (Java, Python, COBOL e Web).
 
 - **Stack do site:** HTML5, CSS3 (cascade layers, custom properties) e JavaScript moderno (ES Modules).
 - **Zero frameworks, zero dependências, sem etapa de build.** É só publicar os arquivos.
@@ -20,7 +20,7 @@ e **dados** nos arquivos de `assets/js/data/`.
 | --- | --- | --- |
 | Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp |
 | Sobre | `config.js` → `bio` | com a bio vazia, aparece o texto padrão do HTML |
-| Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens |
+| Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens; o quinto reúne as ferramentas |
 | Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
 | Formação | `data/education.js` | timeline vertical |
 | Certificados | `data/certificates.js` | grade, com ampliação em lightbox |
@@ -32,15 +32,31 @@ branco, o botão correspondente não é criado — nada de link quebrado para o 
 
 ### Como o topo se comporta
 
-O header é fixo e leva três botões: **Ver projetos · Currículo · Fale comigo**.
+O header é fixo e leva quatro atalhos: **Ver projetos · Currículo · Fale comigo · WhatsApp**.
 
-- **A partir de 1280px:** logo à esquerda, os 8 links centralizados e os três botões à direita,
-  tudo em uma linha.
-- **Abaixo de 1280px:** aparece o menu hambúrguer, e os mesmos três botões ficam dentro dele,
-  abaixo dos links. São os mesmos elementos, não uma cópia.
+- **A partir de 1280px:** logo à esquerda, os 8 links centralizados e os botões à direita, tudo em
+  uma linha. O do WhatsApp é só ícone, para a barra não estourar.
+- **Abaixo de 1280px:** aparece o menu hambúrguer, e os três primeiros botões ficam dentro dele,
+  abaixo dos links — são os mesmos elementos, não uma cópia. O do WhatsApp sai da barra, porque
+  nessa largura ele já aparece no hero e no botão flutuante.
 
-O corte é 1280px, e não 1024px, porque 8 links mais 3 botões não cabem numa tela de 1024px sem
+O corte é 1280px, e não 1024px, porque 8 links mais os botões não cabem numa tela de 1024px sem
 criar rolagem horizontal.
+
+### A identidade visual de cada stack
+
+Cada subseção de projetos tem arte de fundo própria, feita para lembrar a tecnologia:
+
+| Subseção | Arte de fundo |
+| --- | --- |
+| **Java** | rede hexagonal de nós, com pulsos âmbar viajando pelas arestas |
+| **Python** | duas serpentes nas cores oficiais percorrendo o mesmo laço, uma girada 180° da outra — a simetria do logo |
+| **COBOL** | a seção inteira vira um monitor CRT (scanlines, vinheta, flicker, verde fósforo), com o programa sendo digitado e uma silhueta de T. rex ao fundo |
+| **Web** | grade de pontos que reage ao cursor; sem mouse, uma onda percorre a grade sozinha |
+
+Tudo em Canvas 2D ou CSS, sem imagem pesada. As animações **pausam sozinhas** quando saem da tela
+ou quando a aba perde o foco, e com "reduzir movimento" ativo no sistema todas exibem um quadro
+estático — nada fica piscando para quem tem sensibilidade a movimento.
 
 ---
 
