@@ -56,7 +56,10 @@
     margin-block-end: 0;
   }
 
+  /* One <p> per paragraph: the bio can be a single string or a list in config.js */
   .about__bio {
+    display: grid;
+    gap: var(--space-4);
     max-width: var(--measure);
     font-size: var(--fs-lg);
     line-height: var(--lh-normal);

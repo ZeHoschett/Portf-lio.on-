@@ -195,8 +195,12 @@
               <h2 class="section__title" id="about-title">Sobre mim</h2>
             </header>
 
-            <!-- TODO(jose): a bio vem de config.bio; este texto é só o padrão enquanto ela estiver vazia -->
-            <p class="about__bio" data-bind="bio" data-reveal>Desenvolvedor COBOL e Java, com foco em sistemas mainframe (CICS, DB2 e z/OS), back-end com Spring Boot, Python e desenvolvimento web.</p>
+            <!-- A bio vem de config.bio (um parágrafo por item); este texto é o padrão sem JS -->
+            <div class="about__bio" data-bind-paragraphs="bio" data-reveal>
+              <p>Sou estudante de Análise e Desenvolvimento de Sistemas e apaixonado por tecnologia, aprendizado contínuo e resolução de problemas. Tenho grande interesse em desenvolvimento de software, com foco em Java e COBOL, explorando tanto tecnologias modernas quanto sistemas corporativos que movimentam setores como o financeiro e bancário.</p>
+              <p>Além da programação, sou fascinado por história, filosofia, desenvolvimento pessoal e pela forma como a matemática influencia nossa maneira de pensar e resolver desafios. Acredito que a tecnologia é uma ferramenta poderosa para transformar ideias em soluções reais.</p>
+              <p>Possuo um perfil criador e analítico, movido pela curiosidade e pela busca constante por conhecimento. Gosto de compreender como as coisas funcionam, identificar oportunidades de melhoria e desenvolver soluções que gerem valor para pessoas e negócios.</p>
+            </div>
 
             <ul class="chip-list" role="list" aria-label="Destaques" data-reveal>
               <li class="chip" data-stack="cobol">Mainframe z/OS</li>

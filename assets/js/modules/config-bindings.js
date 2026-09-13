@@ -3,6 +3,7 @@
  * The HTML keeps sensible fallback content, so the page is readable even without JS.
  *
  *   data-bind="tagline"            textContent ← config value (only when not empty)
+ *   data-bind-paragraphs="bio"     children ← one <p> per paragraph (string or array of strings)
  *   data-bind-src="photo"          src ← config value; data-bind-alt sets the alt at the same time
  *   data-link="whatsapp"           href ← built link; when unavailable:
  *     data-link-fallback="#id"       → points to an in-page anchor instead (drops `download`)
@@ -12,12 +13,20 @@
  *   data-requires-missing="resume" element is removed when the link IS available
  */
 import { config } from '../config.js';
-import { sanitizeUrl } from '../utils/dom.js';
+import { el, sanitizeUrl } from '../utils/dom.js';
 
 const WHATSAPP_NUMBER = /^\d{10,15}$/;
 
 /** @param {unknown} value */
 const asText = (value) => (typeof value === 'string' ? value.trim() : '');
+
+/**
+ * A config value as a list of paragraphs: an array keeps its order, a plain string is one
+ * paragraph. Empty entries are dropped, so a half-filled array never renders a blank <p>.
+ * @param {unknown} value
+ * @returns {string[]}
+ */
+const asParagraphs = (value) => (Array.isArray(value) ? value : [value]).map(asText).filter(Boolean);
 
 /**
  * Reads a dotted path (e.g. 'whatsapp.number') from the config.
@@ -102,6 +111,12 @@ export function applyConfigBindings(root = document) {
   root.querySelectorAll('[data-bind]').forEach((node) => {
     const value = asText(readConfig(node.dataset.bind));
     if (value) node.textContent = value;
+  });
+
+  root.querySelectorAll('[data-bind-paragraphs]').forEach((node) => {
+    const paragraphs = asParagraphs(readConfig(node.dataset.bindParagraphs));
+    if (!paragraphs.length) return; // the HTML fallback stays
+    node.replaceChildren(...paragraphs.map((text) => el('p', { text })));
   });
 
   root.querySelectorAll('[data-bind-src]').forEach((node) => {
