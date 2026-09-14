@@ -20,14 +20,14 @@
 export const config = {
   name: 'José Hoschett',
   role: 'Desenvolvedor COBOL · Java',
-  tagline: 'Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.', // TODO(jose): revisar
+  tagline: 'Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend.', // TODO(jose): revisar
   // Um item por parágrafo. Vazio = o texto padrão do index.html é exibido.
   bio: [
     'Sou estudante de Análise e Desenvolvimento de Sistemas e apaixonado por tecnologia, aprendizado contínuo e resolução de problemas. Tenho grande interesse em desenvolvimento de software, com foco em Java e COBOL, explorando tanto tecnologias modernas quanto sistemas corporativos que movimentam setores como o financeiro e bancário.',
     'Além da programação, sou fascinado por história, filosofia, desenvolvimento pessoal e pela forma como a matemática influencia nossa maneira de pensar e resolver desafios. Acredito que a tecnologia é uma ferramenta poderosa para transformar ideias em soluções reais.',
     'Possuo um perfil criador e analítico, movido pela curiosidade e pela busca constante por conhecimento. Gosto de compreender como as coisas funcionam, identificar oportunidades de melhoria e desenvolver soluções que gerem valor para pessoas e negócios.',
   ],
-  photo: '', // TODO(jose): caminho da foto, ex.: 'assets/img/jose.webp' (retrato 4:5, ex.: 800×1000)
+  photo: 'assets/img/jose-hoschett.webp', // retrato 4:5, 800×1000
   email: 'dev.jose841@gmail.com',
   linkedin: 'https://www.linkedin.com/in/josehoschett/',
   github: 'https://github.com/ZeHoschett',

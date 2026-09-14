@@ -256,17 +256,17 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 - [x] **GitHub** — `config.js → github`, e também no `sameAs` do JSON-LD
 - [x] **WhatsApp** — `config.js → whatsapp.number` (o número nunca aparece como texto)
 - [x] **Formação** — `data/education.js`
+- [x] **Foto** — `config.js → photo` (`assets/img/jose-hoschett.webp`, 800×1000), no hero e no Sobre
 
 ### Falta preencher
 
 | Pendência | Onde | O que precisa | Como está hoje |
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
-| **Foto** | `config.js → photo` | retrato 4:5 (ex.: 800×1000), `.webp`, em `assets/img/` | placeholder em SVG, no hero e no Sobre |
 | **Currículo** | PDF em `assets/docs/` + `config.js → resumeUrl` | o arquivo | seção mostra "disponível em breve", botões desabilitados |
 | **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` | só o próprio portfólio, sem print nem links; Java, Python e COBOL exibem estado vazio |
 | **Certificados** | `data/certificates.js` | nome, emissor, data e imagem | lista vazia, exibe estado vazio |
-| **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python." |
+| **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **URL final** | `config.js → siteUrl`, `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
 

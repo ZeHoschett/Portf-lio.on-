@@ -157,8 +157,8 @@
 
               <!-- Net scroll speed = content (0.12) + photo (−0.22) = −0.10, same as the orb -->
               <div class="hero__photo" data-parallax="-0.22">
-                <!-- TODO(jose): a foto vem de config.photo; o placeholder é decorativo (alt vazio) -->
-                <img class="hero__photo-img" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" fetchpriority="high" decoding="async" data-parallax-mouse="14">
+                <!-- A foto vem de config.photo; o alt é estático para descrever a imagem também sem JS -->
+                <img class="hero__photo-img" src="assets/img/jose-hoschett.webp" data-bind-src="photo" alt="Foto de José Hoschett" width="800" height="1000" fetchpriority="high" decoding="async" data-parallax-mouse="14">
               </div>
             </div>
 
@@ -166,7 +166,7 @@
               <div class="hero__intro">
                 <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
                 <!-- TODO(jose): a frase vem de config.tagline -->
-                <p class="hero__tagline" data-bind="tagline">Do mainframe à nuvem — sistemas robustos com COBOL, Java e Python.</p>
+                <p class="hero__tagline" data-bind="tagline">Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend.</p>
               </div>
 
               <!-- The main CTAs live in the fixed header; the hero keeps the WhatsApp button -->
@@ -186,7 +186,7 @@
       <section class="section about" id="sobre" aria-labelledby="about-title">
         <div class="container about__inner">
           <div class="about__media" data-reveal>
-            <img class="about__photo" src="assets/img/placeholders/photo.svg" data-bind-src="photo" data-bind-alt="Foto de José Hoschett" alt="" width="800" height="1000" loading="lazy" decoding="async">
+            <img class="about__photo" src="assets/img/jose-hoschett.webp" data-bind-src="photo" alt="Foto de José Hoschett" width="800" height="1000" loading="lazy" decoding="async">
           </div>
 
           <div class="about__content">
@@ -302,7 +302,6 @@
           <header class="section__header" data-reveal>
             <p class="section__eyebrow">03 — Projetos</p>
             <h2 class="section__title" id="projects-title">Projetos</h2>
-            <p class="section__lead">Cada stack tem seu próprio ambiente — e só os projetos que pertencem a ele.</p>
           </header>
         </div>
 
