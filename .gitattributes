@@ -7,4 +7,5 @@
 *.webp binary
 *.avif binary
 *.pdf binary
+*.mp4 binary
 *.woff2 binary

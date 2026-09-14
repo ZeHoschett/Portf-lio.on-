@@ -21,21 +21,41 @@ const KEYWORDS = {
   javascript: `async await break case catch class const continue default delete do else export
     extends false finally for from function if import in instanceof let new null of return
     static super switch this throw true try typeof undefined var void while yield`,
+  typescript: `as async await break case catch class const continue default delete do else enum
+    export extends false finally for from function if implements import in instanceof interface
+    let new null of private public readonly return static super switch this throw true try type
+    typeof undefined var void while yield`,
+  sql: `SELECT FROM WHERE AND OR NOT IN IS NULL AS ON JOIN LEFT RIGHT INNER OUTER GROUP BY ORDER
+    HAVING LIMIT WITH INSERT INTO VALUES UPDATE SET DELETE RETURNING CREATE TABLE INDEX IF EXISTS
+    PRIMARY KEY REFERENCES DEFAULT DISTINCT CASE WHEN THEN ELSE END COUNT MAX MIN AVG SUM ROUND
+    OVER PARTITION DESC ASC CAST INTERVAL COALESCE`,
 };
 
+const C_COMMENTS = String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`;
+
 const COMMENTS = {
-  java: String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`,
-  javascript: String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`,
+  java: C_COMMENTS,
+  javascript: C_COMMENTS,
+  typescript: C_COMMENTS,
   python: String.raw`#[^\n]*`,
+  sql: String.raw`--[^\n]*`,
   // Free-format "*>" comments and fixed-format comments ("*" in column 7)
   cobol: String.raw`\*>[^\n]*|^[ \d]{6}\*[^\n]*`,
 };
 
 const STRING = String.raw`"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'`;
+// Python docstrings and multi-line f-strings (tried before the single-line forms)
+const TRIPLE_STRING = String.raw`[fFrRbB]?(?:"""[\s\S]*?"""|'''[\s\S]*?''')`;
 const NUMBER = String.raw`\b\d+(?:\.\d+)?\b`;
+
+/** Grammars matched case-insensitively. */
+const CASE_INSENSITIVE = new Set(['cobol', 'sql']);
 
 /** Stack → highlighting grammar. */
 const LANGUAGE_BY_STACK = { java: 'java', python: 'python', cobol: 'cobol', web: 'javascript' };
+
+/** Every language a code sample may name explicitly (`codeSamples[].language`). */
+export const LANGUAGES = Object.keys(KEYWORDS);
 
 /** @type {Map<string, RegExp>} */
 const patterns = new Map();
@@ -46,11 +66,12 @@ const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 function getPattern(language) {
   if (!patterns.has(language)) {
     const words = KEYWORDS[language].trim().split(/\s+/).map(escapeRegExp).join('|');
-    const flags = language === 'cobol' ? 'gim' : 'gm';
+    const flags = CASE_INSENSITIVE.has(language) ? 'gim' : 'gm';
+    const string = language === 'python' ? `${TRIPLE_STRING}|${STRING}` : STRING;
     patterns.set(
       language,
       new RegExp(
-        `(?<comment>${COMMENTS[language]})|(?<string>${STRING})|(?<keyword>(?<![\\w-])(?:${words})(?![\\w-]))|(?<number>${NUMBER})`,
+        `(?<comment>${COMMENTS[language]})|(?<string>${string})|(?<keyword>(?<![\\w-])(?:${words})(?![\\w-]))|(?<number>${NUMBER})`,
         flags,
       ),
     );
@@ -60,11 +81,12 @@ function getPattern(language) {
 
 /**
  * @param {string} code
- * @param {'java'|'python'|'cobol'|'web'} stack
+ * @param {'java'|'python'|'cobol'|'web'} stack  grammar used when `language` is not given
+ * @param {string} [language]  explicit grammar (see LANGUAGES), e.g. 'sql' inside a Python project
  * @returns {DocumentFragment}
  */
-export function highlightCode(code, stack) {
-  const language = LANGUAGE_BY_STACK[stack] ?? 'javascript';
+export function highlightCode(code, stack, language) {
+  language = KEYWORDS[language] ? language : (LANGUAGE_BY_STACK[stack] ?? 'javascript');
   const fragment = document.createDocumentFragment();
   let cursor = 0;
 

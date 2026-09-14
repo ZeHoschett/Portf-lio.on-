@@ -189,17 +189,36 @@
     --modal-max: 64rem;
     --modal-media-ratio: 16 / 9;
     --modal-enter-scale: 0.97;
+    /* Full-stack cover: the browser leaves room at the bottom-right for the phone in front */
+    --showcase-inset-x: 14%;
+    --showcase-inset-y: 10%;
+    --showcase-phone-h: 72%;
+    /* Case-study modal */
+    --detail-stat-min: 9rem;
+    --detail-phone-h: 32rem;
+    --detail-video-min: 12rem;
+    --detail-video-h: 28rem;
+    --code-sample-max-h: 28rem;
 
     /* ---------- Stack subsection backgrounds (phase 6) ---------- */
     /* Canvas fades towards the content side so text and cards stay the focus */
     --stack-canvas-mask: radial-gradient(ellipse 90% 80% at 75% 30%, #000 0%, transparent 80%);
-    --stack-canvas-mask-mobile: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 60%, transparent 100%);
+    --stack-canvas-mask-mobile: linear-gradient(
+      to bottom,
+      #000 0%,
+      rgba(0, 0, 0, 0.35) 60%,
+      transparent 100%
+    );
     --stack-canvas-opacity-mobile: 0.75;
 
     /* ---------- COBOL CRT monitor ---------- */
     --color-phosphor-muted: #5fd97f; /* ~11:1 on --color-terminal-bg */
     --glow-phosphor-text: 0 0 2px rgba(51, 255, 102, 0.8), 0 0 12px rgba(51, 255, 102, 0.45);
-    --crt-backdrop: radial-gradient(70% 55% at 50% 30%, rgba(51, 255, 102, 0.06) 0%, transparent 70%);
+    --crt-backdrop: radial-gradient(
+      70% 55% at 50% 30%,
+      rgba(51, 255, 102, 0.06) 0%,
+      transparent 70%
+    );
     --crt-scanlines: repeating-linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.35) 0,
@@ -208,10 +227,15 @@
       transparent 3px
     );
     --crt-scanline-opacity: 0.55;
-    --crt-vignette: radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+    --crt-vignette: radial-gradient(
+      ellipse 120% 90% at 50% 50%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
     --crt-glass: radial-gradient(90% 60% at 20% 0%, rgba(51, 255, 102, 0.07) 0%, transparent 60%);
     --crt-flicker-dur: 7s;
-    --crt-screen: radial-gradient(120% 90% at 50% 40%, rgba(51, 255, 102, 0.06) 0%, transparent 70%), #010703;
+    --crt-screen:
+      radial-gradient(120% 90% at 50% 40%, rgba(51, 255, 102, 0.06) 0%, transparent 70%), #010703;
     --crt-screen-shadow: inset 0 0 4rem rgba(0, 0, 0, 0.85), 0 0 2rem rgba(51, 255, 102, 0.12);
     --fs-cobol-code: clamp(1rem, 0.8rem + 1vw, 1.5rem);
     --dino-w: clamp(12rem, 34vw, 30rem);
@@ -219,8 +243,16 @@
     --dino-opacity: 0.42;
     --dino-opacity-mobile: 0.14; /* it sits behind the text on phones */
     --dino-glow: 0 0 2.5rem rgba(51, 255, 102, 0.4);
-    --java-backdrop: radial-gradient(60% 45% at 85% 10%, rgba(242, 159, 61, 0.08) 0%, transparent 70%);
-    --web-backdrop: radial-gradient(60% 45% at 80% 15%, rgba(124, 92, 255, 0.1) 0%, transparent 70%);
+    --java-backdrop: radial-gradient(
+      60% 45% at 85% 10%,
+      rgba(242, 159, 61, 0.08) 0%,
+      transparent 70%
+    );
+    --web-backdrop: radial-gradient(
+      60% 45% at 80% 15%,
+      rgba(124, 92, 255, 0.1) 0%,
+      transparent 70%
+    );
     --dotgrid-spacing-default: 28px; /* matches SPACING.desktop in web-dotgrid.js */
     --dotgrid-dot-color: rgba(201, 204, 214, 0.16);
     --dotgrid-dot-radius: 0.8px;

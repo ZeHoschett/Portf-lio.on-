@@ -122,10 +122,19 @@ Tudo fica em **`assets/js/config.js`**:
 
 ## Como adicionar um novo projeto
 
-1. Crie a pasta `assets/img/projects/<id-do-projeto>/` e coloque os prints
-   (`.webp` recomendado; anote largura e altura de cada imagem).
+Todo projeto usa o mesmo padrão de apresentação: um **card** na seção da sua stack e, ao clicar, um
+**estudo de caso** no modal. Cada bloco do modal só aparece quando o campo correspondente está
+preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O **AgendaFlow** (em
+`assets/js/data/projects.js`) é o exemplo completo: copie a estrutura dele.
+
+1. Prepare as mídias:
+   - Prints de computador em `assets/img/projects/<id>/desktop-01-<tela>.webp` (1600 px de largura).
+   - Prints de celular em `assets/img/projects/<id>/mobile-01-<tela>.webp` (só a tela, sem bordas
+     cinzas do DevTools, na largura original).
+   - Vídeos em `assets/video/projects/<id>/<nome>.mp4` (H.264, sem áudio, de preferência só a tela
+     do celular) com uma capa `<nome>-poster.webp`. Anote largura e altura de cada arquivo.
 2. Abra `assets/js/data/projects.js`, copie um objeto existente e cole no array `projects`.
-3. Preencha os campos:
+3. Preencha os campos (só `id`, `title` e `stack` são obrigatórios):
 
 ```js
 {
@@ -133,23 +142,44 @@ Tudo fica em **`assets/js/config.js`**:
   title: 'API de Pagamentos',
   stack: 'java',                      // java | python | cobol | web → define a seção
   type: 'backend',                    // mobile (celular) | backend | mainframe (terminal) | web (navegador)
+                                      // | fullstack (navegador + celular na capa do card)
   summary: 'Descrição curta para o card (2–3 linhas).',
-  description: 'Descrição longa exibida no modal.',
+  description: ['Primeiro parágrafo do modal.', 'Segundo parágrafo.'], // ou uma única string
   tags: ['Java 17', 'Spring Boot', 'PostgreSQL'],
-  images: [
-    { src: 'assets/img/projects/api-pagamentos/01.webp', alt: 'Tela de ...', width: 1600, height: 1000 },
+  stats: [                            // números medidos no projeto (nunca estimados)
+    { value: '12', label: 'endpoints REST' },
   ],
-  codeSnippet: '',                    // opcional: código exibido no mockup de terminal
-  fileName: '',                       // opcional: nome na barra do terminal (padrão: id + extensão)
-  challenges: [                       // opcional: exibido no modal
+  highlights: ['Funcionalidade 1', 'Funcionalidade 2'],      // bloco "Funcionalidades"
+  architecture: [                     // bloco "Arquitetura", um item por camada
+    { title: 'API', description: 'Como a camada foi construída.' },
+  ],
+  challenges: [                       // bloco "Desafios e soluções"
     { challenge: 'O problema enfrentado', solution: 'Como foi resolvido' },
   ],
+  images: [                           // capa do card + carrossel do modal
+    { src: 'assets/img/projects/api-pagamentos/desktop-01-inicio.webp', alt: 'Tela de ...', width: 1600, height: 1000 },
+  ],
+  mobileImages: [                     // capa do card "fullstack" + bloco "Versão mobile"
+    { src: 'assets/img/projects/api-pagamentos/mobile-01-inicio.webp', alt: 'Tela de ... no celular', width: 393, height: 800 },
+  ],
+  videos: [                           // bloco "Demonstração em vídeo" (cada vídeo dentro de um celular)
+    { src: 'assets/video/projects/api-pagamentos/demo.mp4', poster: 'assets/video/projects/api-pagamentos/demo-poster.webp',
+      title: 'Fluxo principal', width: 392, height: 848 },
+  ],
+  codeSamples: [                      // bloco "Código em destaque" (abas quando houver mais de um)
+    { fileName: 'src/main/java/.../PagamentoService.java', caption: 'O que o trecho mostra.', code: `...` },
+    { fileName: 'db/consulta.sql', language: 'sql', code: `...` }, // language: python | sql | typescript | javascript | java | cobol
+  ],
+  codeSnippet: '',                    // opcional: código exibido no mockup de terminal do card
+  fileName: '',                       // opcional: nome na barra do terminal (padrão: id + extensão)
   repo: 'https://github.com/...',     // vazio = botão não aparece
   demo: '',                           // vazio = botão não aparece
   year: 2026,
   featured: false,                    // true = ocupa 2 colunas
 },
 ```
+
+Os trechos de código devem ser **copiados do projeto real**, nunca escritos para o portfólio.
 
 O projeto aparece **somente** na seção da sua `stack`. Seções sem projetos exibem um estado vazio.
 
@@ -264,7 +294,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
 | **Currículo** | PDF em `assets/docs/` + `config.js → resumeUrl` | o arquivo | seção mostra "disponível em breve", botões desabilitados |
-| **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` | só o próprio portfólio, sem print nem links; Java, Python e COBOL exibem estado vazio |
+| **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` e vídeos em `assets/video/projects/<id>/` | AgendaFlow (Python) completo; o próprio portfólio sem print nem links; Java e COBOL exibem estado vazio |
 | **Certificados** | `data/certificates.js` | nome, emissor, data e imagem | lista vazia, exibe estado vazio |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
