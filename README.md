@@ -174,6 +174,7 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
   fileName: '',                       // opcional: nome na barra do terminal (padrão: id + extensão)
   repo: 'https://github.com/...',     // vazio = botão não aparece
   demo: '',                           // vazio = botão não aparece
+  docs: 'assets/docs/api-pagamentos-documentacao-tecnica.docx', // download da documentação (vazio = botão não aparece)
   year: 2026,
   featured: false,                    // true = ocupa 2 colunas
 },

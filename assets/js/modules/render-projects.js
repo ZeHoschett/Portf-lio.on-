@@ -336,7 +336,8 @@ const createTagList = (tags) =>
 const getTags = (project) => toTextList(project.tags ?? []);
 
 /**
- * Repository / demo links — only rendered when the URL exists and is safe.
+ * Repository / demo / documentation links — only rendered when the URL exists and is safe.
+ * The documentation is a file in the site itself, so it downloads instead of opening a tab.
  * @param {Project} project
  * @param {string} className
  */
@@ -344,19 +345,27 @@ function createLinks(project, className) {
   const links = [
     { href: sanitizeUrl(project.repo), label: 'Repositório', iconName: 'github' },
     { href: sanitizeUrl(project.demo), label: 'Demo', iconName: 'external' },
+    { href: sanitizeUrl(project.docs), label: 'Documentação', iconName: 'download', download: true },
   ];
   return links
     .filter((link) => link.href)
     .map((link) =>
       el(
         'a',
-        { className, attrs: { href: link.href, target: '_blank', rel: 'noopener noreferrer' } },
+        {
+          className,
+          attrs: link.download
+            ? { href: link.href, download: true }
+            : { href: link.href, target: '_blank', rel: 'noopener noreferrer' },
+        },
         [
           icon(link.iconName),
           el('span', { text: link.label }),
           el('span', {
             className: 'visually-hidden',
-            text: ` de ${project.title} (abre em nova aba)`,
+            text: link.download
+              ? ` técnica de ${project.title} (download)`
+              : ` de ${project.title} (abre em nova aba)`,
           }),
         ],
       ),

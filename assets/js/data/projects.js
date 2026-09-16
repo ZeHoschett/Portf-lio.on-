@@ -45,6 +45,7 @@
  * @property {{challenge: string, solution: string}[]} [challenges]  shown in the modal
  * @property {string} [repo]                              repository URL (hidden when empty)
  * @property {string} [demo]                              live demo URL (hidden when empty)
+ * @property {string} [docs]                              technical document to download, e.g. 'assets/docs/<id>-documentacao-tecnica.docx'
  * @property {number} [year]
  * @property {boolean} [featured]                         spans 2 columns on larger screens
  */
@@ -57,6 +58,273 @@ const AGENDAFLOW_VIDEO = 'assets/video/projects/agendaflow';
 
 /** @type {Project[]} */
 export const projects = [
+  {
+    id: 'flowpay',
+    title: 'FlowPay — API de Cobranças Recorrentes',
+    stack: 'java',
+    type: 'backend',
+    summary:
+      'API REST em Spring Boot para gerenciar o ciclo de vida de cobranças recorrentes, com máquina de estados explícita, idempotência, retry com backoff exponencial e tratamento de erros RFC 7807.',
+    description: [
+      'O FlowPay cria cobranças, acompanha o seu ciclo de vida e notifica outros sistemas por webhook sempre que o status muda. Uma cobrança nasce PENDENTE e só pode ir para PAGA, VENCIDA ou CANCELADA, estados finais dos quais nenhuma transição sai. A regra fica declarada em um único enum e qualquer movimento fora dela é recusado com um erro padronizado.',
+      'A criação aceita o header Idempotency-Key para que um retry de rede não gere cobranças duplicadas, o webhook de saída é reenviado com backoff exponencial e todos os erros seguem a RFC 7807. O schema evolui só por migrations do Flyway, a documentação da API é gerada do código com springdoc-openapi e os testes de integração sobem um PostgreSQL real com Testcontainers.',
+      'O projeto faz parte de um ecossistema simulado de sistemas financeiros: o FlowPay é a camada moderna em Java e um sistema legado em COBOL (FLOWCNAB) consumiria as cobranças pendentes para gerar a remessa bancária — integração documentada como extensão futura, fora da v1.',
+    ],
+    tags: [
+      'Java 21',
+      'Spring Boot 3.3',
+      'PostgreSQL',
+      'Flyway',
+      'Docker',
+      'JUnit',
+      'Testcontainers',
+      'OpenAPI/Swagger',
+    ],
+    stats: [
+      { value: '6', label: 'endpoints REST documentados no Swagger' },
+      { value: '4', label: 'estados na máquina de estados da cobrança' },
+      { value: '3', label: 'migrations versionadas com Flyway' },
+      { value: '9/9', label: 'testes unitários da máquina de estados passando' },
+    ],
+    highlights: [
+      'Máquina de estados com transições explícitas (PENDENTE → PAGA / VENCIDA / CANCELADA).',
+      'Idempotência via header Idempotency-Key com hash SHA-256 do corpo.',
+      'Webhook de saída com retry (backoff exponencial 1s, 2s, 4s, 8s...).',
+      'Erros padronizados RFC 7807 (Problem Details).',
+      'Migrations versionadas com Flyway desde o primeiro commit.',
+      'Testes unitários + integração com Testcontainers (Postgres real).',
+    ],
+    architecture: [
+      {
+        title: 'Domínio',
+        description:
+          'Cobranca e StatusCobranca, a máquina de estados, com as exceções de domínio. Nenhuma dependência do Spring: as regras de transição são testadas sem framework e sem banco.',
+      },
+      {
+        title: 'Aplicação',
+        description:
+          'Casos de uso em CobrancaService e IdempotencyService, que orquestram o domínio e a infraestrutura dentro das transações.',
+      },
+      {
+        title: 'Infraestrutura',
+        description:
+          'API REST com controllers, GlobalExceptionHandler e ProblemDetail; persistência com Spring Data JPA; cliente de webhook com RestTemplate. Acesso protegido por token fixo no header X-API-Key.',
+      },
+      {
+        title: 'Dados e ambiente',
+        description:
+          'PostgreSQL 16 via Docker Compose, schema versionado pelo Flyway (cobrança, chaves de idempotência e auditoria de webhooks) e build com Maven.',
+      },
+    ],
+    challenges: [
+      {
+        challenge: 'Evitar cobranças duplicadas quando o cliente repete a requisição após uma falha de rede.',
+        solution:
+          'A chave de idempotência é gravada com o hash SHA-256 do corpo e a resposta dada. Mesma chave e mesmo corpo devolvem a resposta original; mesma chave com outro corpo retorna 409 Conflict, em vez de assumir uma repetição legítima.',
+      },
+      {
+        challenge: 'Não notificar sistemas externos sobre uma mudança de status que acabou revertida.',
+        solution:
+          'O webhook é registrado como TransactionSynchronization e só dispara em afterCommit. Cada tentativa fica na tabela webhook_notificacao; depois do limite configurado, a notificação é marcada como falha permanente para inspeção.',
+      },
+      {
+        challenge: 'JSON malformado retornava 500 em vez de 400, descoberto nos testes manuais pelo Swagger.',
+        solution:
+          'Um handler dedicado para HttpMessageNotReadableException no GlobalExceptionHandler passou a responder 400 no mesmo formato RFC 7807 do restante da API.',
+      },
+      {
+        challenge: 'Testcontainers não encontrava o Docker no Windows com Docker Desktop 4.60+ sobre WSL2.',
+        solution:
+          'O diagnóstico isolou a incompatibilidade de negociação de API entre o docker-java e o Docker Desktop. A limitação e os contornos testados ficaram documentados no README e o fluxo completo foi validado de ponta a ponta pelo Swagger.',
+      },
+    ],
+    codeSnippet: `
+public enum StatusCobranca {
+
+    PENDENTE {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.of(PAGA, VENCIDA, CANCELADA);
+        }
+    },
+    PAGA {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.noneOf(StatusCobranca.class);
+        }
+    },
+`,
+    fileName: 'StatusCobranca.java',
+    codeSamples: [
+      {
+        fileName: 'src/main/java/com/flowpay/domain/StatusCobranca.java',
+        caption:
+          'A máquina de estados em um único lugar: cada estado declara para onde pode ir.',
+        code: `
+/**
+ * Estados possíveis de uma cobrança e as transições permitidas entre eles.
+ *
+ * Regra de negócio central do sistema:
+ *   PENDENTE -> PAGA
+ *   PENDENTE -> VENCIDA
+ *   PENDENTE -> CANCELADA
+ *   (PAGA, VENCIDA e CANCELADA são estados finais - nenhuma transição sai deles)
+ */
+public enum StatusCobranca {
+
+    PENDENTE {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.of(PAGA, VENCIDA, CANCELADA);
+        }
+    },
+    PAGA {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.noneOf(StatusCobranca.class);
+        }
+    },
+    VENCIDA {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.noneOf(StatusCobranca.class);
+        }
+    },
+    CANCELADA {
+        @Override
+        public Set<StatusCobranca> transicoesPermitidas() {
+            return EnumSet.noneOf(StatusCobranca.class);
+        }
+    };
+
+    public abstract Set<StatusCobranca> transicoesPermitidas();
+
+    public boolean podeTransicionarPara(StatusCobranca novoStatus) {
+        return transicoesPermitidas().contains(novoStatus);
+    }
+}
+`,
+      },
+      {
+        fileName: 'src/main/java/com/flowpay/application/IdempotencyService.java',
+        caption:
+          'Mesma chave e mesmo corpo devolvem a resposta já dada; mesma chave com outro corpo é conflito.',
+        code: `
+public <T> T executar(String chave, Object corpoRequisicao, Class<T> tipoResposta, Supplier<T> operacao) {
+    String hash = calcularHash(corpoRequisicao);
+    Optional<IdempotencyRecord> existente = repository.findByChave(chave);
+
+    if (existente.isPresent()) {
+        IdempotencyRecord record = existente.get();
+        if (!record.getHashRequisicao().equals(hash)) {
+            throw new IdempotencyKeyConflictException(chave);
+        }
+        return desserializar(record, tipoResposta);
+    }
+
+    T resultado = operacao.get();
+    salvar(chave, hash, resultado);
+    return resultado;
+}
+
+private String calcularHash(Object corpo) {
+    try {
+        String json = objectMapper.writeValueAsString(corpo);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(json.getBytes(StandardCharsets.UTF_8));
+        return HexFormat.of().formatHex(hashBytes);
+    } catch (Exception e) {
+        throw new IllegalStateException("Falha ao calcular hash da requisição", e);
+    }
+}
+`,
+      },
+      {
+        fileName: 'src/main/java/com/flowpay/infrastructure/webhook/WebhookSender.java',
+        caption:
+          'Falhou o envio? Nova tentativa agendada com backoff exponencial até o limite configurado.',
+        code: `
+} catch (RestClientException e) {
+    log.warn("Falha ao enviar webhook para a cobrança {} (tentativa {}/{}): {}",
+            notificacao.getCobrancaId(), notificacao.getTentativas(),
+            properties.getMaxTentativas(), e.getMessage());
+
+    if (notificacao.getTentativas() >= properties.getMaxTentativas()) {
+        notificacao.marcarComoFalhaPermanente();
+        repository.save(notificacao);
+        log.error("Webhook para a cobrança {} marcado como FALHA PERMANENTE após {} tentativas",
+                notificacao.getCobrancaId(), notificacao.getTentativas());
+        return;
+    }
+
+    long delaySegundos = (long) (properties.getDelayBaseSegundos()
+            * Math.pow(2, notificacao.getTentativas() - 1));
+    scheduler.schedule(() -> tentarEnviar(notificacaoId, payloadJson), delaySegundos, TimeUnit.SECONDS);
+}
+`,
+      },
+      {
+        fileName: 'src/main/java/com/flowpay/application/CobrancaService.java',
+        caption:
+          'O webhook só é disparado depois do commit, para não anunciar uma mudança que foi revertida.',
+        code: `
+private void agendarNotificacaoAposCommit(Cobranca cobranca, StatusCobranca statusAnterior) {
+    WebhookPayload payload = new WebhookPayload(
+            cobranca.getId(),
+            cobranca.getClienteId(),
+            cobranca.getValor(),
+            statusAnterior,
+            cobranca.getStatus(),
+            Instant.now()
+    );
+
+    if (TransactionSynchronizationManager.isSynchronizationActive()) {
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                webhookSender.notificar(payload);
+            }
+        });
+    } else {
+        webhookSender.notificar(payload);
+    }
+}
+`,
+      },
+      {
+        fileName: 'src/main/java/com/flowpay/infrastructure/web/GlobalExceptionHandler.java',
+        caption: 'Erros da API no formato RFC 7807 com o ProblemDetail nativo do Spring 6.',
+        code: `
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    private static final String BASE_URI = "https://flowpay.dev/problems/";
+
+    @ExceptionHandler(TransicaoInvalidaException.class)
+    public ProblemDetail handleTransicaoInvalida(TransicaoInvalidaException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setType(URI.create(BASE_URI + "transicao-invalida"));
+        problem.setTitle("Transição de status inválida");
+        return problem;
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail handleJsonMalformado(HttpMessageNotReadableException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, "O corpo da requisição não é um JSON válido");
+        problem.setType(URI.create(BASE_URI + "json-malformado"));
+        problem.setTitle("Requisição malformada");
+        return problem;
+    }
+`,
+      },
+    ],
+    repo: 'https://github.com/ZeHoschett/flowpay',
+    demo: '',
+    docs: 'assets/docs/flowpay-documentacao-tecnica.docx',
+    year: 2026,
+    featured: true,
+  },
   {
     id: 'agendaflow',
     title: 'AgendaFlow',
