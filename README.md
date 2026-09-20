@@ -153,7 +153,8 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
   title: 'API de Pagamentos',
   stack: 'java',                      // java | python | cobol | web → define a seção
   type: 'backend',                    // mobile (celular) | backend | mainframe (terminal) | web (navegador)
-                                      // | fullstack (navegador + celular na capa do card)
+                                      // | fullstack (navegador + celular na capa do card;
+                                      //   no celular o card mostra só o navegador)
   summary: 'Descrição curta para o card (2–3 linhas).',
   description: ['Primeiro parágrafo do modal.', 'Segundo parágrafo.'], // ou uma única string
   tags: ['Java 17', 'Spring Boot', 'PostgreSQL'],
@@ -170,7 +171,7 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
   images: [                           // capa do card + carrossel do modal
     { src: 'assets/img/projects/api-pagamentos/desktop-01-inicio.webp', alt: 'Tela de ...', width: 1600, height: 1000 },
   ],
-  mobileImages: [                     // capa do card "fullstack" + bloco "Versão mobile"
+  mobileImages: [                     // capa do card "fullstack" (≥768px) + bloco "Versão mobile"
     { src: 'assets/img/projects/api-pagamentos/mobile-01-inicio.webp', alt: 'Tela de ... no celular', width: 393, height: 800 },
   ],
   videos: [                           // bloco "Demonstração em vídeo" (cada vídeo dentro de um celular)

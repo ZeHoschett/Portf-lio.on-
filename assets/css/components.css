@@ -575,20 +575,29 @@
     grid-area: 1 / 1;
   }
 
-  .mockup--showcase > .mockup {
-    place-self: start;
-    width: calc(100% - var(--showcase-inset-x));
-    height: calc(100% - var(--showcase-inset-y));
-  }
-
+  /* On phones the device in front would be a thumbnail squeezed against the card edge: the card
+     shows the browser alone, like every other card. The phone version stays in the modal. */
   .mockup--showcase > .mockup__device {
-    place-self: end;
-    height: var(--showcase-phone-h);
+    display: none;
   }
 
-  /* The phone covers the right side of the browser: keep the start of the desktop screen visible */
-  .mockup--showcase .mockup--browser .mockup__image {
-    object-position: top left;
+  @media (min-width: 768px) {
+    .mockup--showcase > .mockup {
+      place-self: start;
+      width: calc(100% - var(--showcase-inset-x));
+      height: calc(100% - var(--showcase-inset-y));
+    }
+
+    .mockup--showcase > .mockup__device {
+      display: block;
+      place-self: end;
+      height: var(--showcase-phone-h);
+    }
+
+    /* The phone covers the right side of the browser: keep the start of the screen visible */
+    .mockup--showcase .mockup--browser .mockup__image {
+      object-position: top left;
+    }
   }
 
   /* ---------- Code (terminal mockups) ---------- */
