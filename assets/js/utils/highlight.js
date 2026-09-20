@@ -25,6 +25,13 @@ const KEYWORDS = {
     export extends false finally for from function if implements import in instanceof interface
     let new null of private public readonly return static super switch this throw true try type
     typeof undefined var void while yield`,
+  // Tag names: the excerpts are structural markup, where a tag name in text content is unlikely
+  html: `!doctype html head meta title link script body header nav main section article aside
+    footer div span ul ol li a p h1 h2 h3 h4 button form label input img picture video canvas
+    svg use figure figcaption pre code dialog template`,
+  // At-rules and the functions a token-based stylesheet leans on
+  css: `@layer @media @supports @import @font-face @keyframes @property @container var calc clamp
+    min max minmax repeat color-mix linear-gradient radial-gradient from to and not only`,
   sql: `SELECT FROM WHERE AND OR NOT IN IS NULL AS ON JOIN LEFT RIGHT INNER OUTER GROUP BY ORDER
     HAVING LIMIT WITH INSERT INTO VALUES UPDATE SET DELETE RETURNING CREATE TABLE INDEX IF EXISTS
     PRIMARY KEY REFERENCES DEFAULT DISTINCT CASE WHEN THEN ELSE END COUNT MAX MIN AVG SUM ROUND
@@ -35,6 +42,8 @@ const C_COMMENTS = String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`;
 
 const COMMENTS = {
   java: C_COMMENTS,
+  css: C_COMMENTS,
+  html: String.raw`<!--[\s\S]*?-->`,
   javascript: C_COMMENTS,
   typescript: C_COMMENTS,
   python: String.raw`#[^\n]*`,
@@ -49,7 +58,7 @@ const TRIPLE_STRING = String.raw`[fFrRbB]?(?:"""[\s\S]*?"""|'''[\s\S]*?''')`;
 const NUMBER = String.raw`\b\d+(?:\.\d+)?\b`;
 
 /** Grammars matched case-insensitively. */
-const CASE_INSENSITIVE = new Set(['cobol', 'sql']);
+const CASE_INSENSITIVE = new Set(['cobol', 'sql', 'html']);
 
 /** Stack → highlighting grammar. */
 const LANGUAGE_BY_STACK = { java: 'java', python: 'python', cobol: 'cobol', web: 'javascript' };

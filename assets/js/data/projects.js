@@ -22,7 +22,7 @@
  * @typedef {Object} CodeSample
  * @property {string} fileName    path shown in the window bar; the tab shows its last segment
  * @property {string} code        real excerpt of the project (never invented)
- * @property {'python'|'sql'|'typescript'|'javascript'|'java'|'cobol'} [language]  grammar when it differs from the stack
+ * @property {'python'|'sql'|'typescript'|'javascript'|'java'|'cobol'|'html'|'css'} [language]  grammar when it differs from the stack
  * @property {string} [caption]   one sentence: what this excerpt shows
  *
  * @typedef {Object} Project
@@ -726,9 +726,106 @@ if (is401 && !config?._refreshRetry && config) {
     summary:
       'Este site: página única responsiva e interativa, feita com HTML, CSS e JavaScript puros, sem frameworks.',
     description:
-      'Animações em Canvas com identidade por stack (rede hexagonal para Java, serpentes entrelaçadas para Python, terminal CRT para COBOL e grade interativa para Web), foco em acessibilidade (WCAG 2.1 AA), performance e código modular com ES Modules.',
+      'Arte de fundo com identidade por stack (rede hexagonal em Canvas para Java, letreiro de neon para Python, terminal CRT para COBOL e grade interativa para Web), foco em acessibilidade (WCAG 2.1 AA), performance e código modular com ES Modules.',
     tags: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Acessibilidade'],
     images: [], // TODO(jose): print do site publicado
+    codeSamples: [
+      {
+        fileName: 'index.html',
+        language: 'html',
+        caption:
+          'O esqueleto semântico da página: um <h1> no hero, uma <section> por assunto e os pontos onde o JavaScript injeta o conteúdo.',
+        code: `
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>José Hoschett — Desenvolvedor COBOL · Java</title>
+    <!-- SEO, Open Graph e JSON-LD ficam estáticos: buscadores não executam JavaScript -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <!-- ... um arquivo por camada: tokens, base, layout, components, sections ... -->
+    <script type="module" src="assets/js/main.js"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header" data-header>
+      <!-- logo, navegação e CTAs; abaixo de 1280px vira menu sobreposto -->
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <img class="hero__art" src="assets/img/hero-keycap.webp" alt="" aria-hidden="true">
+        <h1 class="hero__title" id="hero-title" data-hero-title>...</h1>
+      </section>
+
+      <section class="section about" id="sobre" aria-labelledby="about-title">...</section>
+      <section class="section stack" id="stack" aria-labelledby="stack-title">...</section>
+
+      <section class="projects" id="projetos" aria-labelledby="projects-title">
+        <!-- uma subseção por stack, cada uma com a sua arte de fundo -->
+        <section class="project-stack" id="projetos-java" data-stack="java">
+          <ul class="project-grid" data-projects="java"></ul>
+        </section>
+        <!-- ... python, cobol, web ... -->
+      </section>
+
+      <section class="section education" id="formacao" aria-labelledby="education-title">
+        <ol class="timeline" data-education></ol>
+      </section>
+
+      <section class="section certificates" id="certificados" aria-labelledby="certificates-title">
+        <ul class="cert-grid" data-certificates></ul>
+      </section>
+
+      <section class="section contact" id="contato" aria-labelledby="contact-title">...</section>
+    </main>
+
+    <footer class="site-footer">...</footer>
+  </body>
+</html>
+`,
+      },
+      {
+        fileName: 'assets/css/reset.css',
+        language: 'css',
+        caption:
+          'A ordem das camadas é declarada uma única vez: quem vem depois vence, sem depender de especificidade nem de !important.',
+        code: `
+/* Cascade layer order — declared once, in the first stylesheet loaded. */
+@layer reset, tokens, base, layout, components, sections, utilities;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+/* tokens.css — o único lugar com valores crus */
+@layer tokens {
+  :root {
+    --color-bg: #07070a;
+    --color-accent: #7c5cff;
+    --space-5: 1.5rem;
+    --radius-lg: 1rem;
+  }
+}
+
+/* sections/certificates.css — as regras só consomem tokens */
+@layer sections {
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--cert-min), 1fr));
+    gap: var(--space-5);
+  }
+}
+`,
+      },
+    ],
     repo: '', // TODO(jose): link do repositório
     demo: '', // TODO(jose): link publicado
     year: 2026,

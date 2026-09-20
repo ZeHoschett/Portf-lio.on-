@@ -180,7 +180,8 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
   ],
   codeSamples: [                      // bloco "Código em destaque" (abas quando houver mais de um)
     { fileName: 'src/main/java/.../PagamentoService.java', caption: 'O que o trecho mostra.', code: `...` },
-    { fileName: 'db/consulta.sql', language: 'sql', code: `...` }, // language: python | sql | typescript | javascript | java | cobol
+    { fileName: 'db/consulta.sql', language: 'sql', code: `...` }, // language: python | sql | typescript
+                                                                   // | javascript | java | cobol | html | css
   ],
   codeSnippet: '',                    // opcional: código exibido no mockup de terminal do card
   fileName: '',                       // opcional: nome na barra do terminal (padrão: id + extensão)
