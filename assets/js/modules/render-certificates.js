@@ -2,6 +2,7 @@
  * Renders `data/certificates.js` into the grid of #certificados (`[data-certificates]`).
  * A certificate with an image gets a title button that opens it enlarged in the modal
  * (lightbox); without an image the title is plain text (there would be nothing to enlarge).
+ * `description` (one short sentence) is shown on the card and repeated in the lightbox.
  * Invalid entries are skipped with a console warning; an empty list shows the empty state.
  */
 import { certificates as defaultCertificates } from '../data/certificates.js';
@@ -75,6 +76,7 @@ function createCredentialLink(certificate, className) {
  */
 function openCertificate(certificate, image, trigger) {
   const meta = [text(certificate.issuer), formatDate(certificate.date)].filter(Boolean).join(' · ');
+  const description = text(certificate.description);
   const link = createCredentialLink(certificate, 'btn btn--secondary');
 
   const figure = el('figure', { className: 'lightbox' }, [
@@ -95,6 +97,7 @@ function openCertificate(certificate, image, trigger) {
         attrs: { id: LIGHTBOX_TITLE_ID },
       }),
       meta ? el('p', { className: 'lightbox__meta', text: meta }) : null,
+      description ? el('p', { className: 'lightbox__text', text: description }) : null,
       link,
     ]),
   ]);
@@ -107,6 +110,7 @@ function createCard(certificate) {
   const image = normaliseImage(certificate);
   const date = formatDate(certificate.date);
   const issuer = text(certificate.issuer);
+  const description = text(certificate.description);
 
   /** @type {Node} */
   let title;
@@ -142,6 +146,7 @@ function createCard(certificate) {
       title,
       issuer ? el('p', { className: 'cert-card__issuer', text: issuer }) : null,
       date ? el('p', { className: 'cert-card__date', text: date }) : null,
+      description ? el('p', { className: 'cert-card__text', text: description }) : null,
       createCredentialLink(certificate, 'cert-card__link'),
     ]),
   ]);

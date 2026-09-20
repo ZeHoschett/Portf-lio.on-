@@ -23,7 +23,7 @@ e **dados** nos arquivos de `assets/js/data/`.
 | Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens; o quinto reúne as ferramentas |
 | Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
 | Formação | `data/education.js` | timeline vertical |
-| Certificados | `data/certificates.js` | grade, com ampliação em lightbox |
+| Certificados | `data/certificates.js` | grade com imagem, descrição curta e ampliação em lightbox |
 | Contato | `config.js` | e-mail com botão copiar, LinkedIn, GitHub e WhatsApp |
 
 **Links vazios nunca aparecem.** Se `github`, `whatsapp.number`, `repo` ou `demo` estiverem em
@@ -213,9 +213,23 @@ Coloque a imagem em `assets/img/certificates/` e adicione em `assets/js/data/cer
 
 ```js
 { id: 'java-se', name: 'Nome do certificado', issuer: 'Emissor', date: '2025-03',
+  description: 'Uma frase curta sobre o curso (carga horária, temas).',
   image: { src: 'assets/img/certificates/java-se.webp', alt: 'Certificado ...', width: 1400, height: 1000 },
   credentialUrl: 'https://...' },
 ```
+
+`description` aparece no card e se repete no lightbox; sem ela, o card mostra só nome, emissor e
+data. `date` e `credentialUrl` são opcionais — o que o certificado não traz, não se inventa.
+
+**Do PDF para a imagem:** os certificados costumam vir em PDF. Para gerar o `.webp` da primeira
+página (recortando as margens brancas da impressão):
+
+```bash
+python -m pip install pymupdf
+python -c "import pymupdf; p=pymupdf.open('cert.pdf')[0]; p.get_pixmap(matrix=pymupdf.Matrix(1400/p.rect.width, 1400/p.rect.width)).save('cert.png')"
+```
+
+Depois converta o `.png` em `.webp` (qualidade ~82) e anote `width`/`height` reais no dado.
 
 ## Imagem de compartilhamento (og-image)
 
@@ -308,7 +322,6 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
 | **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` e vídeos em `assets/video/projects/<id>/` | AgendaFlow (Python) completo; o próprio portfólio sem print nem links; Java e COBOL exibem estado vazio |
-| **Certificados** | `data/certificates.js` | nome, emissor, data e imagem | lista vazia, exibe estado vazio |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **URL final** | `config.js → siteUrl`, `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
