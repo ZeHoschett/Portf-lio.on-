@@ -3,7 +3,6 @@
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
 import { initCobolTerminal } from './animations/cobol-terminal.js';
-import { initHeroOrb } from './animations/hero-orb.js';
 import { initJavaNetwork } from './animations/java-network.js';
 import { initWebDotgrid } from './animations/web-dotgrid.js';
 import { initClipboard } from './modules/clipboard.js';
@@ -65,7 +64,6 @@ safeInit('whatsapp-float', initWhatsappFloat);
 
 // Canvas animations start when the main thread is idle: they never block the first render
 whenIdle(() => {
-  safeInit('hero-orb', initHeroOrb);
   safeInit('java-network', initJavaNetwork);
   safeInit('cobol-terminal', initCobolTerminal);
   safeInit('web-dotgrid', initWebDotgrid);

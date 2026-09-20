@@ -1,6 +1,6 @@
 /*
  * Hero (#inicio): giant title, portrait crossing the title (outlined ghost copy on top),
- * animated orb canvas and parallax layers. Mobile-first.
+ * grid backdrop and parallax layers. Mobile-first.
  *
  * Stacking inside .hero__stage (one grid cell): title (1) < photo (2) < outlined ghost (3).
  */
@@ -24,15 +24,6 @@
     background-size: var(--hero-grid) var(--hero-grid);
     -webkit-mask-image: var(--hero-grid-mask);
     mask-image: var(--hero-grid-mask);
-  }
-
-  .hero__orb {
-    position: absolute;
-    inset: 0;
-    z-index: var(--z-base);
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
   }
 
   /* ============================== Layout ============================== */
@@ -75,7 +66,7 @@
     list-style: none;
   }
 
-  /* Hidden on phones: they would sit on the brightest part of the orb */
+  /* Hidden on phones: not enough room beside the title */
   .hero__corner {
     position: absolute;
     top: calc(var(--header-h) + var(--space-4));
