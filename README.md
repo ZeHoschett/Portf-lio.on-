@@ -24,7 +24,6 @@ e **dados** nos arquivos de `assets/js/data/`.
 | Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
 | Formação | `data/education.js` | timeline vertical |
 | Certificados | `data/certificates.js` | grade, com ampliação em lightbox |
-| Currículo | `config.js` → `resumeUrl` | sem PDF, mostra "disponível em breve" |
 | Contato | `config.js` | e-mail com botão copiar, LinkedIn, GitHub e WhatsApp |
 
 **Links vazios nunca aparecem.** Se `github`, `whatsapp.number`, `repo` ou `demo` estiverem em
@@ -32,15 +31,15 @@ branco, o botão correspondente não é criado — nada de link quebrado para o 
 
 ### Como o topo se comporta
 
-O header é fixo e leva quatro atalhos: **Ver projetos · Currículo · Fale comigo · WhatsApp**.
+O header é fixo e leva três atalhos: **Ver projetos · Fale comigo · WhatsApp**.
 
-- **A partir de 1280px:** logo à esquerda, os 8 links centralizados e os botões à direita, tudo em
+- **A partir de 1280px:** logo à esquerda, os 7 links centralizados e os botões à direita, tudo em
   uma linha. O do WhatsApp é só ícone, para a barra não estourar.
-- **Abaixo de 1280px:** aparece o menu hambúrguer, e os três primeiros botões ficam dentro dele,
+- **Abaixo de 1280px:** aparece o menu hambúrguer, e os dois primeiros botões ficam dentro dele,
   abaixo dos links — são os mesmos elementos, não uma cópia. O do WhatsApp sai da barra, porque
   nessa largura ele já aparece no hero e no botão flutuante.
 
-O corte é 1280px, e não 1024px, porque 8 links mais os botões não cabem numa tela de 1024px sem
+O corte é 1280px, e não 1024px, porque os links mais os botões não cabem numa tela de 1024px sem
 criar rolagem horizontal.
 
 ### A arte do Início
@@ -105,7 +104,7 @@ assets/
     utils/                 helpers (DOM seguro, motion, canvas…)
   img/  placeholders/ · projects/ · certificates/ · hero-keycap.webp · trex-head.webp · python-neon.webp · og-image.png
   icons/ sprite.svg · favicon.svg
-  docs/  curriculo-jose-hoschett.pdf (a adicionar)
+  docs/  documentações técnicas dos projetos (.docx)
 ```
 
 ---
@@ -122,7 +121,6 @@ Tudo fica em **`assets/js/config.js`**:
 | `github` | URL do seu GitHub | o link não aparece |
 | `whatsapp.number` | só dígitos com DDI+DDD, ex.: `5511999999999` | os botões de WhatsApp não aparecem |
 | `whatsapp.message` | mensagem que já vem escrita | — |
-| `resumeUrl` | caminho do PDF | mostra "Currículo disponível em breve" |
 | `siteUrl` | URL final publicada | — |
 
 **Foto:** use um retrato vertical 4:5 (ex.: 800×1000), de preferência em `.webp`, em `assets/img/`.
@@ -308,7 +306,6 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | Pendência | Onde | O que precisa | Como está hoje |
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
-| **Currículo** | PDF em `assets/docs/` + `config.js → resumeUrl` | o arquivo | seção mostra "disponível em breve", botões desabilitados |
 | **Projetos** | `data/projects.js` | projetos reais + prints em `assets/img/projects/<id>/` e vídeos em `assets/video/projects/<id>/` | AgendaFlow (Python) completo; o próprio portfólio sem print nem links; Java e COBOL exibem estado vazio |
 | **Certificados** | `data/certificates.js` | nome, emissor, data e imagem | lista vazia, exibe estado vazio |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
@@ -320,5 +317,4 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 1. **Bio e foto.** É o que o recrutador vê primeiro, e a foto aparece em dois lugares.
 2. **Publicar no GitHub Pages**, mesmo com pendências. Rende a URL para `siteUrl` e Open Graph, e
    permite preencher `repo` e `demo` do próprio portfólio em `data/projects.js`.
-3. **PDF do currículo** — provavelmente o segundo clique de quem está contratando.
-4. **Projetos reais e certificados**, conforme forem ficando prontos.
+3. **Projetos reais e certificados**, conforme forem ficando prontos.

@@ -10,7 +10,7 @@
  *     data-link-empty="disable"      → stays visible, aria-disabled, no href
  *     (default)                      → element is removed
  *   data-requires="github"         element is removed when the link is unavailable, unhidden otherwise
- *   data-requires-missing="resume" element is removed when the link IS available
+ *   data-requires-missing="link"   element is removed when the link IS available
  */
 import { config } from '../config.js';
 import { el, sanitizeUrl } from '../utils/dom.js';
@@ -44,7 +44,6 @@ const LINK_BUILDERS = {
   },
   linkedin: () => sanitizeUrl(config.linkedin),
   github: () => sanitizeUrl(config.github),
-  resume: () => sanitizeUrl(config.resumeUrl),
   whatsapp: () => {
     const number = asText(config.whatsapp?.number);
     if (!WHATSAPP_NUMBER.test(number)) return '';
@@ -55,7 +54,7 @@ const LINK_BUILDERS = {
 
 /**
  * Builds a contact/resource link from config. Returns '' when it cannot be built.
- * @param {'email'|'linkedin'|'github'|'resume'|'whatsapp'} name
+ * @param {'email'|'linkedin'|'github'|'whatsapp'} name
  * @returns {string}
  */
 export function getLink(name) {

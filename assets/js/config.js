@@ -12,7 +12,6 @@
  * @property {string} linkedin
  * @property {string} github
  * @property {{number: string, message: string}} whatsapp
- * @property {string} resumeUrl  relative path to the PDF
  * @property {string} siteUrl    final public URL (OG/canonical)
  */
 
@@ -35,8 +34,5 @@ export const config = {
     number: '5511952170800', // (11) 95217-0800 — nunca exibido como texto na página
     message: 'Olá José! Vi seu portfólio e gostaria de conversar.',
   },
-  // TODO(jose): coloque o PDF em assets/docs/ e preencha: 'assets/docs/curriculo-jose-hoschett.pdf'
-  // Enquanto vazio, a seção Currículo mostra "Currículo disponível em breve".
-  resumeUrl: '',
   siteUrl: '', // TODO(jose): URL final após publicar (usado em OG/canonical)
 };

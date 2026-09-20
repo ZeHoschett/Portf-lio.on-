@@ -54,7 +54,6 @@
     <link rel="stylesheet" href="assets/css/sections/project-web.css">
     <link rel="stylesheet" href="assets/css/sections/education.css">
     <link rel="stylesheet" href="assets/css/sections/certificates.css">
-    <link rel="stylesheet" href="assets/css/sections/resume.css">
     <link rel="stylesheet" href="assets/css/sections/contact.css">
     <link rel="stylesheet" href="assets/css/sections/footer.css">
 
@@ -98,17 +97,12 @@
               <li><a class="site-nav__link" href="#projetos">Projetos</a></li>
               <li><a class="site-nav__link" href="#formacao">Formação</a></li>
               <li><a class="site-nav__link" href="#certificados">Certificados</a></li>
-              <li><a class="site-nav__link" href="#curriculo">Currículo</a></li>
               <li><a class="site-nav__link" href="#contato">Contato</a></li>
             </ul>
 
             <!-- One DOM node for both layouts: stacked inside the overlay below 1280px, a row in the bar above it -->
             <div class="site-nav__actions" data-nav-actions>
               <a class="btn btn--secondary btn--sm" href="#projetos">Ver projetos</a>
-              <a class="btn btn--secondary btn--sm" data-link="resume" data-link-fallback="#curriculo" download>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
-                <span><span class="visually-hidden">Baixar </span>Currículo</span>
-              </a>
               <a class="btn btn--primary btn--sm" href="#contato" data-magnetic>Fale comigo</a>
               <!-- Icon only, so the row still fits at 1280px. Below that the hero keeps its own. -->
               <a class="btn btn--whatsapp btn--icon site-nav__whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
@@ -424,36 +418,11 @@
         </div>
       </section>
 
-      <!-- ============================== CURRÍCULO ============================== -->
-      <section class="section resume" id="curriculo" aria-labelledby="resume-title">
-        <div class="container">
-          <div class="resume-card" data-reveal>
-            <div class="resume-card__content">
-              <p class="section__eyebrow">06 — Currículo</p>
-              <h2 class="section__title" id="resume-title">Currículo</h2>
-              <p class="resume-card__text">Experiência, formação e stack completa em um único PDF.</p>
-              <p class="resume-card__status" data-requires-missing="resume">Currículo disponível em breve.</p>
-            </div>
-            <div class="resume-card__actions cluster">
-              <a class="btn btn--primary" data-link="resume" data-link-empty="disable" download>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-download"></use></svg>
-                <span>Baixar PDF</span>
-              </a>
-              <a class="btn btn--secondary" data-link="resume" data-link-empty="disable" target="_blank" rel="noopener noreferrer">
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-external"></use></svg>
-                <span>Visualizar</span>
-                <span class="visually-hidden">(abre em nova aba)</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ============================== CONTATO ============================== -->
       <section class="section contact" id="contato" aria-labelledby="contact-title">
         <div class="container">
           <header class="section__header contact__header" data-reveal>
-            <p class="section__eyebrow">07 — Contato</p>
+            <p class="section__eyebrow">06 — Contato</p>
             <h2 class="contact__title" id="contact-title">Vamos conversar?</h2>
             <p class="section__lead">Aberto a oportunidades e novos projetos. Escolha o canal que preferir.</p>
           </header>

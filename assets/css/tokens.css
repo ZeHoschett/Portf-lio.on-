@@ -296,13 +296,6 @@
     --cert-ratio: 1.4 / 1;
     --lightbox-image-max-h: 70dvh;
 
-    /* ---------- Resume ---------- */
-    --resume-sheen: radial-gradient(
-      110% 80% at 100% 0%,
-      color-mix(in srgb, var(--color-accent) 18%, transparent) 0%,
-      transparent 60%
-    );
-
     /* ---------- Contact ---------- */
     --contact-item-min: 18rem;
 
