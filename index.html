@@ -133,8 +133,12 @@
     <main id="conteudo" tabindex="-1">
       <!-- ============================== HERO ============================== -->
       <section class="hero" id="inicio" aria-labelledby="hero-title">
-        <!-- Parallax layers: backdrop slow (+), content medium (+), portrait fast (−) -->
+        <!-- Parallax layers: backdrop slow (+), content medium (+), art and portrait fast (−) -->
         <div class="hero__backdrop" aria-hidden="true" data-parallax="0.35"></div>
+        <!-- Glass keycap: purely decorative background art, composited with `screen` so the black
+             plate of the image disappears into the hero. -->
+        <img class="hero__art" src="assets/img/hero-keycap.webp" alt="" aria-hidden="true"
+             width="736" height="886" decoding="async" data-parallax="-0.1">
 
         <div class="hero__inner container container--wide">
           <p class="hero__side-label" aria-hidden="true">Portfólio — <span data-current-year>2026</span></p>

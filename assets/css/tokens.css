@@ -137,6 +137,16 @@
     --hero-photo-mask: linear-gradient(to bottom, #000 50%, transparent 100%);
     --hero-grid: 5rem;
     --hero-grid-mask: radial-gradient(ellipse 80% 70% at 65% 35%, #000 0%, transparent 75%);
+    /* Background art: a glass keycap shot on black, composited with `screen` (see hero.css) */
+    --hero-art-w: clamp(13rem, 58vw, 34rem);
+    --hero-art-top: 21%; /* phones: in the empty band above the photo */
+    --hero-art-top-lg: 44%;
+    --hero-art-right-lg: 26%; /* left of the portrait, inside the empty middle of the hero */
+    --hero-art-opacity: 0.8;
+    --hero-art-opacity-mobile: 0.5; /* the title and the photo sit over it on phones */
+    --hero-art-glow: 0 0 6rem rgba(124, 92, 255, 0.28);
+    /* Fade the edges of the black plate so it never reads as a square */
+    --hero-art-mask: radial-gradient(closest-side, #000 52%, transparent 100%);
     --photo-img-scale: 1.06;
     --rise-scale: 1.04;
     --char-rise: 0.35em;

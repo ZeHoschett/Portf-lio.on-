@@ -26,6 +26,33 @@
     mask-image: var(--hero-grid-mask);
   }
 
+  /* Background art: decorative image instead of the former canvas animation. `screen` makes the
+     black plate of the photograph disappear into the section background. */
+  .hero__art {
+    position: absolute;
+    top: var(--hero-art-top);
+    right: 50%;
+    z-index: var(--z-below);
+    width: var(--hero-art-w);
+    height: auto;
+    translate: 50% -50%;
+    opacity: var(--hero-art-opacity-mobile);
+    mix-blend-mode: screen;
+    -webkit-mask-image: var(--hero-art-mask);
+    mask-image: var(--hero-art-mask);
+    filter: drop-shadow(var(--hero-art-glow));
+    pointer-events: none;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__art {
+      top: var(--hero-art-top-lg);
+      right: var(--hero-art-right-lg);
+      translate: 0 -50%;
+      opacity: var(--hero-art-opacity);
+    }
+  }
+
   /* ============================== Layout ============================== */
   .hero__inner {
     position: relative;
