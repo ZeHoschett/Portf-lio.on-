@@ -18,7 +18,7 @@ e **dados** nos arquivos de `assets/js/data/`.
 
 | Seção | Conteúdo vem de | Observação |
 | --- | --- | --- |
-| Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp |
+| Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp; fundo preto com a arte do keycap |
 | Sobre | `config.js` → `bio` | com a bio vazia, aparece o texto padrão do HTML |
 | Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens; o quinto reúne as ferramentas |
 | Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
@@ -42,6 +42,19 @@ O header é fixo e leva quatro atalhos: **Ver projetos · Currículo · Fale com
 
 O corte é 1280px, e não 1024px, porque 8 links mais os botões não cabem numa tela de 1024px sem
 criar rolagem horizontal.
+
+### A arte do Início
+
+O hero tem fundo **preto puro** (`--hero-bg`) e uma única arte estática: o keycap de vidro
+`assets/img/hero-keycap.webp`, posicionado acima do nome e longe da foto. Ele é decorativo
+(`alt=""`, `aria-hidden`) e é composto com `mix-blend-mode: screen`, então a chapa preta da
+fotografia some no fundo da seção — o mesmo truque do neon do Python.
+
+Tamanho, posição e opacidade saem dos tokens `--hero-art-*` em `assets/css/tokens.css`
+(um valor para celular, um para telas médias e um para desktop). Para trocar a arte, basta
+substituir o `.webp` e ajustar `width`/`height` no `index.html`.
+
+> Antes havia aqui um canvas animado (o "orb"). Ele foi removido: o Início agora é estático.
 
 ### A identidade visual de cada stack
 
@@ -90,7 +103,7 @@ assets/
     modules/               navegação, projetos, formação, certificados, modal, toast, copiar e-mail…
     animations/            animações de canvas por seção
     utils/                 helpers (DOM seguro, motion, canvas…)
-  img/  placeholders/ · projects/ · certificates/ · trex-head.webp · python-neon.webp · og-image.png
+  img/  placeholders/ · projects/ · certificates/ · hero-keycap.webp · trex-head.webp · python-neon.webp · og-image.png
   icons/ sprite.svg · favicon.svg
   docs/  curriculo-jose-hoschett.pdf (a adicionar)
 ```
@@ -272,6 +285,7 @@ Nenhum destes exige atribuição, mas fica o registro de onde vieram:
 | Logos de tecnologias e ferramentas | `assets/icons/sprite.svg` | [Simple Icons](https://simpleicons.org), CC0 |
 | Cabeça de T. rex (máscara alfa) | `assets/img/trex-head.webp` | arte fornecida por José para este portfólio |
 | Letreiro de neon do logo Python | `assets/img/python-neon.webp` | arte fornecida por José para este portfólio |
+| Keycap de vidro do Início | `assets/img/hero-keycap.webp` | arte fornecida por José para este portfólio |
 
 Os ícones de COBOL, CICS, DB2, z/OS e SQL são desenhos originais deste projeto: essas tecnologias
 não têm logo de marca que possa ser usado.
