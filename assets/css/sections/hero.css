@@ -1,6 +1,6 @@
 /*
  * Hero (#inicio): giant title, portrait crossing the title (outlined ghost copy on top),
- * grid backdrop and parallax layers. Mobile-first.
+ * a glass-keycap background art and parallax layers, on a pure black plate. Mobile-first.
  *
  * Stacking inside .hero__stage (one grid cell): title (1) < photo (2) < outlined ghost (3).
  */
@@ -10,32 +10,21 @@
     isolation: isolate;
     min-height: 100vh;
     min-height: 100svh;
+    background-color: var(--hero-bg);
     overflow: clip;
   }
 
-  /* ============================== Background layers ============================== */
-  .hero__backdrop {
-    position: absolute;
-    inset: 0;
-    z-index: var(--z-below);
-    background-image:
-      linear-gradient(to right, var(--color-border) var(--border-thin), transparent var(--border-thin)),
-      linear-gradient(to bottom, var(--color-border) var(--border-thin), transparent var(--border-thin));
-    background-size: var(--hero-grid) var(--hero-grid);
-    -webkit-mask-image: var(--hero-grid-mask);
-    mask-image: var(--hero-grid-mask);
-  }
-
+  /* ============================== Background art ============================== */
   /* Background art: decorative image instead of the former canvas animation. `screen` makes the
      black plate of the photograph disappear into the section background. */
   .hero__art {
     position: absolute;
     top: var(--hero-art-top);
-    right: 50%;
+    left: 50%;
     z-index: var(--z-below);
     width: var(--hero-art-w);
     height: auto;
-    translate: 50% -50%;
+    translate: -50% -50%;
     opacity: var(--hero-art-opacity-mobile);
     mix-blend-mode: screen;
     -webkit-mask-image: var(--hero-art-mask);
@@ -44,10 +33,19 @@
     pointer-events: none;
   }
 
+  /* Tablets are tall enough for a bigger keycap, but the art must not reach the header */
+  @media (min-width: 640px) {
+    .hero__art {
+      top: var(--hero-art-top-md);
+      width: var(--hero-art-w-md);
+    }
+  }
+
   @media (min-width: 1024px) {
     .hero__art {
       top: var(--hero-art-top-lg);
-      right: var(--hero-art-right-lg);
+      left: var(--hero-art-left-lg);
+      width: var(--hero-art-w-lg);
       translate: 0 -50%;
       opacity: var(--hero-art-opacity);
     }

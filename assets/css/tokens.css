@@ -135,15 +135,17 @@
     --hero-photo-ratio: 4 / 5;
     --hero-photo-lift: 0.18; /* photo bottom sits this × title size above the baseline */
     --hero-photo-mask: linear-gradient(to bottom, #000 50%, transparent 100%);
-    --hero-grid: 5rem;
-    --hero-grid-mask: radial-gradient(ellipse 80% 70% at 65% 35%, #000 0%, transparent 75%);
+    --hero-bg: #000; /* the hero is pure black so the art's own plate blends into it */
     /* Background art: a glass keycap shot on black, composited with `screen` (see hero.css) */
-    --hero-art-w: clamp(13rem, 58vw, 34rem);
-    --hero-art-top: 21%; /* phones: in the empty band above the photo */
-    --hero-art-top-lg: 44%;
-    --hero-art-right-lg: 26%; /* left of the portrait, inside the empty middle of the hero */
-    --hero-art-opacity: 0.8;
-    --hero-art-opacity-mobile: 0.5; /* the title and the photo sit over it on phones */
+    --hero-art-w: clamp(12rem, 52vw, 30rem);
+    --hero-art-w-md: clamp(20rem, 40vw, 30rem);
+    --hero-art-w-lg: clamp(26rem, 44vw, 46rem);
+    --hero-art-top: 15%; /* phones: the free band above the portrait */
+    --hero-art-top-md: 26%;
+    --hero-art-top-lg: 33%; /* above the title, clear of the portrait on the right */
+    --hero-art-left-lg: 8%;
+    --hero-art-opacity: 1;
+    --hero-art-opacity-mobile: 0.85;
     --hero-art-glow: 0 0 6rem rgba(124, 92, 255, 0.28);
     /* Fade the edges of the black plate so it never reads as a square */
     --hero-art-mask: radial-gradient(closest-side, #000 52%, transparent 100%);
