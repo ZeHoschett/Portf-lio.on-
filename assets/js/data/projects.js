@@ -949,7 +949,7 @@ if (is401 && !config?._refreshRetry && config) {
     id: 'funil-gh',
     title: 'Funil de Leads — Consultoria Team GH',
     stack: 'python',
-    type: 'fullstack',
+    type: 'web',
     summary:
       'Quiz de diagnóstico que capta leads para uma consultoria de treino: front-end mobile-first em JavaScript puro, API em FastAPI e dados no Supabase, publicado no Render.',
     description: [
@@ -1227,8 +1227,6 @@ async function submit() {
 `,
       },
     ],
-    repo: '', // TODO(jose): o repositório GHconsulting é privado — preencher se ficar público
-    demo: '', // TODO(jose): https://funil-leads.onrender.com grava leads reais do cliente — só publicar com autorização
     year: 2026,
   },
   {
@@ -1623,7 +1621,7 @@ async function submit() {
     id: 'aura-store',
     title: 'AURA — Loja de Moda Feminina',
     stack: 'web',
-    type: 'fullstack',
+    type: 'web',
     summary:
       'Loja virtual de streetwear feminino em Next.js e TypeScript: catálogo com filtros, página de produto, provador virtual que calcula o tamanho ideal e sacola que fecha o pedido pelo WhatsApp.',
     description: [

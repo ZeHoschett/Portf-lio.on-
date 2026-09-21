@@ -322,7 +322,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | Pendência | Onde | O que precisa | Como está hoje |
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
-| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB · Web: portfólio e AURA. Funil sem repo (privado) nem demo (grava leads reais); AURA sem repo nem deploy; portfólio sem print |
+| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **URL final** | `config.js → siteUrl`, `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
