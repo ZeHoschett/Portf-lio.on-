@@ -1,4 +1,4 @@
-/* Cascade layer order — declared once, in the first stylesheet loaded. */
+/* Cascade layer order, declared once, in the first stylesheet loaded. */
 @layer reset, tokens, base, layout, components, sections, utilities;
 
 @layer reset {

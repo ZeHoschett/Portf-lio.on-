@@ -289,6 +289,15 @@
     letter-spacing: var(--ls-tight);
   }
 
+  /* What the project is, on its own line under the name */
+  .project-card__subtitle {
+    margin-block-start: calc(var(--space-2) * -1);
+    font-size: var(--fs-base);
+    font-weight: 500;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
   /* One main control per card; its ::after stretches over the whole card */
   .project-card__trigger {
     padding: 0;

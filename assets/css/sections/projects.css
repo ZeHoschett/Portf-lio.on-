@@ -271,6 +271,12 @@
     letter-spacing: var(--ls-tight);
   }
 
+  .project-detail__subtitle {
+    font-size: var(--fs-md);
+    line-height: var(--lh-snug);
+    color: var(--color-text-muted);
+  }
+
   .project-detail__main {
     display: grid;
     align-content: start;

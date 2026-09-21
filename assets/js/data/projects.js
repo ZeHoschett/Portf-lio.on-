@@ -4,7 +4,7 @@
  *
  * Only `id`, `title` and `stack` are required. Everything else is optional and each section of
  * the case-study modal (numbers, features, architecture, mobile screens, videos, code, challenges)
- * appears only when its field is filled — `agendaflow` below is the complete reference.
+ * appears only when its field is filled; `agendaflow` below is the complete reference.
  *
  * @typedef {Object} ProjectImage
  * @property {string} src     relative path, e.g. 'assets/img/projects/<id>/desktop-01.webp'
@@ -27,10 +27,11 @@
  *
  * @typedef {Object} Project
  * @property {string} id                                  unique slug
- * @property {string} title
+ * @property {string} title                               project name only (shown large)
+ * @property {string} [subtitle]                          what it is, one line under the name (no dash in the title)
  * @property {'java'|'python'|'cobol'|'web'} stack        subsection where it appears
  * @property {'mobile'|'backend'|'mainframe'|'web'|'fullstack'} type  mockup: phone | terminal | terminal | browser | browser + phone
- * @property {string} summary                             short description (card, 2–3 lines)
+ * @property {string} summary                             short description (card, 2 to 3 lines)
  * @property {string|string[]} [description]              long description (modal), one string per paragraph
  * @property {string[]} tags                              e.g. ['Java 17', 'Spring Boot', 'PostgreSQL']
  * @property {ProjectImage[]} [images]                    desktop/main screenshots (card cover + modal carousel)
@@ -60,7 +61,8 @@ const AGENDAFLOW_VIDEO = 'assets/video/projects/agendaflow';
 export const projects = [
   {
     id: 'flowpay',
-    title: 'FlowPay — API de Cobranças Recorrentes',
+    title: 'FlowPay',
+    subtitle: 'API de cobranças recorrentes',
     stack: 'java',
     type: 'backend',
     summary:
@@ -68,7 +70,7 @@ export const projects = [
     description: [
       'O FlowPay cria cobranças, acompanha o seu ciclo de vida e notifica outros sistemas por webhook sempre que o status muda. Uma cobrança nasce PENDENTE e só pode ir para PAGA, VENCIDA ou CANCELADA, estados finais dos quais nenhuma transição sai. A regra fica declarada em um único enum e qualquer movimento fora dela é recusado com um erro padronizado.',
       'A criação aceita o header Idempotency-Key para que um retry de rede não gere cobranças duplicadas, o webhook de saída é reenviado com backoff exponencial e todos os erros seguem a RFC 7807. O schema evolui só por migrations do Flyway, a documentação da API é gerada do código com springdoc-openapi e os testes de integração sobem um PostgreSQL real com Testcontainers.',
-      'O projeto faz parte de um ecossistema simulado de sistemas financeiros: o FlowPay é a camada moderna em Java e um sistema legado em COBOL (FLOWCNAB) consumiria as cobranças pendentes para gerar a remessa bancária — integração documentada como extensão futura, fora da v1.',
+      'O projeto faz parte de um ecossistema simulado de sistemas financeiros: o FlowPay é a camada moderna em Java e um sistema legado em COBOL (FLOWCNAB) consumiria as cobranças pendentes para gerar a remessa bancária. Essa integração está documentada como extensão futura, fora da v1.',
     ],
     tags: [
       'Java 21',
@@ -327,14 +329,15 @@ public class GlobalExceptionHandler {
   },
   {
     id: 'copybridge',
-    title: 'CopyBridge — Ponte entre Arquivos COBOL e JSON',
+    title: 'CopyBridge',
+    subtitle: 'Ponte entre arquivos COBOL e JSON',
     stack: 'java',
     type: 'backend',
     summary:
       'Biblioteca e CLI em Java que lê copybooks COBOL e converte arquivos posicionais em JSON e de volta, com COMP-3 e fidelidade byte a byte no roundtrip.',
     description: [
       'O CopyBridge responde a uma pergunta clássica da modernização de legado: como um sistema Java consome dados que só o COBOL sabe interpretar? Em vez de reescrever a lógica, ele traduz. Um parser lê o copybook, monta a árvore de campos com offset e tamanho de cada um, e os codecs usam esse schema para converter registros de tamanho fixo em JSON e JSON de volta em registros.',
-      'O coração do projeto é o COMP-3 (packed decimal): dois dígitos por byte, sinal no último nibble e casas decimais implícitas pela cláusula V do PIC. O critério de pronto é o roundtrip — arquivo → JSON → arquivo tem de produzir bytes idênticos ao original, inclusive para valores negativos e registros múltiplos.',
+      'O coração do projeto é o COMP-3 (packed decimal): dois dígitos por byte, sinal no último nibble e casas decimais implícitas pela cláusula V do PIC. O critério de pronto é o roundtrip: arquivo → JSON → arquivo tem de produzir bytes idênticos ao original, inclusive para valores negativos e registros múltiplos.',
       'É a terceira peça de um ecossistema simulado de sistemas financeiros, ao lado do FlowPay (Java) e do FLOWCNAB (COBOL): o copybook de exemplo é um registro de detalhe CNAB 240, segmento P.',
     ],
     tags: ['Java 17', 'Maven', 'Jackson', 'JUnit 5', 'COBOL', 'COMP-3', 'CNAB 240'],
@@ -345,12 +348,12 @@ public class GlobalExceptionHandler {
       { value: '202', label: 'bytes no registro CNAB 240 de exemplo, campo a campo' },
     ],
     highlights: [
-      'Parser de copybook: níveis 01–49 e 77, campos de grupo, PIC X, PIC 9, PIC S9, V99, OCCURS e REDEFINES.',
+      'Parser de copybook: níveis de 01 a 49 e 77, campos de grupo, PIC X, PIC 9, PIC S9, V99, OCCURS e REDEFINES.',
       'Decode: arquivo posicional + copybook → JSON, um objeto por registro.',
       'Encode: JSON + copybook → arquivo posicional com bytes idênticos ao original.',
       'COMP-3 (packed decimal) com sinal (C, D, F) e casas decimais implícitas.',
       'COMP/BINARY big-endian em 2, 4 ou 8 bytes, com extensão de sinal.',
-      'Copybooks em formato fixo (colunas 7–72, com números de sequência) ou livre, detectado automaticamente.',
+      'Copybooks em formato fixo (colunas 7 a 72, com números de sequência) ou livre, detectado automaticamente.',
       'CLI com os comandos decode, encode e inspect, empacotada em um único JAR.',
     ],
     architecture: [
@@ -379,7 +382,7 @@ public class GlobalExceptionHandler {
       {
         challenge: 'Garantir que o caminho de volta, JSON → arquivo, reproduza exatamente o arquivo original.',
         solution:
-          'O roundtrip virou o critério de pronto: os testes montam registros byte a byte, decodificam, recodificam e comparam os arrays com assertArrayEquals — texto, COMP-3 positivo e negativo e vários registros no mesmo arquivo.',
+          'O roundtrip virou o critério de pronto: os testes montam registros byte a byte, decodificam, recodificam e comparam os arrays com assertArrayEquals. Cobrem texto, COMP-3 positivo e negativo e vários registros no mesmo arquivo.',
       },
       {
         challenge: 'Calcular o tamanho real de um campo COMP-3 a partir do PIC.',
@@ -389,7 +392,7 @@ public class GlobalExceptionHandler {
       {
         challenge: 'Aceitar copybooks escritos em formato fixo de 80 colunas e em formato livre.',
         solution:
-          'Uma heurística detecta o formato fixo (linhas com mais de 72 colunas ou números de sequência nas colunas 1–6) e, nesse caso, descarta as áreas de sequência e identificação e trata o * da coluna 7 como comentário.',
+          'Uma heurística detecta o formato fixo (linhas com mais de 72 colunas ou números de sequência nas colunas 1 a 6) e, nesse caso, descarta as áreas de sequência e identificação e trata o * da coluna 7 como comentário.',
       },
     ],
     codeSnippet: `
@@ -430,7 +433,6 @@ public static BigDecimal decode(byte[] data, int offset, int length, int decimal
             // Último byte: dígito + sinal
             validateDigit(highNibble, offset + i, "high");
             digits.append(highNibble);
-            // lowNibble é o sinal — não é dígito
         }
     }
 
@@ -841,7 +843,6 @@ ORDER BY b.ultimo_agendamento DESC
         caption:
           'Job em segundo plano que roda uma única vez mesmo com vários workers e dá baixa no estoque.',
         code: `
-# ID inteiro fixo para pg_advisory_lock — identifica exclusivamente este job no cluster
 _LOCK_ID = 987654321
 
 
@@ -850,8 +851,6 @@ def atualizar_status_agendamentos():
     adquiriu_lock = False
 
     try:
-        # Tenta adquirir o advisory lock — não bloqueia, retorna false imediatamente
-        # se outro worker já está executando este job
         adquiriu_lock = db.execute(
             text("SELECT pg_try_advisory_lock(:lock_id)"),
             {"lock_id": _LOCK_ID},
@@ -909,7 +908,6 @@ function resolverFila(sucesso: boolean) {
   filaAguardandoRefresh = [];
 }
 
-// 401 em rota protegida — tenta renovar o access token via refresh token
 if (is401 && !config?._refreshRetry && config) {
   // Se já há um refresh em andamento, aguarda ele terminar antes de tentar novamente
   if (refreshEmAndamento) {
@@ -929,7 +927,6 @@ if (is401 && !config?._refreshRetry && config) {
     resolverFila(true);
     return api(config);
   } catch {
-    // Refresh falhou — limpa sessão e redireciona para login
     resolverFila(false);
     // ...
     return Promise.reject(error);
@@ -947,13 +944,14 @@ if (is401 && !config?._refreshRetry && config) {
   },
   {
     id: 'funil-gh',
-    title: 'Funil de Leads — Consultoria Team GH',
+    title: 'Funil de Leads',
+    subtitle: 'Consultoria Team GH',
     stack: 'python',
     type: 'web',
     summary:
       'Quiz de diagnóstico que capta leads para uma consultoria de treino: front-end mobile-first em JavaScript puro, API em FastAPI e dados no Supabase, publicado no Render.',
     description: [
-      'O funil conduz o visitante por 12 etapas — escala de satisfação, objetivo, rotina, disponibilidade, investimento, uma tela de apresentação da consultoria, nome, WhatsApp, e-mail e consentimento LGPD — e envia as respostas para a API. As perguntas ficam em um único arquivo de dados e a interface é montada a partir dele, então o roteiro muda sem tocar na lógica.',
+      'O funil conduz o visitante por 12 etapas (escala de satisfação, objetivo, rotina, disponibilidade, investimento, uma tela de apresentação da consultoria, nome, WhatsApp, e-mail e consentimento LGPD) e envia as respostas para a API. As perguntas ficam em um único arquivo de dados e a interface é montada a partir dele, então o roteiro muda sem tocar na lógica.',
       'O back-end em FastAPI valida o corpo com Pydantic, normaliza o WhatsApp para o formato internacional, grava no Supabase (PostgreSQL) e trata o número repetido como sucesso, sem duplicar o lead. Uma página protegida por HTTP Basic lista os leads dos últimos sete dias com um botão que abre a conversa no WhatsApp já com a mensagem pronta.',
     ],
     tags: ['Python', 'FastAPI', 'Pydantic', 'Supabase', 'PostgreSQL', 'JavaScript', 'HTML5', 'CSS3', 'Render'],
@@ -999,7 +997,7 @@ if (is401 && !config?._refreshRetry && config) {
       {
         challenge: 'Não cadastrar o mesmo lead duas vezes quando a pessoa refaz o quiz.',
         solution:
-          'O WhatsApp é normalizado antes de gravar e tem índice único no banco. Quando o Supabase recusa a inserção por chave duplicada (código 23505), a API responde sucesso com duplicate: true — o visitante vê a tela de confirmação e a base continua limpa.',
+          'O WhatsApp é normalizado antes de gravar e tem índice único no banco. Quando o Supabase recusa a inserção por chave duplicada (código 23505), a API responde sucesso com duplicate: true. O visitante vê a tela de confirmação e a base continua limpa.',
       },
       {
         challenge: 'Proteger o painel de leads sem montar um sistema de login.',
@@ -1231,14 +1229,15 @@ async function submit() {
   },
   {
     id: 'flowcnab',
-    title: 'FLOWCNAB — Batch de Remessa e Retorno Bancário (CNAB 240)',
+    title: 'FLOWCNAB',
+    subtitle: 'Batch de remessa e retorno bancário (CNAB 240)',
     stack: 'cobol',
     type: 'mainframe',
     summary:
       'Processo batch noturno em COBOL: gera a remessa CNAB 240 de boletos no layout do Itaú, simula a resposta do banco e processa o retorno com um relatório de conciliação.',
     description: [
-      'Toda empresa que cobra clientes em volume roda um batch como este: empacota as cobranças pendentes em um arquivo que o banco entende (a remessa) e, no dia seguinte, lê a resposta do banco (o retorno) para saber quem pagou. O FLOWCNAB faz esse ciclo com três programas COBOL encadeados — GERAREM, SIMBANCO e PROCRET — e um JCL de exemplo mostra como o job seria agendado em um z/OS.',
-      'A remessa segue a hierarquia FEBRABAN: header de arquivo, header de lote, segmentos P e Q por título, trailer de lote e trailer de arquivo, cada linha com exatamente 240 posições. Antes de virar título, cada cobrança passa por uma crítica: nosso número inválido ou duplicado, valor zerado, vencimento inválido e campo numérico do pagador com texto são descartados com aviso — em COBOL, mover texto para um campo PIC 9 não dá erro, grava zeros, e o problema só apareceria no banco.',
+      'Toda empresa que cobra clientes em volume roda um batch como este: empacota as cobranças pendentes em um arquivo que o banco entende (a remessa) e, no dia seguinte, lê a resposta do banco (o retorno) para saber quem pagou. O FLOWCNAB faz esse ciclo com três programas COBOL encadeados (GERAREM, SIMBANCO e PROCRET), e um JCL de exemplo mostra como o job seria agendado em um z/OS.',
+      'A remessa segue a hierarquia FEBRABAN: header de arquivo, header de lote, segmentos P e Q por título, trailer de lote e trailer de arquivo, cada linha com exatamente 240 posições. Antes de virar título, cada cobrança passa por uma crítica: nosso número inválido ou duplicado, valor zerado, vencimento inválido e campo numérico do pagador com texto são descartados com aviso. Em COBOL, mover texto para um campo PIC 9 não dá erro, grava zeros, e o problema só apareceria no banco.',
       'O PROCRET casa cada retorno pelo nosso número, marca o título como pago, pago com atraso ou rejeitado com o motivo, e emite um relatório que confere sozinho a identidade enviados = pagos + com atraso + rejeitados + pendentes. É a peça de mainframe do ecossistema FlowPay → FLOWCNAB → CopyBridge, mas funciona de forma independente. Roda em GnuCOBOL 3.3, sem mainframe.',
     ],
     tags: ['COBOL', 'GnuCOBOL 3.3', 'CNAB 240', 'JCL', 'Copybooks', 'Batch', 'Python', 'Shell Script'],
@@ -1284,7 +1283,7 @@ async function submit() {
       {
         challenge: 'Um MOVE de texto para um campo PIC 9 não falha em COBOL: grava zeros e o erro só apareceria no banco.',
         solution:
-          'A crítica do GERAREM testa NOT NUMERIC em tudo que vira campo numérico no CNAB — nosso número, valor, CEP, CPF/CNPJ e tipo de inscrição — e descarta o título com um aviso que diz o motivo, terminando com RETURN-CODE 4.',
+          'A crítica do GERAREM testa NOT NUMERIC em tudo que vira campo numérico no CNAB (nosso número, valor, CEP, CPF/CNPJ e tipo de inscrição) e descarta o título com um aviso que diz o motivo, terminando com RETURN-CODE 4.',
       },
       {
         challenge: 'Decidir "pago com atraso" comparando datas no formato do banco dá o resultado errado.',
@@ -1527,7 +1526,7 @@ async function submit() {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>José Hoschett — Desenvolvedor COBOL · Java</title>
+    <title>José Hoschett | Desenvolvedor COBOL · Java</title>
     <!-- SEO, Open Graph e JSON-LD ficam estáticos: buscadores não executam JavaScript -->
     <link rel="stylesheet" href="assets/css/reset.css">
     <!-- ... um arquivo por camada: tokens, base, layout, components, sections ... -->
@@ -1580,7 +1579,7 @@ async function submit() {
         caption:
           'A ordem das camadas é declarada uma única vez: quem vem depois vence, sem depender de especificidade nem de !important.',
         code: `
-/* Cascade layer order — declared once, in the first stylesheet loaded. */
+/* Cascade layer order, declared once, in the first stylesheet loaded. */
 @layer reset, tokens, base, layout, components, sections, utilities;
 
 @layer reset {
@@ -1591,7 +1590,7 @@ async function submit() {
   }
 }
 
-/* tokens.css — o único lugar com valores crus */
+/* tokens.css: o único lugar com valores crus */
 @layer tokens {
   :root {
     --color-bg: #07070a;
@@ -1601,7 +1600,7 @@ async function submit() {
   }
 }
 
-/* sections/certificates.css — as regras só consomem tokens */
+/* sections/certificates.css: as regras só consomem tokens */
 @layer sections {
   .cert-grid {
     display: grid;
@@ -1619,14 +1618,15 @@ async function submit() {
   },
   {
     id: 'aura-store',
-    title: 'AURA — Loja de Moda Feminina',
+    title: 'AURA',
+    subtitle: 'Loja de moda feminina',
     stack: 'web',
     type: 'web',
     summary:
       'Loja virtual de streetwear feminino em Next.js e TypeScript: catálogo com filtros, página de produto, provador virtual que calcula o tamanho ideal e sacola que fecha o pedido pelo WhatsApp.',
     description: [
-      'A AURA é uma vitrine de moda com conversão pelo WhatsApp: a cliente navega pela coleção, escolhe cor, tamanho e quantidade, e a sacola monta a comanda do pedido — peça, cor, tamanho, quantidade, valor e total — e abre a conversa com a loja com a mensagem pronta. Uma barra mostra quanto falta para o frete grátis.',
-      'Na página do produto, o provador virtual tem duas abas: uma galeria com zoom e troca de cor e tamanho sincronizada com a página, e um comparador de medidas em que a cliente informa busto, cintura e quadril e recebe na hora o tamanho recomendado e o tipo de caimento. A identidade visual — paleta rosé, movimentos lentos e elegantes — fica em tokens do Tailwind CSS v4, e os produtos e textos da marca ficam em arquivos de dados próprios. As peças e fotos atuais são dados de exemplo, à espera do catálogo real da marca.',
+      'A AURA é uma vitrine de moda com conversão pelo WhatsApp: a cliente navega pela coleção, escolhe cor, tamanho e quantidade, e a sacola monta a comanda do pedido (peça, cor, tamanho, quantidade, valor e total) e abre a conversa com a loja com a mensagem pronta. Uma barra mostra quanto falta para o frete grátis.',
+      'Na página do produto, o provador virtual tem duas abas: uma galeria com zoom e troca de cor e tamanho sincronizada com a página, e um comparador de medidas em que a cliente informa busto, cintura e quadril e recebe na hora o tamanho recomendado e o tipo de caimento. A identidade visual, com paleta rosé e movimentos lentos e elegantes, fica em tokens do Tailwind CSS v4, e os produtos e textos da marca ficam em arquivos de dados próprios. As peças e fotos atuais são dados de exemplo, à espera do catálogo real da marca.',
     ],
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Framer Motion', 'Zustand'],
     stats: [
@@ -1676,7 +1676,7 @@ async function submit() {
       {
         challenge: 'Fechar a venda sem gateway de pagamento.',
         solution:
-          'A sacola gera a comanda com cada item, a cor, o tamanho, a quantidade e o total, e abre o WhatsApp da loja com a mensagem codificada na URL — a conversa já começa com o pedido completo.',
+          'A sacola gera a comanda com cada item, a cor, o tamanho, a quantidade e o total, e abre o WhatsApp da loja com a mensagem codificada na URL. A conversa já começa com o pedido completo.',
       },
       {
         challenge: 'Deixar a loja editável por quem não programa.',
@@ -1861,7 +1861,6 @@ export function CatalogContent() {
   const categoria = searchParams.get("categoria") as ProductCategory | "todos" | null;
   const filtro = searchParams.get("filtro");
 
-  /* Filtra apenas por categoria e novidades — cor e tamanho ficam na página do produto */
   const filtered = products.filter((p) => {
     if (categoria && categoria !== "todos" && p.category !== categoria) return false;
     if (filtro === "novo" && !p.isNew) return false;
