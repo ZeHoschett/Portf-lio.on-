@@ -1,17 +1,10 @@
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const FINE_POINTER_QUERY = '(hover: hover) and (pointer: fine)';
-const COARSE_POINTER_QUERY = '(pointer: coarse)';
 const LOW_POWER_CORES = 4;
 const LOW_POWER_MEMORY_GB = 4;
 
 /** @returns {boolean} true when the user asked the OS to reduce motion. */
 export const prefersReducedMotion = () => window.matchMedia(REDUCED_MOTION_QUERY).matches;
-
-/** @returns {boolean} true for a mouse/trackpad that can hover (desktop-only effects). */
-export const hasFinePointer = () => window.matchMedia(FINE_POINTER_QUERY).matches;
-
-/** @returns {boolean} true when the primary input is touch. */
-export const isTouch = () => window.matchMedia(COARSE_POINTER_QUERY).matches;
 
 /**
  * Subscribes to a media query. The callback runs immediately and on every change.

@@ -61,6 +61,8 @@
    * burnt into the phosphor instead of pasted on top. It sits behind the content, to the right of
    * the header, which is capped at --container-narrow and therefore leaves that band free; the
    * scanline overlay above it finishes the CRT look.
+   * The mask is attached only under .is-loaded (modules/lazy-art.js), so the file is not downloaded
+   * on page open; until then the element stays hidden instead of painting an unmasked block.
    */
   .cobol-dino {
     position: absolute;
@@ -69,9 +71,8 @@
     z-index: var(--z-below);
     width: var(--dino-w);
     aspect-ratio: var(--dino-ratio);
+    visibility: hidden;
     background: var(--stack-cobol);
-    -webkit-mask-image: url('../../img/trex-head.webp');
-    mask-image: url('../../img/trex-head.webp');
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-size: contain;
@@ -81,6 +82,12 @@
     opacity: var(--dino-opacity-mobile);
     filter: drop-shadow(var(--dino-glow));
     pointer-events: none;
+  }
+
+  .cobol-dino.is-loaded {
+    visibility: visible;
+    -webkit-mask-image: url('../../img/trex-head.webp');
+    mask-image: url('../../img/trex-head.webp');
   }
 
   @media (min-width: 768px) {

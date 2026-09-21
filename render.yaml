@@ -1,0 +1,42 @@
+# Render Blueprint: the portfolio as a static site (no server, no database).
+# Render → New → Blueprint → pick this repository. Every push to main redeploys.
+#
+# The build step only copies the public files into dist/, so the internal docs (README, CLAUDE.md,
+# briefing and prompt) are not published. The site itself needs no build: index.html still opens
+# as-is from any static server.
+services:
+  - type: web
+    name: jose-hoschett-portfolio
+    runtime: static
+    branch: main
+    buildCommand: rm -rf dist && mkdir dist && cp -r index.html robots.txt assets dist/
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: false
+    headers:
+      # Security. The only third-party origins are Google Fonts (CSS + font files).
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      # Caching. File names are not fingerprinted, so assets get one day (a replaced image shows
+      # up the next day at the latest) and the HTML is always revalidated.
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /
+        name: Cache-Control
+        value: no-cache
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache

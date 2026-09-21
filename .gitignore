@@ -13,3 +13,6 @@ node_modules/
 *.log
 .lighthouseci/
 .env
+
+# Render build output (render.yaml copies the public files here)
+dist/

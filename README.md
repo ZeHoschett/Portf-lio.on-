@@ -89,6 +89,7 @@ ES Modules não funcionam abrindo o `index.html` direto (`file://`). Use um serv
 
 ```
 index.html                 esqueleto semântico de todas as seções + SEO/OG/JSON-LD
+render.yaml                deploy no Render (site estático, cabeçalhos de segurança e cache)
 assets/
   css/
     reset.css              declara a ordem das cascade layers
@@ -117,11 +118,10 @@ Tudo fica em **`assets/js/config.js`**:
 | --- | --- | --- |
 | `tagline` | frase de apoio do topo | — |
 | `bio` | 2–4 frases sobre você | exibe o texto padrão do `index.html` |
-| `photo` | caminho da foto, ex.: `assets/img/jose.webp` | exibe o placeholder |
+| `photo` | caminho da foto, ex.: `assets/img/jose.webp` | mantém a foto definida no `index.html` |
 | `github` | URL do seu GitHub | o link não aparece |
 | `whatsapp.number` | só dígitos com DDI+DDD, ex.: `5511999999999` | os botões de WhatsApp não aparecem |
 | `whatsapp.message` | mensagem que já vem escrita | — |
-| `siteUrl` | URL final publicada | — |
 
 **Foto:** use um retrato vertical 4:5 (ex.: 800×1000), de preferência em `.webp`, em `assets/img/`.
 
@@ -265,6 +265,29 @@ Vale conferir no navegador depois de preencher seus dados:
 
 Todos os caminhos são relativos, então o site funciona na raiz de um domínio ou em subpasta.
 
+### Render (configurado)
+
+O `render.yaml` na raiz descreve o site como **Static Site**: sem servidor e sem banco de dados.
+O build só copia `index.html`, `robots.txt` e `assets/` para `dist/`, para não publicar os
+documentos internos (README, CLAUDE.md, briefing). Ele também define os cabeçalhos de segurança
+(CSP, `nosniff`, `X-Frame-Options`…) e o cache de 1 dia para `assets/`. O Render já entrega os
+arquivos com compressão (gzip/brotli) e HTTPS.
+
+1. Envie o código para o GitHub:
+   ```bash
+   git remote add origin https://github.com/ZeHoschett/portfolio.git
+   git push -u origin main
+   ```
+2. <https://dashboard.render.com> → **New → Blueprint** → escolha o repositório → **Apply**.
+3. Em ~1 minuto o site estará em `https://jose-hoschett-portfolio.onrender.com` (o nome sai de
+   `name` no `render.yaml`). Cada push na `main` publica de novo.
+4. Com a URL final: descomente o `canonical` e o `og:url` no `<head>` do `index.html`, troque
+   `og:image` e `twitter:image` por URLs absolutas e atualize o `robots.txt`.
+
+> **Supabase não é necessário.** O portfólio não tem banco de dados nem formulário: todo o
+> conteúdo vem de `assets/js/data/` e o contato é por e-mail, LinkedIn e WhatsApp. Supabase só
+> entraria se o site passasse a gravar algo (ex.: um formulário de contato).
+
 ### GitHub Pages
 
 1. Crie um repositório no GitHub (ex.: `portfolio`) e envie o código:
@@ -275,8 +298,7 @@ Todos os caminhos são relativos, então o site funciona na raiz de um domínio 
 2. No repositório: **Settings → Pages → Build and deployment → Source: Deploy from a branch**.
 3. Escolha a branch `main` e a pasta `/ (root)` → **Save**.
 4. Em ~1 minuto o site estará em `https://<usuario>.github.io/portfolio/`.
-5. Atualize `siteUrl` no `config.js`, o `canonical`, `og:url` e as URLs absolutas de `og:image` no
-   `index.html`.
+5. Atualize o `canonical`, o `og:url` e as URLs absolutas de `og:image` no `index.html`.
 
 ### Vercel
 
@@ -316,7 +338,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 - [x] **GitHub** — `config.js → github`, e também no `sameAs` do JSON-LD
 - [x] **WhatsApp** — `config.js → whatsapp.number` (o número nunca aparece como texto)
 - [x] **Formação** — `data/education.js`
-- [x] **Foto** — `config.js → photo` (`assets/img/jose-hoschett.webp`, 800×1000), no hero e no Sobre
+- [x] **Foto** — `config.js → photo` (`assets/img/jose-hoschett.webp`, 832×1040), no hero e no Sobre
 
 ### Falta preencher
 
@@ -326,11 +348,11 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
-| **URL final** | `config.js → siteUrl`, `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
+| **URL final** | `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
 
 ### Ordem sugerida
 
 1. **Bio e foto.** É o que o recrutador vê primeiro, e a foto aparece em dois lugares.
-2. **Publicar no GitHub Pages**, mesmo com pendências. Rende a URL para `siteUrl` e Open Graph, e
+2. **Publicar no Render**, mesmo com pendências. Rende a URL para o Open Graph e
    permite preencher `repo` e `demo` do próprio portfólio em `data/projects.js`.
 3. **Projetos reais e certificados**, conforme forem ficando prontos.

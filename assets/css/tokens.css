@@ -27,7 +27,6 @@
     --color-overlay: rgba(7, 7, 10, 0.72);
     --color-glass: rgba(7, 7, 10, 0.6);
     --gradient-accent: linear-gradient(135deg, #7c5cff 0%, #4f7bff 50%, #c9ccd6 100%);
-    --gradient-silver: linear-gradient(180deg, #ffffff 0%, #c9ccd6 45%, #6b6b80 100%);
     --glow-accent: 0 0 0 1px rgba(124, 92, 255, 0.35), 0 0 32px rgba(124, 92, 255, 0.25);
     --glow-accent-strong: 0 0 0 1px rgba(124, 92, 255, 0.6), 0 0 48px rgba(124, 92, 255, 0.4);
     /* Deeper accent for filled buttons: white text passes AA (~6.1:1 / ~5.9:1) */
@@ -92,7 +91,6 @@
     --measure-narrow: 45ch;
 
     /* ---------- Spacing (4/8 scale) ---------- */
-    --space-0: 0;
     --space-px: 1px;
     --space-1: 0.25rem; /* 4 */
     --space-2: 0.5rem; /* 8 */
@@ -103,7 +101,6 @@
     --space-7: 3rem; /* 48 */
     --space-8: 4rem; /* 64 */
     --space-9: 6rem; /* 96 */
-    --space-10: 8rem; /* 128 */
 
     --space-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
     --space-section: clamp(5rem, 3rem + 8vw, 10rem);
@@ -326,7 +323,6 @@
     --radius-full: 9999px;
 
     /* ---------- Shadows ---------- */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
     --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
     --shadow-inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -348,23 +344,19 @@
 
     /* ---------- Z-index ---------- */
     --z-below: -1;
-    --z-base: 0;
     --z-raised: 1;
     --z-content: 2;
     --z-front: 3;
     --z-sticky: 100;
     --z-header: 200;
     --z-progress: 250;
-    --z-overlay: 300;
     --z-float: 400;
-    --z-modal: 500;
     --z-toast: 600;
     --z-cursor: 700;
     --z-grain: 800;
     --z-skip: 900;
 
     /* ---------- Motion ---------- */
-    --dur-instant: 80ms;
     --dur-fast: 150ms;
     --dur-base: 300ms;
     --dur-slow: 600ms;
@@ -373,9 +365,7 @@
 
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-linear: linear;
 
     --stagger-step: 60ms;
   }

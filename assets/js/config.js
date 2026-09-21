@@ -12,7 +12,6 @@
  * @property {string} linkedin
  * @property {string} github
  * @property {{number: string, message: string}} whatsapp
- * @property {string} siteUrl    final public URL (OG/canonical)
  */
 
 /** @type {SiteConfig} */
@@ -26,7 +25,7 @@ export const config = {
     'Além da programação, sou fascinado por história, filosofia, desenvolvimento pessoal e pela forma como a matemática influencia nossa maneira de pensar e resolver desafios. Acredito que a tecnologia é uma ferramenta poderosa para transformar ideias em soluções reais.',
     'Possuo um perfil criador e analítico, movido pela curiosidade e pela busca constante por conhecimento. Gosto de compreender como as coisas funcionam, identificar oportunidades de melhoria e desenvolver soluções que gerem valor para pessoas e negócios.',
   ],
-  photo: 'assets/img/jose-hoschett.webp', // retrato 4:5, 800×1000
+  photo: 'assets/img/jose-hoschett.webp', // retrato 4:5, 832×1040
   email: 'dev.jose841@gmail.com',
   linkedin: 'https://www.linkedin.com/in/josehoschett/',
   github: 'https://github.com/ZeHoschett',
@@ -34,5 +33,4 @@ export const config = {
     number: '5511952170800', // (11) 95217-0800 — nunca exibido como texto na página
     message: 'Olá José! Vi seu portfólio e gostaria de conversar.',
   },
-  siteUrl: '', // TODO(jose): URL final após publicar (usado em OG/canonical)
 };
