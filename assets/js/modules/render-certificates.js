@@ -9,7 +9,7 @@ import { certificates as defaultCertificates } from '../data/certificates.js';
 import { el, icon, qs, sanitizeUrl } from '../utils/dom.js';
 import { openModal } from './modal.js';
 
-const EMPTY_MESSAGE = 'Certificados em digitalização — em breve por aqui.';
+const EMPTY_MESSAGE = 'Certificados em digitalização. Em breve por aqui.';
 const LIGHTBOX_TITLE_ID = 'modal-certificate-title';
 const MONTH_YEAR = /^(\d{4})-(0[1-9]|1[0-2])$/;
 const DEFAULT_IMAGE_SIZE = { width: 1400, height: 1000 };

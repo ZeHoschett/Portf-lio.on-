@@ -1,6 +1,6 @@
-# Portfólio — José Hoschett
+# Portfólio de José Hoschett
 
-Portfólio pessoal de **José Hoschett — Desenvolvedor COBOL · Java**. Página única, dark, responsiva e
+Portfólio pessoal de **José Hoschett**, Desenvolvedor COBOL · Java. Página única, dark, responsiva e
 interativa, com uma identidade visual própria para cada stack (Java, Python, COBOL e Web).
 
 - **Stack do site:** HTML5, CSS3 (cascade layers, custom properties) e JavaScript moderno (ES Modules).
@@ -150,7 +150,8 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
 ```js
 {
   id: 'api-pagamentos',               // único, sem espaços
-  title: 'API de Pagamentos',
+  title: 'Pagamentos',                // só o nome do projeto, em destaque
+  subtitle: 'API de cobranças',       // o que ele é, na linha de baixo (nunca "Nome — descrição")
   stack: 'java',                      // java | python | cobol | web → define a seção
   type: 'backend',                    // mobile (celular) | backend | mainframe (terminal) | web (navegador)
                                       // | fullstack (navegador + celular na capa do card;
@@ -203,7 +204,7 @@ Em `assets/js/data/education.js`, substitua o placeholder por itens reais (o mai
 
 ```js
 { id: 'ads', institution: 'Nome da instituição', course: 'Análise e Desenvolvimento de Sistemas',
-  degree: 'Tecnólogo', period: '2023 — 2025', status: 'completed', description: '' },
+  degree: 'Tecnólogo', period: '2023 a 2025', status: 'completed', description: '' },
 ```
 
 `status`: `'completed'` (concluído) ou `'in-progress'` (em andamento).

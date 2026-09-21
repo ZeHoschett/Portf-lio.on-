@@ -7,7 +7,7 @@ import { education as defaultEducation } from '../data/education.js';
 import { el, icon, qs } from '../utils/dom.js';
 
 const STATUS_LABELS = { completed: 'Concluído', 'in-progress': 'Em andamento' };
-const EMPTY_MESSAGE = 'Formação acadêmica em atualização — em breve por aqui.';
+const EMPTY_MESSAGE = 'Formação acadêmica em atualização. Em breve por aqui.';
 
 /** @typedef {import('../data/education.js').Education} Education */
 

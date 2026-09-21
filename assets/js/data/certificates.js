@@ -129,7 +129,7 @@ export const certificates = [
   {
     id: 'administrando-banco-de-dados',
     name: 'Administrando banco de dados',
-    issuer: 'Fundação Bradesco — Escola Virtual',
+    issuer: 'Fundação Bradesco, Escola Virtual',
     date: '2025-12',
     description: 'Curso autoinstrucional de 15 horas sobre a administração de bancos de dados.',
     image: {
@@ -156,7 +156,7 @@ export const certificates = [
   {
     id: 'powerbi-visualizando-dados',
     name: 'Visualizando dados no Power BI',
-    issuer: 'Fundação Bradesco — Escola Virtual',
+    issuer: 'Fundação Bradesco, Escola Virtual',
     date: '2025-12',
     description: 'Curso autoinstrucional de 10 horas sobre visualização de dados no Power BI.',
     image: {

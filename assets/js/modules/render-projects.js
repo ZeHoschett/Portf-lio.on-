@@ -27,10 +27,10 @@ const FILE_EXTENSIONS = { java: '.java', python: '.py', web: '.js' };
 const COBOL_PROGRAM_NAME_MAX = 8;
 
 const EMPTY_MESSAGES = {
-  java: 'Projetos Java em documentação — em breve por aqui.',
-  python: 'Projetos Python em documentação — em breve por aqui.',
+  java: 'Projetos Java em documentação. Em breve por aqui.',
+  python: 'Projetos Python em documentação. Em breve por aqui.',
   cobol: '> NENHUM REGISTRO ENCONTRADO. AGUARDANDO CARGA...',
-  web: 'Projetos Web em documentação — em breve por aqui.',
+  web: 'Projetos Web em documentação. Em breve por aqui.',
 };
 
 const PLACEHOLDER = { src: 'assets/img/placeholders/project.svg', width: 1600, height: 1000 };
@@ -489,6 +489,9 @@ function openProjectModal(project, trigger) {
           text: project.title,
           attrs: { id: MODAL_TITLE_ID },
         }),
+        text(project.subtitle)
+          ? el('p', { className: 'project-detail__subtitle', text: project.subtitle })
+          : null,
       ]),
       stats.length
         ? el(
@@ -625,6 +628,9 @@ function createCard(project) {
           Number.isFinite(project.year) ? el('span', { text: String(project.year) }) : null,
         ]),
         el('h4', { className: 'project-card__title', attrs: { id: titleId } }, [trigger]),
+        text(project.subtitle)
+          ? el('p', { className: 'project-card__subtitle', text: project.subtitle })
+          : null,
         text(project.summary)
           ? el('p', { className: 'project-card__summary', text: project.summary })
           : null,
