@@ -275,7 +275,7 @@ arquivos com compressão (gzip/brotli) e HTTPS.
 
 1. Envie o código para o GitHub:
    ```bash
-   git remote add origin https://github.com/ZeHoschett/portfolio.git
+   git remote add origin https://github.com/ZeHoschett/Portf-lio.on-.git
    git push -u origin main
    ```
 2. <https://dashboard.render.com> → **New → Blueprint** → escolha o repositório → **Apply**.
