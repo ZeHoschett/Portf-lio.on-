@@ -137,13 +137,6 @@
     flex-shrink: 0;
   }
 
-  .text-gradient {
-    color: transparent;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
   .mono {
     font-family: var(--font-mono);
   }

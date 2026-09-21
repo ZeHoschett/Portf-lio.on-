@@ -10,10 +10,6 @@
     max-width: var(--container-wide);
   }
 
-  .container--narrow {
-    max-width: var(--container-narrow);
-  }
-
   .section {
     position: relative;
     padding-block: var(--space-section);

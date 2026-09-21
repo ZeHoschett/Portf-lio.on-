@@ -81,8 +81,3 @@ export function openModal(node, { labelledBy, trigger, variant }) {
     modal.showModal();
   }
 }
-
-/** Closes the modal if it is open. */
-export function closeModal() {
-  if (dialog?.open) dialog.close();
-}

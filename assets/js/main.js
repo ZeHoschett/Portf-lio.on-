@@ -9,6 +9,7 @@ import { initClipboard } from './modules/clipboard.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
 import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
+import { initLazyArt } from './modules/lazy-art.js';
 import { initMagnetic } from './modules/magnetic.js';
 import { initMarquee } from './modules/marquee.js';
 import { initNav } from './modules/nav.js';
@@ -61,6 +62,7 @@ safeInit('magnetic', initMagnetic);
 safeInit('cursor-glow', initCursorGlow);
 safeInit('clipboard', initClipboard);
 safeInit('whatsapp-float', initWhatsappFloat);
+safeInit('lazy-art', initLazyArt);
 
 // Canvas animations start when the main thread is idle: they never block the first render
 whenIdle(() => {
