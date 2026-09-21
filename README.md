@@ -6,7 +6,7 @@ interativa, com uma identidade visual própria para cada stack (Java, Python, CO
 - **Stack do site:** HTML5, CSS3 (cascade layers, custom properties) e JavaScript moderno (ES Modules).
 - **Zero frameworks, zero dependências, sem etapa de build.** É só publicar os arquivos.
 
-> Status: todas as seções implementadas. Falta preencher os dados pessoais — veja
+> Status: todas as seções implementadas. Falta preencher os dados pessoais  veja
 > [TODOs pendentes](#todos-pendentes-josé) no fim deste arquivo.
 
 ---
@@ -27,7 +27,7 @@ e **dados** nos arquivos de `assets/js/data/`.
 | Contato | `config.js` | e-mail com botão copiar, LinkedIn, GitHub e WhatsApp |
 
 **Links vazios nunca aparecem.** Se `github`, `whatsapp.number`, `repo` ou `demo` estiverem em
-branco, o botão correspondente não é criado — nada de link quebrado para o recrutador.
+branco, o botão correspondente não é criado nada de link quebrado para o recrutador.
 
 ### Como o topo se comporta
 
@@ -36,7 +36,7 @@ O header é fixo e leva três atalhos: **Ver projetos · Fale comigo · WhatsApp
 - **A partir de 1280px:** logo à esquerda, os 7 links centralizados e os botões à direita, tudo em
   uma linha. O do WhatsApp é só ícone, para a barra não estourar.
 - **Abaixo de 1280px:** aparece o menu hambúrguer, e os dois primeiros botões ficam dentro dele,
-  abaixo dos links — são os mesmos elementos, não uma cópia. O do WhatsApp sai da barra, porque
+  abaixo dos links são os mesmos elementos, não uma cópia. O do WhatsApp sai da barra, porque
   nessa largura ele já aparece no hero e no botão flutuante.
 
 O corte é 1280px, e não 1024px, porque os links mais os botões não cabem numa tela de 1024px sem
@@ -47,7 +47,7 @@ criar rolagem horizontal.
 O hero tem fundo **preto puro** (`--hero-bg`) e uma única arte estática: o keycap de vidro
 `assets/img/hero-keycap.webp`, posicionado acima do nome e longe da foto. Ele é decorativo
 (`alt=""`, `aria-hidden`) e é composto com `mix-blend-mode: screen`, então a chapa preta da
-fotografia some no fundo da seção — o mesmo truque do neon do Python.
+fotografia some no fundo da seção o mesmo truque do neon do Python.
 
 Tamanho, posição e opacidade saem dos tokens `--hero-art-*` em `assets/css/tokens.css`
 (um valor para celular, um para telas médias e um para desktop). Para trocar a arte, basta
@@ -68,7 +68,7 @@ Cada subseção de projetos tem arte de fundo própria, feita para lembrar a tec
 
 Java e Web em Canvas 2D; Python e COBOL em CSS, sobre duas imagens leves (37 KB e 74 KB). As animações **pausam sozinhas** quando saem da tela
 ou quando a aba perde o foco, e com "reduzir movimento" ativo no sistema todas exibem um quadro
-estático — nada fica piscando para quem tem sensibilidade a movimento.
+estático nada fica piscando para quem tem sensibilidade a movimento.
 
 ---
 
