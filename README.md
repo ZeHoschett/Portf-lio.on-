@@ -268,7 +268,7 @@ Todos os caminhos são relativos, então o site funciona na raiz de um domínio 
 ### Render (configurado)
 
 O `render.yaml` na raiz descreve o site como **Static Site**: sem servidor e sem banco de dados.
-O build só copia `index.html`, `robots.txt` e `assets/` para `dist/`, para não publicar os
+O build só copia `index.html`, `robots.txt`, `sitemap.xml` e `assets/` para `dist/`, para não publicar os
 documentos do repositório (como este README). Ele também define os cabeçalhos de segurança
 (CSP, `nosniff`, `X-Frame-Options`…) e o cache de 1 dia para `assets/`. O Render já entrega os
 arquivos com compressão (gzip/brotli) e HTTPS.
@@ -278,11 +278,14 @@ arquivos com compressão (gzip/brotli) e HTTPS.
    git remote add origin https://github.com/ZeHoschett/Portf-lio.on-.git
    git push -u origin main
    ```
-2. <https://dashboard.render.com> → **New → Blueprint** → escolha o repositório → **Apply**.
-3. Em ~1 minuto o site estará em `https://jose-hoschett-portfolio.onrender.com` (o nome sai de
-   `name` no `render.yaml`). Cada push na `main` publica de novo.
-4. Com a URL final: descomente o `canonical` e o `og:url` no `<head>` do `index.html`, troque
-   `og:image` e `twitter:image` por URLs absolutas e atualize o `robots.txt`.
+2. <https://dashboard.render.com/select-repo?type=blueprint> (ou **Blueprints → New Blueprint
+   Instance** no menu lateral) → escolha o repositório → **Deploy Blueprint**. Não crie como
+   *Web Service*: ele exige um comando de servidor que este site não tem, e o deploy falha.
+3. O site está no ar em <https://jose-hoschett-portfolio.onrender.com> (o nome sai de `name` no
+   `render.yaml`). Cada push na `main` publica de novo.
+4. A URL final já está no `canonical`, `og:url`, `og:image`, `twitter:image` e JSON-LD do
+   `index.html`, no `robots.txt` e no `sitemap.xml`. Se um dia mudar de domínio, troque nesses
+   lugares.
 
 > **Supabase não é necessário.** O portfólio não tem banco de dados nem formulário: todo o
 > conteúdo vem de `assets/js/data/` e o contato é por e-mail, LinkedIn e WhatsApp. Supabase só
@@ -339,6 +342,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 - [x] **WhatsApp** — `config.js → whatsapp.number` (o número nunca aparece como texto)
 - [x] **Formação** — `data/education.js`
 - [x] **Foto** — `config.js → photo` (`assets/img/jose-hoschett.webp`, 832×1040), no hero e no Sobre
+- [x] **URL final** — <https://jose-hoschett-portfolio.onrender.com>: `canonical`, Open Graph, JSON-LD, `robots.txt` e `sitemap.xml`
 
 ### Falta preencher
 
@@ -348,11 +352,10 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
-| **URL final** | `index.html`, `robots.txt` | só existe depois de publicar | `canonical` e `og:url` comentados, `og:image` relativa |
 
 ### Ordem sugerida
 
 1. **Bio e foto.** É o que o recrutador vê primeiro, e a foto aparece em dois lugares.
-2. **Publicar no Render**, mesmo com pendências. Rende a URL para o Open Graph e
-   permite preencher `repo` e `demo` do próprio portfólio em `data/projects.js`.
+2. ~~**Publicar no Render**~~ feito em 2026-09-21, com a URL já no Open Graph e o repositório no
+   card do próprio portfólio.
 3. **Projetos reais e certificados**, conforme forem ficando prontos.

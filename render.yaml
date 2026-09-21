@@ -9,7 +9,7 @@ services:
     name: jose-hoschett-portfolio
     runtime: static
     branch: main
-    buildCommand: rm -rf dist && mkdir dist && cp -r index.html robots.txt assets dist/
+    buildCommand: rm -rf dist && mkdir dist && cp -r index.html robots.txt sitemap.xml assets dist/
     staticPublishPath: dist
     pullRequestPreviewsEnabled: false
     headers:

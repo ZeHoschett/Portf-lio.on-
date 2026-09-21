@@ -2032,8 +2032,7 @@ async function submit() {
 `,
       },
     ],
-    repo: '', // TODO(jose): link do repositório
-    demo: '', // TODO(jose): link publicado
+    repo: 'https://github.com/ZeHoschett/Portf-lio.on-',
     year: 2026,
     featured: true,
   },
