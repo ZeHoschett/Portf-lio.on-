@@ -269,7 +269,7 @@ Todos os caminhos são relativos, então o site funciona na raiz de um domínio 
 
 O `render.yaml` na raiz descreve o site como **Static Site**: sem servidor e sem banco de dados.
 O build só copia `index.html`, `robots.txt` e `assets/` para `dist/`, para não publicar os
-documentos internos (README, CLAUDE.md, briefing). Ele também define os cabeçalhos de segurança
+documentos do repositório (como este README). Ele também define os cabeçalhos de segurança
 (CSP, `nosniff`, `X-Frame-Options`…) e o cache de 1 dia para `assets/`. O Render já entrega os
 arquivos com compressão (gzip/brotli) e HTTPS.
 
