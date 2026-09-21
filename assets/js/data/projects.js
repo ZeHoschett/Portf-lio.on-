@@ -1504,6 +1504,427 @@ async function submit() {
     featured: true,
   },
   {
+    id: 'cobol-validacao-saldo',
+    title: 'Validação de Saldo',
+    subtitle: 'Saque com checagem de saldo e taxa de manutenção',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Programa COBOL que recusa o saque quando falta saldo e desconta uma taxa de manutenção quando a conta fica abaixo de R$ 100.',
+    description: [
+      'Recebe o saldo atual e o valor do saque. Se o saque é maior que o saldo, a operação é recusada com a mensagem SALDO INSUFICIENTE e o saldo fica como estava. Caso contrário, o saque é feito e, se o saldo restante ficar abaixo de R$ 100,00, é descontada a taxa de manutenção de R$ 5,00.',
+      'Executado no GnuCOBOL: com saldo de 500 e saque de 450, o saldo final é 45,00 (sobram 50 e a taxa é descontada); com saldo de 100 e saque de 300, o programa responde SALDO INSUFICIENTE e mantém os 100,00.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL'],
+    highlights: [
+      'Regra de negócio com IF aninhado: saldo insuficiente, saque normal e saque com taxa.',
+      'Taxa de manutenção declarada como valor inicial do campo (VALUE 5.00).',
+      'Campos monetários com casas decimais implícitas (PIC 9(7)V99).',
+    ],
+    codeSnippet: `
+002200 PROCEDURE DIVISION.
+002300     DISPLAY "DIGITE O VALOR DA CONTA ATUAL:"
+002400     ACCEPT VALOR-ATUAL
+002500     DISPLAY "DIGITE O VALOR DO SAQUE A SER REALIZADO:"
+002600     ACCEPT VALOR-SAQUE
+002700     IF VALOR-SAQUE > VALOR-ATUAL
+002800         MOVE "SALDO INSUFICIENTE" TO VERIFICACAO-DO-SALDO
+002900         MOVE VALOR-ATUAL TO VALOR-FINAL
+003000     ELSE
+003100         COMPUTE VALOR-FINAL = VALOR-ATUAL - VALOR-SAQUE
+003200         IF VALOR-FINAL < 100.00
+003300             COMPUTE VALOR-FINAL = VALOR-FINAL - TAXA-MANUTENCAO
+003400         END-IF
+003500         MOVE "SAQUE REALIZADO" TO VERIFICACAO-DO-SALDO
+003600     END-IF
+`,
+    fileName: 'ValidacaoDeSaldo.cob',
+    codeSamples: [
+      {
+        fileName: 'ValidacaoDeSaldo.cob',
+        caption: 'O programa completo, como foi compilado e executado.',
+        code: `
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID. VALIDA001.
+000300 AUTHOR. JOSE HOSCHETT.
+000400 DATE-WRITTEN. 03/09/2026.
+000500 INSTALLATION. KRONUMTECH.
+000600* CALCULO DE VALIDACAO DE SALDO E SAQUE DE CONTA CORRENTE.
+000700
+000800 ENVIRONMENT DIVISION.
+000900 CONFIGURATION SECTION.
+001000 SOURCE-COMPUTER. PC.
+001100 OBJECT-COMPUTER. PC.
+001200
+001300 DATA DIVISION.
+001400 WORKING-STORAGE SECTION.
+001500
+001600 77 VALOR-ATUAL           PIC 9(7)V99 VALUE ZERO.
+001700 77 VALOR-SAQUE           PIC 9(7)V99 VALUE ZERO.
+001800 77 TAXA-MANUTENCAO       PIC 9(7)V99 VALUE 5.00.
+001900 77 VALOR-FINAL           PIC 9(7)V99 VALUE ZERO.
+002000 77 VERIFICACAO-DO-SALDO  PIC X(40) VALUE SPACES.
+002100
+002200 PROCEDURE DIVISION.
+002300     DISPLAY "DIGITE O VALOR DA CONTA ATUAL:"
+002400     ACCEPT VALOR-ATUAL
+002500     DISPLAY "DIGITE O VALOR DO SAQUE A SER REALIZADO:"
+002600     ACCEPT VALOR-SAQUE
+002700     IF VALOR-SAQUE > VALOR-ATUAL
+002800         MOVE "SALDO INSUFICIENTE" TO VERIFICACAO-DO-SALDO
+002900         MOVE VALOR-ATUAL TO VALOR-FINAL
+003000     ELSE
+003100         COMPUTE VALOR-FINAL = VALOR-ATUAL - VALOR-SAQUE
+003200         IF VALOR-FINAL < 100.00
+003300             COMPUTE VALOR-FINAL = VALOR-FINAL - TAXA-MANUTENCAO
+003400         END-IF
+003500         MOVE "SAQUE REALIZADO" TO VERIFICACAO-DO-SALDO
+003600     END-IF
+003700     DISPLAY VERIFICACAO-DO-SALDO
+003800     DISPLAY "O SALDO FINAL DA CONTA E: " VALOR-FINAL
+003900     STOP RUN.
+`,
+      },
+    ],
+    year: 2026,
+  },
+  {
+    id: 'cobol-seguradora',
+    title: 'Seguro de Veículo',
+    subtitle: 'Cálculo do seguro pelo perfil do condutor',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Programa COBOL que classifica o condutor pela idade e calcula o valor do seguro como um percentual do valor do veículo.',
+    description: [
+      'Recebe o valor do veículo e a idade do condutor. Condutores com menos de 25 anos entram no perfil JOVEM, com 5% do valor do veículo; os demais entram no perfil EXPERIENTE, com 3%.',
+      'Executado no GnuCOBOL: para um veículo de R$ 80.000, o seguro sai por 4.000,00 para um condutor de 22 anos e por 2.400,00 para um de 40.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL'],
+    highlights: [
+      'Classificação do perfil de risco com IF / ELSE.',
+      'Percentual definido pela regra e aplicado com COMPUTE.',
+      'Programa no formato fixo, com numeração de sequência nas colunas 1 a 6.',
+    ],
+    codeSnippet: `
+002100 PROCEDURE DIVISION.
+002200     DISPLAY "DIGITE O VALOR DO VEICULO: "
+002300     ACCEPT VALOR-VEICULO
+002400     DISPLAY "DIGITE A IDADE DO CONDUTOR: "
+002500     ACCEPT IDADE-CONDUTOR
+002600     IF IDADE-CONDUTOR < 25
+002700         MOVE "JOVEM" TO SITUACAO
+002800         MOVE 5 TO PORCENTAGEM
+002900     ELSE
+003000         MOVE "EXPERIENTE" TO SITUACAO
+003100         MOVE 3 TO PORCENTAGEM
+003200     END-IF
+003300     COMPUTE VALOR-DO-SEGURO =
+003400         VALOR-VEICULO * PORCENTAGEM / 100
+003500     DISPLAY "PERFIL: " SITUACAO
+003600     DISPLAY "VALOR DO SEGURO: " VALOR-DO-SEGURO
+003700     STOP RUN.
+`,
+    fileName: 'SEGURADORA.cob',
+    codeSamples: [
+      {
+        fileName: 'SEGURADORA.cob',
+        caption: 'O programa completo, como foi compilado e executado.',
+        code: `
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID.    SEGURO01.
+000300 AUTHOR.        JOSE HOSCHETT.
+000400 DATE-WRITTEN.  23/08/2026.
+000500 INSTALLATION.  KRONUMTCH.
+000600* CALCULAR PRECOS DE SEGUROS.
+000700
+000800 ENVIRONMENT DIVISION.
+000900 CONFIGURATION SECTION.
+001000 SOURCE-COMPUTER. PC.
+001100 OBJECT-COMPUTER. PC.
+001200
+001300 DATA DIVISION.
+001400 WORKING-STORAGE SECTION.
+001500 77 VALOR-VEICULO    PIC 9(7)V99  VALUE ZEROS.
+001600 77 IDADE-CONDUTOR   PIC 9(3)     VALUE ZEROS.
+001700 77 PORCENTAGEM      PIC 9(3)V99  VALUE ZEROS.
+001800 77 VALOR-DO-SEGURO  PIC 9(7)V99  VALUE ZEROS.
+001900 77 SITUACAO         PIC X(30)    VALUE SPACES.
+002000
+002100 PROCEDURE DIVISION.
+002200     DISPLAY "DIGITE O VALOR DO VEICULO: "
+002300     ACCEPT VALOR-VEICULO
+002400     DISPLAY "DIGITE A IDADE DO CONDUTOR: "
+002500     ACCEPT IDADE-CONDUTOR
+002600     IF IDADE-CONDUTOR < 25
+002700         MOVE "JOVEM" TO SITUACAO
+002800         MOVE 5 TO PORCENTAGEM
+002900     ELSE
+003000         MOVE "EXPERIENTE" TO SITUACAO
+003100         MOVE 3 TO PORCENTAGEM
+003200     END-IF
+003300     COMPUTE VALOR-DO-SEGURO =
+003400         VALOR-VEICULO * PORCENTAGEM / 100
+003500     DISPLAY "PERFIL: " SITUACAO
+003600     DISPLAY "VALOR DO SEGURO: " VALOR-DO-SEGURO
+003700     STOP RUN.
+`,
+      },
+    ],
+    year: 2026,
+  },
+  {
+    id: 'cobol-saldo-conta',
+    title: 'Saldo da Conta',
+    subtitle: 'Depósito, saque e situação da conta corrente',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Programa COBOL que aplica um depósito e um saque ao saldo da conta corrente e informa se a conta ficou positiva ou negativa.',
+    description: [
+      'Recebe o saldo atual, o valor depositado e o valor do saque, calcula o saldo final e informa se a conta está POSITIVO ou NEGATIVO.',
+      'Executado no GnuCOBOL: com saldo de 1.000, depósito de 200 e saque de 300, o saldo final é +900,00; com saldo de 100 e saque de 500, é -400,00 e a conta aparece como NEGATIVO.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL'],
+    highlights: [
+      'Saldo final com sinal (PIC S9), capaz de representar conta negativa.',
+      'Situação da conta decidida por IF sobre o resultado do COMPUTE.',
+    ],
+    challenges: [
+      {
+        challenge: 'Uma conta com saque maior que o saldo aparecia como POSITIVO, com saldo de 400 em vez de -400.',
+        solution:
+          'O campo do saldo final era PIC 9(7)V99, sem sinal: o COBOL descartava o "-" do resultado e o teste < ZEROS nunca era verdadeiro. Com PIC S9(7)V99 o campo guarda o sinal e a conta negativa passa a ser identificada.',
+      },
+    ],
+    codeSnippet: `
+002100 PROCEDURE DIVISION.
+002200     DISPLAY "VALOR ATUAL DA CONTA: "
+002300     ACCEPT VALOR-ATUAL.
+002400     DISPLAY "DIGITE O VALOR DEPOSITADO: "
+002500     ACCEPT VALOR-DEPOSITO.
+002600     DISPLAY "DIGITE O VALOR DO SAQUE: "
+002700     ACCEPT VALOR-SAQUE.
+002800     COMPUTE VALOR-FINAL-DA-CONTA =
+002900         VALOR-ATUAL + VALOR-DEPOSITO - VALOR-SAQUE.
+003000     IF VALOR-FINAL-DA-CONTA < ZEROS
+003100         MOVE "NEGATIVO" TO VERIFICACAO-DA-CONTA
+003200     ELSE
+003300         MOVE "POSITIVO" TO VERIFICACAO-DA-CONTA
+003400     END-IF.
+003500     DISPLAY "SUA CONTA ESTA: " VERIFICACAO-DA-CONTA.
+003600     DISPLAY "SALDO FINAL: " VALOR-FINAL-DA-CONTA.
+003700     STOP RUN.
+`,
+    fileName: 'SAQUE.cob',
+    codeSamples: [
+      {
+        fileName: 'SAQUE.cob',
+        caption: 'O programa completo, como foi compilado e executado.',
+        code: `
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID.    SALDO-NA-CONTA.
+000300 AUTHOR.        JOSE HOSCHETT.
+000400 DATE-WRITTEN.  23/08/2026.
+000500 INSTALLATION.  KRONUMTECH.
+000600*CALCULAR SALDO DA CONTA CORRENTE.
+000700
+000800 ENVIRONMENT DIVISION.
+000900 CONFIGURATION SECTION.
+001000 SOURCE-COMPUTER. PC.
+001100 OBJECT-COMPUTER. PC.
+001200
+001300 DATA DIVISION.
+001400 WORKING-STORAGE SECTION.
+001500   77 VALOR-ATUAL          PIC 9(7)V99 VALUE ZEROS.
+001600   77 VALOR-DEPOSITO       PIC 9(7)V99 VALUE ZEROS.
+001700   77 VALOR-SAQUE          PIC 9(7)V99 VALUE ZEROS.
+001800   77 VALOR-FINAL-DA-CONTA PIC S9(7)V99 VALUE ZEROS.
+001900   77 VERIFICACAO-DA-CONTA PIC X(30)   VALUE SPACES.
+002000
+002100 PROCEDURE DIVISION.
+002200     DISPLAY "VALOR ATUAL DA CONTA: "
+002300     ACCEPT VALOR-ATUAL.
+002400     DISPLAY "DIGITE O VALOR DEPOSITADO: "
+002500     ACCEPT VALOR-DEPOSITO.
+002600     DISPLAY "DIGITE O VALOR DO SAQUE: "
+002700     ACCEPT VALOR-SAQUE.
+002800     COMPUTE VALOR-FINAL-DA-CONTA =
+002900         VALOR-ATUAL + VALOR-DEPOSITO - VALOR-SAQUE.
+003000     IF VALOR-FINAL-DA-CONTA < ZEROS
+003100         MOVE "NEGATIVO" TO VERIFICACAO-DA-CONTA
+003200     ELSE
+003300         MOVE "POSITIVO" TO VERIFICACAO-DA-CONTA
+003400     END-IF.
+003500     DISPLAY "SUA CONTA ESTA: " VERIFICACAO-DA-CONTA.
+003600     DISPLAY "SALDO FINAL: " VALOR-FINAL-DA-CONTA.
+003700     STOP RUN.
+`,
+      },
+    ],
+    year: 2026,
+  },
+  {
+    id: 'cobol-emprestimo',
+    title: 'Simulador de Empréstimo',
+    subtitle: 'Parcela mensal e classificação da taxa',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Programa COBOL que calcula a parcela mensal de um empréstimo a partir do valor, da taxa de juros e do número de parcelas, e classifica a taxa.',
+    description: [
+      'Recebe o valor do empréstimo, a taxa de juros em % e o número de parcelas. Aplica a taxa sobre o valor, divide pelo número de parcelas e classifica a taxa como BAIXA (abaixo de 5%) ou ALTA.',
+      'Executado no GnuCOBOL: R$ 10.000 a 3% em 12 parcelas resultam em parcelas de 858,33 com TAXA BAIXA; a 8% em 10 parcelas, 1.080,00 com TAXA ALTA.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL'],
+    highlights: [
+      'Cálculo da parcela em uma única expressão COMPUTE.',
+      'Classificação da taxa com IF / ELSE.',
+      'Cabeçalho completo da IDENTIFICATION DIVISION: autor, data e instalação.',
+    ],
+    codeSnippet: `
+002100 PROCEDURE DIVISION.
+002200 DISPLAY "DIGITE O VALOR DO EMPRESTIMO: "
+002300 ACCEPT VALOR-EMPRESTIMO
+002400 DISPLAY "DIGITE A TAXA DE JUROS (EM %): "
+002500 ACCEPT TAXA-DE-JUROS
+002600 DISPLAY "DIGITE O NUMERO DE PARCELAS: "
+002700 ACCEPT NUMERO-DE-PARCELAS
+002800 IF TAXA-DE-JUROS < 5
+002900 MOVE "TAXA BAIXA" TO SITUACAO
+003000 ELSE
+003100 MOVE "TAXA ALTA" TO SITUACAO
+003200 END-IF
+003300 COMPUTE VALOR-PARCELA-MENSAL =
+003400 VALOR-EMPRESTIMO * (1 + TAXA-DE-JUROS / 100) / NUMERO-DE-PARCELAS
+003500 DISPLAY "SITUACAO: " SITUACAO
+003600 DISPLAY "VALOR DA PARCELA MENSAL: " VALOR-PARCELA-MENSAL
+003700 STOP RUN.
+`,
+    fileName: 'EMPRESTIMO.cob',
+    codeSamples: [
+      {
+        fileName: 'EMPRESTIMO.cob',
+        caption: 'O programa completo, como foi compilado e executado.',
+        code: `
+000100 IDENTIFICATION DIVISION. 
+000200 PROGRAM-ID. EMPRESTIMO01.
+000300 AUTHOR. JOSÉ HOSCHETT.
+000400 DATE-WRITTEN. 28/08/2026.
+000500 INSTALLATION. KRONUMTECH.
+000600* CALCULAR VALOR DO EMPRESTIMO.
+000700
+000800 ENVIRONMENT DIVISION.
+000900 CONFIGURATION SECTION.
+001000 SOURCE-COMPUTER. PC.
+001100 OBJECT-COMPUTER. PC.
+001200
+001300 DATA DIVISION.
+001400 WORKING-STORAGE SECTION.
+001500 77 VALOR-EMPRESTIMO PIC 9(7)V99 VALUE ZEROS.
+001600 77 TAXA-DE-JUROS PIC 9(3)V99 VALUE ZEROS.
+001700 77 VALOR-PARCELA-MENSAL PIC 9(7)V99 VALUE ZEROS.
+001800 77 NUMERO-DE-PARCELAS PIC 9(3) VALUE ZEROS.
+001900 77 SITUACAO PIC X(30) VALUE SPACES.
+002000
+002100 PROCEDURE DIVISION.
+002200 DISPLAY "DIGITE O VALOR DO EMPRESTIMO: "
+002300 ACCEPT VALOR-EMPRESTIMO
+002400 DISPLAY "DIGITE A TAXA DE JUROS (EM %): "
+002500 ACCEPT TAXA-DE-JUROS
+002600 DISPLAY "DIGITE O NUMERO DE PARCELAS: "
+002700 ACCEPT NUMERO-DE-PARCELAS
+002800 IF TAXA-DE-JUROS < 5
+002900 MOVE "TAXA BAIXA" TO SITUACAO
+003000 ELSE
+003100 MOVE "TAXA ALTA" TO SITUACAO
+003200 END-IF
+003300 COMPUTE VALOR-PARCELA-MENSAL =
+003400 VALOR-EMPRESTIMO * (1 + TAXA-DE-JUROS / 100) / NUMERO-DE-PARCELAS
+003500 DISPLAY "SITUACAO: " SITUACAO
+003600 DISPLAY "VALOR DA PARCELA MENSAL: " VALOR-PARCELA-MENSAL
+003700 STOP RUN.
+`,
+      },
+    ],
+    year: 2026,
+  },
+  {
+    id: 'cobol-juros-simples',
+    title: 'Calculadora de Juros Simples',
+    subtitle: 'Juros e montante a partir de capital, taxa e prazo',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Programa COBOL que calcula os juros simples e o valor final a partir do capital, da taxa mensal e do prazo em meses.',
+    description: [
+      'Recebe o valor inicial, a taxa de juros mensal em % e o tempo em meses, e aplica a fórmula dos juros simples, J = C × i × t, para mostrar os juros e o valor final.',
+      'Executado no GnuCOBOL: R$ 1.000 a 2% ao mês por 12 meses geram 240,00 de juros e 1.240,00 no final; R$ 2.500 a 1,5% por 6 meses, 225,00 e 2.725,00.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL'],
+    highlights: [
+      'Fórmula de juros simples com COMPUTE e taxa percentual.',
+      'Taxa com casas decimais (PIC 9(3)V99), aceitando valores como 1,5%.',
+      'Parágrafo nomeado (INICIO) na PROCEDURE DIVISION.',
+    ],
+    codeSnippet: `
+001300 INICIO.
+001400     DISPLAY " CALCULADORA DE JUROS SIMPLES " .
+001500     DISPLAY "-------------------------------" .
+001600     DISPLAY "DIGITE O VALOR INICIAL:".
+001700     ACCEPT VALOR-INICIAL
+001800     DISPLAY " DIGITE A TAXA DE JUROS EM (%):".
+001900     ACCEPT TAXA-DE-JUROS.
+002000     DISPLAY " DIGITE O TEMPO EM MESES:".
+002100     ACCEPT TEMPO.
+002200*    JUROS SIMPLES: J = C x i x t, COM A TAXA MENSAL EM %.
+002300     COMPUTE JUROS-SIMPLES =
+002400         VALOR-INICIAL * TAXA-DE-JUROS / 100 * TEMPO.
+002500     COMPUTE VALOR-FINAL = VALOR-INICIAL + JUROS-SIMPLES.
+002600     DISPLAY "JUROS: " JUROS-SIMPLES.
+002700     DISPLAY "VALOR FINAL: " VALOR-FINAL.
+002800     STOP RUN.
+`,
+    fileName: 'CALCULADORA-DE-JUROS-SIMPLES.cob',
+    codeSamples: [
+      {
+        fileName: 'CALCULADORA-DE-JUROS-SIMPLES.cob',
+        caption: 'O programa completo, como foi compilado e executado.',
+        code: `
+000100 IDENTIFICATION DIVISION.
+000200 PROGRAM-ID. CALCULADORA-DE-JUROS-SIMPLES.
+000300 ENVIRONMENT DIVISION.
+000400 DATA DIVISION.
+000500 WORKING-STORAGE SECTION.
+000600 77 VALOR-INICIAL PIC 9(5)V99 VALUE ZEROS.
+000700 77 TAXA-DE-JUROS PIC 9(3)V99 VALUE ZEROS.
+000800 77 TEMPO PIC 9(3)V99 VALUE ZEROS. 
+000900 77 JUROS-SIMPLES PIC 9(5)V99 VALUE ZEROS.
+001000 77 VALOR-FINAL PIC 9(5)V99 VALUE ZEROS.
+001100 77 SAIR PIC X VALUE 'N'.
+001200 PROCEDURE DIVISION.
+001300 INICIO.
+001400     DISPLAY " CALCULADORA DE JUROS SIMPLES " .
+001500     DISPLAY "-------------------------------" .
+001600     DISPLAY "DIGITE O VALOR INICIAL:".
+001700     ACCEPT VALOR-INICIAL
+001800     DISPLAY " DIGITE A TAXA DE JUROS EM (%):".
+001900     ACCEPT TAXA-DE-JUROS.
+002000     DISPLAY " DIGITE O TEMPO EM MESES:".
+002100     ACCEPT TEMPO.
+002200*    JUROS SIMPLES: J = C x i x t, COM A TAXA MENSAL EM %.
+002300     COMPUTE JUROS-SIMPLES =
+002400         VALOR-INICIAL * TAXA-DE-JUROS / 100 * TEMPO.
+002500     COMPUTE VALOR-FINAL = VALOR-INICIAL + JUROS-SIMPLES.
+002600     DISPLAY "JUROS: " JUROS-SIMPLES.
+002700     DISPLAY "VALOR FINAL: " VALOR-FINAL.
+002800     STOP RUN.
+`,
+      },
+    ],
+    year: 2026,
+  },
+  {
     id: 'portfolio',
     title: 'Portfólio Pessoal',
     stack: 'web',
