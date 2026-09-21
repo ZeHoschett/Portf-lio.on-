@@ -16,3 +16,8 @@ node_modules/
 
 # Render build output (render.yaml copies the public files here)
 dist/
+
+# Internal docs: kept only on this machine, never pushed
+CLAUDE.md
+PROMPT-portfolio.md
+briefing-portfolio.md

@@ -1,8 +1,8 @@
 # Render Blueprint: the portfolio as a static site (no server, no database).
 # Render → New → Blueprint → pick this repository. Every push to main redeploys.
 #
-# The build step only copies the public files into dist/, so the internal docs (README, CLAUDE.md,
-# briefing and prompt) are not published. The site itself needs no build: index.html still opens
+# The build step only copies the public files into dist/, so repository docs (README and the like)
+# are not published. The site itself needs no build: index.html still opens
 # as-is from any static server.
 services:
   - type: web
