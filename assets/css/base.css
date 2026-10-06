@@ -1,6 +1,6 @@
 @layer base {
   html {
-    background-color: var(--color-bg);
+    background-color: var(--bg);
     scrollbar-gutter: stable; /* no layout shift when the mobile menu locks scrolling */
     scroll-behavior: smooth;
     scroll-padding-top: calc(var(--header-h) + var(--space-4));
@@ -12,21 +12,31 @@
     font-size: var(--fs-base);
     font-weight: var(--fw-regular);
     line-height: var(--lh-normal);
-    color: var(--color-text);
-    background-color: var(--color-bg);
+    color: var(--t1);
+    /* No background here: the floor is painted by <html>, so the fixed bloom (z-index −1) shows */
     font-synthesis-weight: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* Film grain over the whole page */
-  body::after {
-    content: '';
+  /*
+   * Atmospheric light behind the whole page: radial gradients only (no filter: blur, which would
+   * cost a full-screen blur every frame). Colour lives here and nowhere else.
+   */
+  .page-bloom {
     position: fixed;
-    inset: 0;
-    z-index: var(--z-grain);
+    inset: var(--page-bloom-bleed);
+    z-index: var(--z-below);
     pointer-events: none;
+    background: var(--page-bloom);
+  }
+
+  /* Grain over the light: texture, and it dithers the gradients so 8-bit screens show no banding */
+  .page-bloom::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     background-image: var(--texture-grain);
     background-size: var(--grain-size);
     opacity: var(--grain-opacity);
@@ -37,9 +47,9 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     line-height: var(--lh-snug);
-    letter-spacing: var(--ls-snug);
+    letter-spacing: var(--ls-tight);
     text-wrap: balance;
   }
 
@@ -53,12 +63,12 @@
   }
 
   :where(a:not([class])) {
-    color: var(--color-accent-text);
+    color: var(--t1);
     transition: color var(--dur-fast) var(--ease-out-quart);
   }
 
   :where(a:not([class])):hover {
-    color: var(--color-text);
+    color: var(--t2);
   }
 
   code,
@@ -75,12 +85,12 @@
   }
 
   ::selection {
-    color: var(--color-text);
-    background-color: var(--color-accent);
+    color: var(--ink);
+    background-color: var(--t1);
   }
 
   :focus-visible {
-    outline: var(--focus-width) solid var(--color-focus);
+    outline: var(--focus-width) solid var(--focus-ring);
     outline-offset: var(--focus-offset);
   }
 

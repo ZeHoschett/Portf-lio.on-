@@ -2,39 +2,99 @@
  * Design tokens — the only place where raw values live.
  * Breakpoints (media queries cannot read custom properties):
  *   sm 480px · md 768px · lg 1024px · xl 1280px · 2xl 1536px
+ *
+ * Glass system: the interface is black and white. Colour exists only out of focus, as the
+ * bloom behind the glass, and never touches text, borders, icons, buttons or states.
  */
 @layer tokens {
   :root {
     color-scheme: dark;
 
-    /* ---------- Colors: base ---------- */
-    --color-bg: #07070a;
-    --color-bg-elev: #0d0d13;
-    --color-surface: #13131c;
-    --color-surface-2: #1a1a26;
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-strong: rgba(255, 255, 255, 0.16);
-    --color-text: #ededf2; /* ~16.9:1 on --color-bg */
-    --color-text-muted: #9a9ab0; /* ~7.2:1 on --color-bg, ~6.2:1 on --color-surface-2 (AA) */
-    --color-text-faint: #6b6b80; /* ~3.9:1 — large/decorative text only (AA large) */
+    /* ---------- Floor ---------- */
+    --bg: #050506;
+    --bg-2: #0a0a0c;
+    --ink: #0a0a0c; /* text on white fills */
 
-    /* ---------- Colors: accent ---------- */
-    --color-accent: #7c5cff; /* graphics, borders, glow (4.3:1 on surfaces: not for small text) */
-    --color-accent-2: #4f7bff;
-    --color-accent-text: #a78bff; /* accent for small text: ~6.4:1 on --color-surface-2 */
-    --color-silver: #c9ccd6;
-    --color-focus: var(--color-accent-text);
-    --color-overlay: rgba(7, 7, 10, 0.72);
-    --color-glass: rgba(7, 7, 10, 0.6);
-    --gradient-accent: linear-gradient(135deg, #7c5cff 0%, #4f7bff 50%, #c9ccd6 100%);
-    --glow-accent: 0 0 0 1px rgba(124, 92, 255, 0.35), 0 0 32px rgba(124, 92, 255, 0.25);
-    --glow-accent-strong: 0 0 0 1px rgba(124, 92, 255, 0.6), 0 0 48px rgba(124, 92, 255, 0.4);
-    /* Deeper accent for filled buttons: white text passes AA (~6.1:1 / ~5.9:1) */
-    --gradient-button: linear-gradient(135deg, #5b3df5 0%, #3457e0 100%);
-    --color-on-accent: #ffffff;
-    --gradient-menu:
-      radial-gradient(120% 60% at 100% 0%, rgba(124, 92, 255, 0.18) 0%, transparent 60%),
-      radial-gradient(90% 50% at 0% 100%, rgba(79, 123, 255, 0.12) 0%, transparent 60%);
+    /* ---------- Glass ---------- */
+    --glass: rgba(255, 255, 255, 0.045);
+    --glass-strong: rgba(255, 255, 255, 0.075);
+    --glass-line: rgba(255, 255, 255, 0.12);
+    --glass-line-hi: rgba(255, 255, 255, 0.22);
+    --glass-blur: 28px;
+    --glass-saturation: 150%;
+    --glass-fallback: rgba(18, 18, 22, 0.88); /* no backdrop-filter support */
+
+    /* ---------- Relief & solid surfaces ---------- */
+    --relief-bg: linear-gradient(145deg, #0e0e12 0%, #08080a 100%);
+    --relief-line: rgba(255, 255, 255, 0.05);
+    --solid-bg: rgba(16, 16, 19, 0.86);
+    --solid-line: rgba(255, 255, 255, 0.08);
+    --hairline: rgba(255, 255, 255, 0.07); /* dividers inside surfaces */
+
+    /* ---------- Text (contrast on --bg) ---------- */
+    --t1: #ffffff;
+    --t2: rgba(255, 255, 255, 0.72); /* 9.4:1 */
+    --t3: rgba(255, 255, 255, 0.55); /* 6.5:1, floor for small text */
+    --t4: rgba(255, 255, 255, 0.26); /* large decorative type only */
+
+    /* ---------- Radii ---------- */
+    --r-sm: 12px;
+    --r-md: 18px;
+    --r-lg: 28px;
+    --r-xl: 36px;
+    --r-pill: 999px;
+
+    /* ---------- Edges, elevation, relief ---------- */
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+    --lift: 0 32px 80px -28px rgba(0, 0, 0, 0.95);
+    --relief: 10px 10px 24px rgba(0, 0, 0, 0.55), -8px -8px 22px rgba(255, 255, 255, 0.028);
+    --relief-in: inset 6px 6px 14px rgba(0, 0, 0, 0.6), inset -6px -6px 14px rgba(255, 255, 255, 0.03);
+    --specular: rgba(255, 255, 255, 0.1);
+    --specular-size: 260px;
+
+    /* ---------- Bloom: bare RGB per stack, used ONLY inside background radial-gradients ---------- */
+    --bloom-java: 218, 150, 74;
+    --bloom-python: 72, 122, 200;
+    --bloom-cobol: 86, 176, 118;
+    --bloom-web: 138, 124, 214;
+    --bloom-neutro: 190, 198, 214;
+    --bloom-amount: 0.32;
+    --bloom-amount-mobile: 0.22; /* phones: the text sits right over the light */
+    --page-bloom:
+      radial-gradient(42% 38% at 22% 18%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 0.9)), transparent 70%),
+      radial-gradient(38% 34% at 78% 62%, rgba(var(--bloom-java), calc(var(--bloom-amount) * 0.7)), transparent 70%),
+      radial-gradient(50% 44% at 58% 96%, rgba(var(--bloom-neutro), calc(var(--bloom-amount) * 0.3)), transparent 72%);
+    --page-bloom-bleed: -25%; /* oversized so the fixed light never shows an edge */
+
+    /* ---------- Focus ---------- */
+    --focus-ring: #ffffff;
+
+    /* ---------- Colors: base ---------- */
+    /* TODO(restyle): legacy aliases kept so every phase ships a working site; removed in phase 9 */
+    --color-bg: var(--bg);
+    --color-bg-elev: var(--bg-2);
+    --color-surface: #111114;
+    --color-surface-2: #18181c;
+    --color-border: var(--solid-line);
+    --color-border-strong: rgba(255, 255, 255, 0.16);
+    --color-text: var(--t1);
+    --color-text-muted: var(--t2);
+    --color-text-faint: var(--t3);
+
+    /* ---------- Colors: legacy accent (now monochrome; removed in phase 9) ---------- */
+    --color-accent: var(--t2);
+    --color-accent-2: #c4c6cf; /* hex on purpose: read by a canvas until phase 6 */
+    --color-accent-text: var(--t1);
+    --color-silver: #c9ccd6; /* hex on purpose: read by a canvas until phase 6 */
+    --color-focus: var(--focus-ring);
+    --color-overlay: rgba(5, 5, 6, 0.72);
+    --color-glass: rgba(5, 5, 6, 0.6);
+    --gradient-accent: linear-gradient(var(--t1), var(--t1));
+    --glow-accent: var(--edge);
+    --glow-accent-strong: var(--edge);
+    --gradient-button: linear-gradient(var(--t1), var(--t1));
+    --color-on-accent: var(--ink);
+    --gradient-menu: none;
 
     /* ---------- Colors: stack identity ---------- */
     --stack-java: #f29f3d; /* ~8.1:1 on --color-surface-2 */
@@ -52,10 +112,10 @@
     --glow-whatsapp: 0 0 0 1px rgba(37, 211, 102, 0.5), 0 0 32px rgba(37, 211, 102, 0.35);
 
     /* ---------- Typography ---------- */
-    --font-display: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Inter Tight', 'Helvetica Neue', Arial, system-ui, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --font-terminal: 'VT323', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --font-terminal: var(--font-mono); /* VT323 is gone; alias removed in phase 9 */
 
     --fw-regular: 400;
     --fw-medium: 500;
@@ -65,14 +125,25 @@
     --fs-2xs: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
     --fs-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
     --fs-sm: clamp(0.875rem, 0.84rem + 0.18vw, 0.9375rem);
-    --fs-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+    --fs-base: 1rem; /* 16 */
     --fs-md: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
     --fs-lg: clamp(1.25rem, 1.12rem + 0.6vw, 1.5rem);
     --fs-xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
     --fs-2xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
     --fs-3xl: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
-    --fs-display: clamp(3rem, 1.5rem + 7.5vw, 8rem);
+    --fs-display: clamp(3rem, 1.2rem + 8vw, 6.5rem); /* up to 104 */
     --fs-hero: clamp(3.5rem, 17.5vw, 15rem); /* "HOSCHETT" spans the width, still fits at 360px */
+
+    /* Glass type scale */
+    --fs-h2: clamp(2rem, 1.35rem + 2.9vw, 3.5rem); /* up to 56 */
+    --fs-h3: 1.75rem; /* 28 */
+    --fs-h4: 1.0625rem; /* 17 */
+    --fs-label: clamp(0.625rem, 0.6rem + 0.12vw, 0.6875rem); /* 10 to 11, mono uppercase */
+    --fs-code: clamp(0.625rem, 0.58rem + 0.25vw, 0.71875rem); /* 10 to 11.5 */
+    --lh-display: 0.92;
+    --ls-display: -0.05em;
+    --ls-h2: -0.035em;
+    --ls-label: 0.18em;
 
     --lh-none: 0.9;
     --lh-tight: 1.05;
@@ -121,7 +192,7 @@
     --icon-scale: 1.125em;
 
     /* ---------- Hero ---------- */
-    --gradient-title: linear-gradient(180deg, #ffffff 0%, #c9ccd6 55%, #8a8ca0 100%);
+    --gradient-title: linear-gradient(var(--t1), var(--t1)); /* titles are solid white; removed in phase 4 */
     --color-ghost-stroke: rgba(237, 237, 242, 0.45);
     --hero-first-scale: 0.3em; /* "José" relative to the title size */
     --hero-first-gap: 0.35em;
@@ -317,10 +388,10 @@
     --border-thin: 1px;
     --border-thick: 2px;
     --radius-sm: 0.375rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1.25rem;
-    --radius-xl: 2rem;
-    --radius-full: 9999px;
+    --radius-md: var(--r-md); /* legacy names, renamed in phase 9 */
+    --radius-lg: var(--r-lg);
+    --radius-xl: var(--r-xl);
+    --radius-full: var(--r-pill);
 
     /* ---------- Shadows ---------- */
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
@@ -337,7 +408,7 @@
     --blur-lg: 40px;
     --glass-saturate: 140%;
     --opacity-disabled: 0.5;
-    --press-scale: 0.98;
+    --press-scale: 0.985;
     --grain-opacity: 0.05;
     --grain-size: 200px;
     --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -353,11 +424,11 @@
     --z-float: 400;
     --z-toast: 600;
     --z-cursor: 700;
-    --z-grain: 800;
     --z-skip: 900;
 
     /* ---------- Motion ---------- */
     --dur-fast: 150ms;
+    --dur-hover: 180ms;
     --dur-base: 300ms;
     --dur-slow: 600ms;
     --dur-slower: 900ms;
@@ -368,5 +439,12 @@
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     --stagger-step: 60ms;
+  }
+
+  /* Below md the copy runs straight over the light: keep it dimmer */
+  @media (max-width: 767px) {
+    :root {
+      --bloom-amount: var(--bloom-amount-mobile);
+    }
   }
 }
