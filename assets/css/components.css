@@ -27,14 +27,6 @@
     --stack-bloom: var(--bloom-neutro);
   }
 
-  /* TODO(restyle): monochrome stand-ins for sections/projects.css and sections/stack.css until
-     phases 5 and 6 rewrite them; removed there. */
-  [data-stack] {
-    --stack-color: var(--t3);
-    --stack-color-2: var(--t3);
-    --stack-text: var(--t2);
-  }
-
   /* ============================== Surfaces ============================== */
   /*
    * Three materials, one rule:
@@ -818,24 +810,38 @@
     margin: auto;
     padding: 0;
     overflow: visible;
-    color: var(--color-text);
+    color: var(--t1);
     background: transparent;
   }
 
+  /* The page behind goes out of focus (surface 1 of 2 while the modal is open) */
   .modal::backdrop {
-    background: var(--color-overlay);
-    -webkit-backdrop-filter: blur(var(--blur-sm));
-    backdrop-filter: blur(var(--blur-sm));
+    background: var(--modal-scrim);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   }
 
+  /* Glass panel (surface 2): darker than the other glass, it carries long reading */
   .modal__panel {
     position: relative;
     max-height: inherit;
     overflow: hidden;
-    background: var(--color-bg-elev);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-xl);
+    background: var(--modal-glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-xl);
     box-shadow: var(--edge), var(--lift);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .modal::backdrop {
+      background: var(--color-overlay);
+    }
+
+    .modal__panel {
+      background: var(--glass-fallback);
+    }
   }
 
   .modal[open] .modal__panel {
@@ -848,15 +854,12 @@
     overscroll-behavior: contain;
   }
 
+  /* Circular close button, aligned with the case study's top bar */
   .modal__close {
-    --btn-bg: var(--color-glass);
-
     position: absolute;
-    top: var(--space-3);
-    right: var(--space-3);
+    top: var(--space-4);
+    right: var(--space-4);
     z-index: var(--z-front);
-    -webkit-backdrop-filter: blur(var(--blur-sm));
-    backdrop-filter: blur(var(--blur-sm));
   }
 
   /* ============================== Icon-only link ============================== */

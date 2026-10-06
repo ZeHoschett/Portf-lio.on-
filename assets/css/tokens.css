@@ -260,6 +260,10 @@
     --phone-island-top: 0.45rem;
     --screen-reflection: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, transparent 38%);
     --modal-max: 64rem;
+    --modal-glass: rgba(14, 14, 18, 0.78); /* glass dark enough for long reading */
+    --modal-scrim: rgba(5, 5, 6, 0.5);
+    --detail-media-max-h: 60dvh;
+    --detail-marker: 0.3125rem; /* highlight bullet */
     --modal-media-ratio: 16 / 9;
     --modal-enter-scale: 0.97;
     /* Full-stack cover: the browser leaves room at the bottom-right for the phone in front */

@@ -481,33 +481,41 @@ function openProjectModal(project, trigger) {
   const showSnippet =
     !codeSamples.length && snippet && images.length && (type === 'backend' || type === 'mainframe');
 
+  /*
+   * Glass case study: a top bar (stack, type and year in mono; the close button from modal.js
+   * sits at its right), the media, then two columns: the main reading on the left and the
+   * supporting column (Tecnologias, Acessos, Versão mobile) on the right, which drops below on
+   * phones. Videos and code samples close the panel at full width.
+   */
   const detail = el('article', { className: 'project-detail', dataset: { stack: project.stack } }, [
+    el('div', { className: 'project-detail__bar' }, [
+      el('p', { className: 'project-detail__eyebrow', text: eyebrow }),
+    ]),
     el('div', { className: 'project-detail__media' }, [createMockup(project, 'modal')]),
     el('div', { className: 'project-detail__body' }, [
-      el('header', { className: 'project-detail__header' }, [
-        el('p', { className: 'project-detail__eyebrow', text: eyebrow }),
-        el('h2', {
-          className: 'project-detail__title',
-          text: project.title,
-          attrs: { id: MODAL_TITLE_ID },
-        }),
-        text(project.subtitle)
-          ? el('p', { className: 'project-detail__subtitle', text: project.subtitle })
-          : null,
-      ]),
-      stats.length
-        ? el(
-            'dl',
-            { className: 'project-detail__stats' },
-            stats.map((item) =>
-              el('div', { className: 'project-detail__stat' }, [
-                el('dt', { text: item.label }),
-                el('dd', { text: item.value }),
-              ]),
-            ),
-          )
-        : null,
       el('div', { className: 'project-detail__main' }, [
+        el('header', { className: 'project-detail__header' }, [
+          el('h2', {
+            className: 'project-detail__title',
+            text: project.title,
+            attrs: { id: MODAL_TITLE_ID },
+          }),
+          text(project.subtitle)
+            ? el('p', { className: 'project-detail__subtitle', text: project.subtitle })
+            : null,
+        ]),
+        stats.length
+          ? el(
+              'dl',
+              { className: 'project-detail__stats' },
+              stats.map((item) =>
+                el('div', { className: 'project-detail__stat' }, [
+                  el('dt', { text: item.label }),
+                  el('dd', { text: item.value }),
+                ]),
+              ),
+            )
+          : null,
         paragraphs.length
           ? el(
               'div',
@@ -563,9 +571,9 @@ function openProjectModal(project, trigger) {
           : null,
       ]),
       el('aside', { className: 'project-detail__aside' }, [
-        tags.length ? section('Stack', [createTagList(tags)]) : null,
+        tags.length ? section('Tecnologias', [createTagList(tags)]) : null,
         links.length
-          ? section('Links', [el('div', { className: 'project-detail__links' }, links)])
+          ? section('Acessos', [el('div', { className: 'project-detail__links' }, links)])
           : null,
         mobileImages.length
           ? section('Versão mobile', [
