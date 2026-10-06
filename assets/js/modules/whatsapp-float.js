@@ -1,5 +1,5 @@
 /**
- * Floating WhatsApp button: hidden over the hero (the hero already has its own WhatsApp CTA),
+ * Floating WhatsApp button: hidden over the hero (the first screen stays clean),
  * revealed once the visitor scrolls past it. The button is removed altogether by
  * config-bindings.js when there is no number, so this module may find nothing to do.
  *

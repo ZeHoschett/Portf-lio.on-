@@ -129,53 +129,51 @@
     <main id="conteudo" tabindex="-1">
       <!-- ============================== HERO ============================== -->
       <section class="hero" id="inicio" aria-labelledby="hero-title">
-        <!-- Parallax layers: content medium (+), art and portrait fast (−) -->
-        <!-- Glass keycap: purely decorative background art above the title, composited with
-             `screen` so the black plate of the image disappears into the black hero. -->
-        <img class="hero__art" src="assets/img/hero-keycap.webp" alt="" aria-hidden="true"
-             width="736" height="886" decoding="async" data-parallax="-0.1">
-
         <div class="hero__inner container container--wide">
-          <p class="hero__side-label" aria-hidden="true">Portfólio · <span data-current-year>2026</span></p>
+          <!-- The one large glass panel of the site: it scrolls a little slower than the page -->
+          <div class="hero__panel surface-glass" data-parallax="0.12">
+            <ul class="hero__corners" role="list" aria-hidden="true">
+              <li class="hero__corner">N° 01 / Portfólio</li>
+              <li class="hero__corner">Mainframe ↔ Cloud</li>
+            </ul>
 
-          <ul class="hero__corners" role="list" aria-hidden="true">
-            <li class="hero__corner hero__corner--tl">N° 01 / Portfólio</li>
-            <li class="hero__corner hero__corner--tr">Mainframe ↔ Cloud</li>
-            <li class="hero__corner hero__corner--br">COBOL · Java · Python · Web</li>
-          </ul>
+            <div class="hero__grid">
+              <div class="hero__content">
+                <!-- Letters are pre-split (CSS-only entrance, no flash); screen readers get the name once -->
+                <h1 class="hero__title" id="hero-title">
+                  <span class="visually-hidden">José Hoschett</span>
+                  <span class="hero__title-first" aria-hidden="true"><span class="char">J</span><span class="char">o</span><span class="char">s</span><span class="char">é</span></span>
+                  <span class="hero__title-last" aria-hidden="true"><span class="char">H</span><span class="char">o</span><span class="char">s</span><span class="char">c</span><span class="char">h</span><span class="char">e</span><span class="char">t</span><span class="char">t</span></span>
+                </h1>
 
-          <div class="hero__content" data-parallax="0.12">
-            <div class="hero__stage">
-              <!-- Letters are pre-split (CSS-only entrance, no flash); screen readers get the name once -->
-              <h1 class="hero__title" id="hero-title" data-hero-title>
-                <span class="visually-hidden">José Hoschett</span>
-                <span class="hero__title-first" aria-hidden="true"><span class="char">J</span><span class="char">o</span><span class="char">s</span><span class="char">é</span></span>
-                <span class="hero__title-last" aria-hidden="true"><span class="char">H</span><span class="char">o</span><span class="char">s</span><span class="char">c</span><span class="char">h</span><span class="char">e</span><span class="char">t</span><span class="char">t</span></span>
-              </h1>
+                <div class="hero__intro">
+                  <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
+                  <!-- TODO(jose): a frase vem de config.tagline -->
+                  <p class="hero__tagline" data-bind="tagline">Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend.</p>
+                </div>
 
-              <!-- Net scroll speed = content (0.12) + photo (−0.22) = −0.10 -->
-              <div class="hero__photo" data-parallax="-0.22">
+                <div class="hero__actions cluster">
+                  <a class="btn btn--primary" href="#projetos">Ver projetos</a>
+                  <a class="btn btn--secondary" href="#contato">Fale comigo</a>
+                  <a class="btn btn--secondary" data-link="github" target="_blank" rel="noopener noreferrer">
+                    <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-github"></use></svg>
+                    <span>GitHub</span>
+                    <span class="visually-hidden">(abre em nova aba)</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Framed portrait with the same light edge as the panel -->
+              <div class="hero__photo">
                 <!-- A foto vem de config.photo; o alt é estático para descrever a imagem também sem JS -->
                 <img class="hero__photo-img" src="assets/img/jose-hoschett.webp" data-bind-src="photo" alt="Foto de José Hoschett" width="832" height="1040" fetchpriority="high" decoding="async" data-parallax-mouse="14">
               </div>
             </div>
 
-            <div class="hero__meta">
-              <div class="hero__intro">
-                <p class="hero__role" data-bind="role">Desenvolvedor COBOL · Java</p>
-                <!-- TODO(jose): a frase vem de config.tagline -->
-                <p class="hero__tagline" data-bind="tagline">Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend.</p>
-              </div>
-
-              <!-- The main CTAs live in the fixed header; the hero keeps the WhatsApp button -->
-              <div class="hero__actions cluster">
-                <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
-                  <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
-                  <span>WhatsApp</span>
-                  <span class="visually-hidden">(abre em nova aba)</span>
-                </a>
-              </div>
-            </div>
+            <p class="hero__footer" aria-hidden="true">
+              <span>Portfólio · <span data-current-year>2026</span></span>
+              <span>COBOL · Java · Python · Web</span>
+            </p>
           </div>
         </div>
       </section>

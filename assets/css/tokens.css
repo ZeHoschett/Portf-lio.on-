@@ -138,7 +138,6 @@
     --fs-2xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
     --fs-3xl: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
     --fs-display: clamp(3rem, 1.2rem + 8vw, 6.5rem); /* up to 104 */
-    --fs-hero: clamp(3.5rem, 17.5vw, 15rem); /* "HOSCHETT" spans the width, still fits at 360px */
 
     /* Glass type scale */
     --fs-h2: clamp(2rem, 1.35rem + 2.9vw, 3.5rem); /* up to 56 */
@@ -204,35 +203,22 @@
     --icon-scale: 1.125em;
 
     /* ---------- Hero ---------- */
-    --gradient-title: linear-gradient(var(--t1), var(--t1)); /* titles are solid white; removed in phase 4 */
-    --color-ghost-stroke: rgba(237, 237, 242, 0.45);
-    --hero-first-scale: 0.3em; /* "José" relative to the title size */
-    --hero-first-gap: 0.35em;
-    --hero-first-indent: 0.12em;
-    --hero-photo-w: min(62vw, 20rem);
-    --hero-photo-w-lg: clamp(16rem, 24vw, 26rem);
-    --hero-photo-offset-lg: 6%;
+    --gradient-title: linear-gradient(var(--t1), var(--t1)); /* only contact.css until phase 8 */
+    --hero-panel-pad: clamp(1.375rem, 0.9rem + 2.4vw, 2.375rem); /* 22 to 38 */
+    --hero-meta-gap: clamp(2.25rem, 1.4rem + 4vw, 4rem); /* the large interval under the corners */
+    --hero-panel-min-h: calc(100svh - var(--header-h) - var(--space-5) - var(--space-6));
+    --hero-first-scale: 0.42em; /* "José" relative to "Hoschett" */
+    --hero-photo-max: 22rem;
     --hero-photo-ratio: 4 / 5;
-    --hero-photo-lift: 0.18; /* photo bottom sits this × title size above the baseline */
-    --hero-photo-mask: linear-gradient(to bottom, #000 50%, transparent 100%);
-    --hero-bg: #000; /* the hero is pure black so the art's own plate blends into it */
-    /* Background art: a glass keycap shot on black, composited with `screen` (see hero.css) */
-    --hero-art-w: clamp(12rem, 52vw, 30rem);
-    --hero-art-w-md: clamp(20rem, 40vw, 30rem);
-    --hero-art-w-lg: clamp(26rem, 44vw, 46rem);
-    --hero-art-top: 15%; /* phones: the free band above the portrait */
-    --hero-art-top-md: 26%;
-    --hero-art-top-lg: 33%; /* above the title, clear of the portrait on the right */
-    --hero-art-left-lg: 8%;
-    --hero-art-opacity: 1;
-    --hero-art-opacity-mobile: 0.85;
-    --hero-art-glow: 0 0 6rem rgba(124, 92, 255, 0.28);
-    /* Fade the edges of the black plate so it never reads as a square */
-    --hero-art-mask: radial-gradient(closest-side, #000 52%, transparent 100%);
+    --hero-photo-shadow: 0 24px 60px -30px #000000;
+    --hero-bloom-bleed: -10% -20%;
+    /* The strongest light of the page: it sits behind the hero's glass panel */
+    --hero-bloom:
+      radial-gradient(36% 42% at 24% 18%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 1.05)), transparent 70%),
+      radial-gradient(32% 36% at 80% 82%, rgba(var(--bloom-java), calc(var(--bloom-amount) * 0.7)), transparent 70%);
     --photo-img-scale: 1.06;
     --rise-scale: 1.04;
     --char-rise: 0.35em;
-    --char-bleed: 0.15em;
     --char-tilt: 6deg;
     --hero-delay: 150ms;
     --char-stagger: 35ms;
