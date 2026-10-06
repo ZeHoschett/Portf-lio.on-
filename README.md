@@ -255,6 +255,63 @@ Vale conferir no navegador depois de preencher seus dados:
 
 ---
 
+## Restyle: sistema vidro (06/10/2026)
+
+O visual foi refeito em nove etapas, sem mexer em textos nem em dados. O site passou de roxo e
+neon para o **sistema vidro**: fundo quase preto, painéis de vidro fosco, interface em preto e
+branco e cor só na luz fora de foco, com uma tinta por stack.
+
+### O que mudou
+
+| Área | Antes | Depois |
+| --- | --- | --- |
+| Topo | menu abaixo de 1280px; WhatsApp na barra | barra de vidro de borda a borda; menu abaixo de 1024px; Ver projetos, Fale comigo e GitHub |
+| Início | fundo preto, keycap, nome gigante cruzado pela foto | painel único de vidro; "José" sobre "Hoschett"; foto emoldurada na coluna da direita |
+| Sobre | foto com borrão roxo | duas colunas; foto com recorte mais fechado |
+| Stack | letreiro branco e cartões com linha colorida | letreiro monocromático e cinco cartões em relevo |
+| Projetos | quatro seções empilhadas, cada uma com sua animação | uma área com abas que filtram no lugar e mostram a contagem (`Java · 2`); a luz troca com a aba |
+| Cartão de projeto | título clicável, tilt 3D | título, subtítulo, resumo, tags, mockup e rodapé com "Estudo de caso" e ícones de acesso |
+| COBOL | monitor CRT verde, digitação e T. rex | painel ISPF e o programa `.CBL` em branco sobre preto |
+| Estudo de caso | painel escuro em uma coluna | vidro sobre a página desfocada, leitura principal e coluna de apoio (Tecnologias, Acessos, Versão mobile) |
+| Certificados | grade | trilho horizontal com contador, setas e o último cartão cortado na borda |
+| Contato | cartões por canal, botão verde do WhatsApp | um painel de vidro com uma linha clicável por canal |
+| Botão flutuante | verde da marca | vidro monocromático; some também ao chegar no Contato |
+| Fontes | Space Grotesk, Inter, JetBrains Mono, VT323 | Inter Tight, Inter, JetBrains Mono |
+
+Saíram do projeto: as três animações em canvas, a digitação do COBOL, o brilho que seguia o
+cursor, o tilt 3D, o carregamento sob demanda da arte do COBOL e as três imagens de arte (keycap,
+neon do Python e T. rex). Favicon, og-image e placeholder de projeto foram refeitos em preto e
+branco.
+
+### Verificação feita no fim
+
+| Item | Resultado |
+| --- | --- |
+| Console | sem erros nem avisos, em todas as seções, nas 4 abas e nos 12 estudos de caso |
+| Larguras 360, 390, 768, 1024, 1280 e 1920px | nenhuma rolagem horizontal |
+| Teclado | 58 paradas de Tab, todas com anel de foco branco de 2px |
+| Abas | 4 painéis no HTML; contagens 2, 2, 6 e 2 batem com `data/projects.js` |
+| Trilho de certificados | setas andam um cartão; contador de `01 de 14` a `14 de 14`; recebe Tab; último cartão cortado |
+| Contato | cada linha abre o destino certo; o botão de copiar não abre o e-mail junto; o número do WhatsApp nunca aparece |
+| Desfoque | no máximo 3 superfícies de vidro visíveis em qualquer ponto da página |
+| Contraste AA | medido nos pixels reais atrás de cada texto: pior caso 4.65:1, nenhuma falha; sem `backdrop-filter`, pior caso 4.78:1 |
+| Movimento reduzido | nada anima e nada fica invisível |
+| Degraus no gradiente | sem faixas visíveis (grão também por cima do vidro) |
+
+Lighthouse mobile, mediana de três execuções, antes e depois:
+
+| Categoria / métrica | Antes | Depois |
+| --- | ---: | ---: |
+| Desempenho | 55 | 66 |
+| Acessibilidade | 100 | 100 |
+| Boas práticas | 100 | 100 |
+| SEO | 100 | 100 |
+| LCP | 5,4 s | 4,8 s |
+| TBT | 516 ms | 250 ms |
+| CLS | 0 | 0 |
+
+---
+
 ## Publicar
 
 Todos os caminhos são relativos, então o site funciona na raiz de um domínio ou em subpasta.
@@ -343,6 +400,8 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
+| **Projeto "Portfólio Pessoal"** | `data/projects.js` | atualizar a descrição para o visual novo | os destaques ainda citam Canvas, neon e terminal CRT; a tag "Canvas API" e os dois trechos de código mostram o visual antigo |
+| **Segunda foto** | `index.html` (`TODO(jose)` no Sobre) | uma foto diferente para o Sobre | a mesma foto do Início, num recorte mais fechado |
 
 ### Ordem sugerida
 
