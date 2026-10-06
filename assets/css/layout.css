@@ -60,8 +60,4 @@
     align-items: center;
     gap: var(--cluster-gap, var(--space-3));
   }
-
-  .flow > * + * {
-    margin-block-start: var(--flow-space, 1em);
-  }
 }

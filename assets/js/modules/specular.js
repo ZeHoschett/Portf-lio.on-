@@ -1,8 +1,8 @@
 /**
  * Specular highlight: a soft light that follows the pointer over glass and solid surfaces.
  * Writes `--mx/--my` (percentages) on the hovered surface; the CSS `::after` draws the light.
- * Event delegation, so it also works for cards rendered later. No transform: the old 3D tilt is
- * gone, the surface only lifts through CSS. Fine pointer only, off with reduced motion.
+ * Event delegation, so it also works for cards rendered later. No transform: the surface only
+ * lifts through CSS. Fine pointer only, off with reduced motion.
  */
 import { watchFinePointer, watchReducedMotion } from '../utils/motion.js';
 import { onScrollFrame } from '../utils/scroll.js';

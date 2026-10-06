@@ -52,7 +52,7 @@
     max-width: 100%;
     padding: var(--space-1);
     overflow-x: auto;
-    background: var(--glass);
+    background: linear-gradient(var(--glass), var(--glass)), var(--glass-scrim-bar);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     border: var(--border-thin) solid var(--glass-line);

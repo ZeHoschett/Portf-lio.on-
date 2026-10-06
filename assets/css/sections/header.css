@@ -36,7 +36,7 @@
     position: absolute;
     inset: 0;
     z-index: var(--z-below);
-    background: var(--glass);
+    background: linear-gradient(var(--glass), var(--glass)), var(--glass-scrim-bar);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     border-bottom: var(--border-thin) solid var(--hairline);

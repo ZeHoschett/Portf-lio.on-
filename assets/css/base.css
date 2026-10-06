@@ -125,10 +125,10 @@
     z-index: var(--z-skip);
     padding: var(--space-3) var(--space-5);
     font-weight: var(--fw-semibold);
-    color: var(--color-bg);
+    color: var(--bg);
     text-decoration: none;
-    background: var(--color-text);
-    border-radius: var(--radius-full);
+    background: var(--t1);
+    border-radius: var(--r-pill);
     transform: translateY(calc(-100% - var(--space-6)));
     transition: transform var(--dur-base) var(--ease-out-expo);
   }
@@ -145,10 +145,6 @@
     width: var(--icon-size, 1em);
     height: var(--icon-size, 1em);
     flex-shrink: 0;
-  }
-
-  .mono {
-    font-family: var(--font-mono);
   }
 
   /* Set on <html> while the mobile menu (or a modal) is open */

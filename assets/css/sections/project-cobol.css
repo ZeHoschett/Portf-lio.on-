@@ -1,7 +1,7 @@
 /*
  * COBOL panel (#projetos-cobol): the mainframe flavour lives in the type, not in colour.
  * ISPF/3270 panel rows, the PF-key footer and a terminal with the .CBL program, all monospace,
- * white on black. No CRT effects (scanlines, vignette, flicker, phosphor green).
+ * white on black, with no monitor effects and no colour.
  */
 @layer sections {
   /* ---------- ISPF / 3270 panel ---------- */

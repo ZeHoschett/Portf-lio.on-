@@ -38,7 +38,10 @@
    */
   .surface-glass {
     position: relative;
-    background: var(--glass);
+    background:
+      var(--texture-grain-glass) 0 0 / var(--grain-size),
+      linear-gradient(var(--glass), var(--glass)),
+      var(--glass-scrim);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     border: var(--border-thin) solid var(--glass-line);
@@ -140,7 +143,7 @@
   /* ============================== Buttons ============================== */
   .btn {
     --btn-bg: transparent;
-    --btn-color: var(--color-text);
+    --btn-color: var(--t1);
     --btn-border: transparent;
     --btn-shadow: none;
 
@@ -160,7 +163,7 @@
     white-space: nowrap;
     background: var(--btn-bg);
     border: var(--border-thin) solid var(--btn-border);
-    border-radius: var(--radius-full);
+    border-radius: var(--r-pill);
     box-shadow: var(--btn-shadow);
     cursor: pointer;
     translate: var(--magnet-x, 0) var(--magnet-y, 0); /* set by modules/magnetic.js */
@@ -486,7 +489,7 @@
     position: relative;
     min-height: 0;
     overflow: hidden;
-    background: var(--color-bg);
+    background: var(--bg);
   }
 
   .mockup__image {
@@ -508,7 +511,7 @@
     background: var(--phone-frame);
     border-radius: var(--phone-radius);
     box-shadow:
-      inset 0 0 0 var(--border-thin) var(--color-border-strong),
+      inset 0 0 0 var(--border-thin) var(--glass-line),
       var(--shadow-lg);
   }
 
@@ -525,21 +528,21 @@
     top: 20%;
     left: calc(var(--phone-button-w) * -1);
     height: 12%;
-    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    border-radius: var(--r-xs) 0 0 var(--r-xs);
   }
 
   .mockup__device::after {
     top: 26%;
     right: calc(var(--phone-button-w) * -1);
     height: 16%;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-radius: 0 var(--r-xs) var(--r-xs) 0;
   }
 
   .mockup__screen {
     position: relative;
     height: 100%;
     overflow: hidden;
-    background: var(--color-bg);
+    background: var(--bg);
     border-radius: calc(var(--phone-radius) - var(--phone-bezel));
   }
 
@@ -559,7 +562,7 @@
     width: var(--phone-island-w);
     height: var(--phone-island-h);
     background: var(--phone-island);
-    border-radius: var(--radius-full);
+    border-radius: var(--r-pill);
     translate: -50% 0;
   }
 
@@ -568,7 +571,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background: var(--color-bg);
+    background: var(--bg);
   }
 
   /* ---------- Showcase (full-stack): browser with the phone version in front ---------- */
@@ -636,7 +639,7 @@
     color: var(--t3);
   }
 
-  /* COBOL keeps its mainframe flavour through the monospace and the program name, not phosphor */
+  /* COBOL keeps its mainframe flavour through the monospace and the program name, not colour */
   [data-stack='cobol'] .code__token--comment {
     font-style: normal;
   }
@@ -695,7 +698,7 @@
     width: var(--tap-min);
     height: var(--tap-min);
     color: var(--t1);
-    background: var(--color-glass);
+    background: var(--control-scrim);
     border: var(--border-thin) solid var(--glass-line);
     border-radius: var(--r-pill);
     box-shadow: var(--edge);
@@ -707,9 +710,9 @@
     padding: var(--space-1) var(--space-3);
     font-family: var(--font-mono);
     font-size: var(--fs-2xs);
-    color: var(--color-text);
-    background: var(--color-glass);
-    border-radius: var(--radius-full);
+    color: var(--t1);
+    background: var(--control-scrim);
+    border-radius: var(--r-pill);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -827,7 +830,7 @@
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .modal::backdrop {
-      background: var(--color-overlay);
+      background: var(--modal-scrim-solid);
     }
 
     .modal__panel {
@@ -926,7 +929,7 @@
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     color: var(--t1);
-    background: var(--glass);
+    background: linear-gradient(var(--glass), var(--glass)), var(--glass-scrim);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     border: var(--border-thin) solid var(--glass-line);
@@ -977,7 +980,7 @@
     height: var(--float-size);
     color: var(--t1);
     /* Glass, monochrome: no brand green (colour never touches a control) */
-    background: var(--glass-strong);
+    background: linear-gradient(var(--glass-strong), var(--glass-strong)), var(--glass-scrim);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     border: var(--border-thin) solid var(--glass-line);

@@ -1,7 +1,8 @@
 # Portfólio de José Hoschett
 
-Portfólio pessoal de **José Hoschett**, Desenvolvedor COBOL · Java. Página única, dark, responsiva e
-interativa, com uma identidade visual própria para cada stack (Java, Python, COBOL e Web).
+Portfólio pessoal de **José Hoschett**, Desenvolvedor COBOL · Java. Página única, responsiva, no
+**sistema vidro**: fundo quase preto, painéis de vidro fosco e uma interface toda em preto e branco.
+A única cor do site é a luz fora de foco atrás do vidro, com uma tinta própria por stack.
 
 - **Stack do site:** HTML5, CSS3 (cascade layers, custom properties) e JavaScript moderno (ES Modules).
 - **Zero frameworks, zero dependências, sem etapa de build.** É só publicar os arquivos.
@@ -18,57 +19,49 @@ e **dados** nos arquivos de `assets/js/data/`.
 
 | Seção | Conteúdo vem de | Observação |
 | --- | --- | --- |
-| Início (hero) | `config.js` | nome, cargo, frase, foto e botão do WhatsApp; fundo preto com a arte do keycap |
-| Sobre | `config.js` → `bio` | com a bio vazia, aparece o texto padrão do HTML |
-| Stack | `index.html` | marquee infinito + 5 grupos com logos, sem porcentagens; o quinto reúne as ferramentas |
-| Projetos | `data/projects.js` | 4 subseções (Java, Python, COBOL, Web), cada uma com sua animação |
-| Formação | `data/education.js` | timeline vertical |
-| Certificados | `data/certificates.js` | grade com imagem, descrição curta e ampliação em lightbox |
-| Contato | `config.js` | e-mail com botão copiar, LinkedIn, GitHub e WhatsApp |
+| Início (hero) | `config.js` | painel de vidro: nome, cargo, frase, botões (Ver projetos, Fale comigo, GitHub) e foto |
+| Sobre | `config.js` → `bio` | duas colunas: foto e bio com os chips; com a bio vazia, aparece o texto padrão do HTML |
+| Stack | `index.html` | letreiro em movimento + 5 grupos em relevo, sem porcentagens; o quinto reúne as ferramentas |
+| Projetos | `data/projects.js` | uma área com abas que filtram no lugar (Java · 2, Python · 2…), contagem vinda dos dados |
+| Formação | `data/education.js` | linha do tempo vertical |
+| Certificados | `data/certificates.js` | trilho horizontal com contador, setas e ampliação em lightbox |
+| Contato | `config.js` | painel de vidro com uma linha clicável por canal e botão de copiar o e-mail |
 
 **Links vazios nunca aparecem.** Se `github`, `whatsapp.number`, `repo` ou `demo` estiverem em
 branco, o botão correspondente não é criado nada de link quebrado para o recrutador.
 
 ### Como o topo se comporta
 
-O header é fixo e leva três atalhos: **Ver projetos · Fale comigo · WhatsApp**.
+O header é uma barra de vidro fixa, de borda a borda, com três atalhos: **Ver projetos · Fale comigo ·
+GitHub**.
 
-- **A partir de 1280px:** logo à esquerda, os 7 links centralizados e os botões à direita, tudo em
-  uma linha. O do WhatsApp é só ícone, para a barra não estourar.
-- **Abaixo de 1280px:** aparece o menu hambúrguer, e os dois primeiros botões ficam dentro dele,
-  abaixo dos links são os mesmos elementos, não uma cópia. O do WhatsApp sai da barra, porque
-  nessa largura ele já aparece no hero e no botão flutuante.
+- **A partir de 1024px:** logo à esquerda, os 7 links no centro e os botões à direita, tudo em uma
+  linha. O GitHub é só o ícone, num botão circular. A fileira foi medida em 1024px, com a barra de
+  rolagem, e cabe com folga.
+- **Abaixo de 1024px:** aparece o menu hambúrguer, que abre em vidro sobre a página. Os três botões
+  ficam dentro dele, abaixo dos links (são os mesmos elementos, não uma cópia), e o GitHub ganha
+  rótulo.
 
-O corte é 1280px, e não 1024px, porque os links mais os botões não cabem numa tela de 1024px sem
-criar rolagem horizontal.
+O WhatsApp não fica no topo: ele está no Contato e no botão flutuante, que aparece depois do Início
+e some de novo ao chegar no Contato.
 
-### A arte do Início
+### O sistema vidro
 
-O hero tem fundo **preto puro** (`--hero-bg`) e uma única arte estática: o keycap de vidro
-`assets/img/hero-keycap.webp`, posicionado acima do nome e longe da foto. Ele é decorativo
-(`alt=""`, `aria-hidden`) e é composto com `mix-blend-mode: screen`, então a chapa preta da
-fotografia some no fundo da seção o mesmo truque do neon do Python.
+Toda a aparência sai dos tokens de `assets/css/tokens.css`. Três materiais, com uma regra fixa:
 
-Tamanho, posição e opacidade saem dos tokens `--hero-art-*` em `assets/css/tokens.css`
-(um valor para celular, um para telas médias e um para desktop). Para trocar a arte, basta
-substituir o `.webp` e ajustar `width`/`height` no `index.html`.
+| Material | Quando | Onde |
+| --- | --- | --- |
+| **Vidro** (`.surface-glass`) | o elemento se sobrepõe a outro conteúdo | topo, menu, painel do Início, abas de projeto, modal, painel do Contato, botão flutuante, aviso |
+| **Relevo** (`.surface-relief`) | o elemento só repousa sobre a página | grupos da Stack, itens da Formação, estados vazios |
+| **Sólido** (`.surface-solid`) | o elemento se repete muitas vezes na tela | cartões de projeto e de certificado, mockups, blocos de código |
 
-> Antes havia aqui um canvas animado (o "orb"). Ele foi removido: o Início agora é estático.
+No máximo **três superfícies com desfoque** ficam visíveis ao mesmo tempo, por desempenho. É por isso
+que o cartão de projeto é sólido, e não vidro.
 
-### A identidade visual de cada stack
-
-Cada subseção de projetos tem arte de fundo própria, feita para lembrar a tecnologia:
-
-| Subseção | Arte de fundo |
-| --- | --- |
-| **Java** | rede hexagonal de nós, com pulsos âmbar viajando pelas arestas |
-| **Python** | o logo da linguagem como um letreiro de neon aceso, composto em `screen` sobre o fundo escuro da seção |
-| **COBOL** | a seção inteira vira um monitor CRT (scanlines, vinheta, flicker, verde fósforo), com o programa sendo digitado e uma cabeça de T. rex rugindo ao fundo, queimada no fósforo |
-| **Web** | grade de pontos que reage ao cursor; sem mouse, uma onda percorre a grade sozinha |
-
-Java e Web em Canvas 2D; Python e COBOL em CSS, sobre duas imagens leves (37 KB e 74 KB). As animações **pausam sozinhas** quando saem da tela
-ou quando a aba perde o foco, e com "reduzir movimento" ativo no sistema todas exibem um quadro
-estático nada fica piscando para quem tem sensibilidade a movimento.
+A cor existe só como luz fora de foco (`.page-bloom` e a luz de cada seção), feita de gradientes
+radiais, sem imagem de fundo. Na área de projetos, a luz troca junto com a aba: âmbar no Java,
+azul no Python, verde no COBOL e violeta na Web. Texto, borda, ícone, botão e estado são sempre
+branco sobre preto.
 
 ---
 
@@ -101,9 +94,8 @@ assets/
     config.js              ← SEUS DADOS E LINKS (único lugar para editar)
     data/                  ← projects.js · education.js · certificates.js
     modules/               navegação, projetos, formação, certificados, modal, toast, copiar e-mail…
-    animations/            animações de canvas por seção
-    utils/                 helpers (DOM seguro, motion, canvas…)
-  img/  placeholders/ · projects/ · certificates/ · hero-keycap.webp · trex-head.webp · python-neon.webp · og-image.png
+    utils/                 helpers (DOM seguro, motion, scroll, realce de código…)
+  img/  placeholders/ · projects/ · certificates/ · jose-hoschett.webp · og-image.png
   icons/ sprite.svg · favicon.svg
   docs/  documentações técnicas dos projetos (.docx)
 ```
@@ -196,7 +188,8 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
 
 Os trechos de código devem ser **copiados do projeto real**, nunca escritos para o portfólio.
 
-O projeto aparece **somente** na seção da sua `stack`. Seções sem projetos exibem um estado vazio.
+O projeto aparece **somente** na aba da sua `stack`, e a contagem da aba (`Java · 2`) se atualiza
+sozinha. Abas sem projetos exibem um estado vazio.
 
 ## Como adicionar formação
 
@@ -257,6 +250,7 @@ Vale conferir no navegador depois de preencher seus dados:
 - [ ] Navegação só pelo teclado (Tab, Shift+Tab, Enter, Esc) no menu, nas abas de projetos, nos
       cards, no modal e no carrossel
 - [ ] Com "reduzir movimento" ativo no sistema, o site fica estático, completo e bonito
+- [ ] Trilho de certificados: arrasta no toque, anda com as setas e recebe foco pelo Tab
 - [ ] Lighthouse mobile (F12 → Lighthouse) nas 4 categorias
 
 ---
@@ -322,10 +316,7 @@ Nenhum destes exige atribuição, mas fica o registro de onde vieram:
 
 | Recurso | Onde | Licença |
 | --- | --- | --- |
-| Logos de tecnologias e ferramentas | `assets/icons/sprite.svg` | [Simple Icons](https://simpleicons.org), CC0 |
-| Cabeça de T. rex (máscara alfa) | `assets/img/trex-head.webp` | arte fornecida por José para este portfólio |
-| Letreiro de neon do logo Python | `assets/img/python-neon.webp` | arte fornecida por José para este portfólio |
-| Keycap de vidro do Início | `assets/img/hero-keycap.webp` | arte fornecida por José para este portfólio |
+| Logos de tecnologias e ferramentas (inclusive o do GitHub) | `assets/icons/sprite.svg` | [Simple Icons](https://simpleicons.org), CC0 |
 
 Os ícones de COBOL, CICS, DB2, z/OS e SQL são desenhos originais deste projeto: essas tecnologias
 não têm logo de marca que possa ser usado.
