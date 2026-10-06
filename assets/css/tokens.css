@@ -195,6 +195,11 @@
     --progress-h: 2px;
     --indicator-base: 100px; /* nav indicator is scaled from this width */
     --toggle-line-w: 1.125rem;
+    --menu-bg: rgba(5, 5, 6, 0.62); /* mobile overlay tint over the blur */
+    --nav-pill-bg: rgba(255, 255, 255, 0.08);
+    --nav-pill-inset: 0.375rem; /* active pill is 32px tall inside the 44px hit area */
+    --nav-link-pad: var(--space-2); /* desktop bar, 1024 to 1279px */
+    --fs-nav: var(--fs-xs);
     --toggle-icon-h: 0.5rem;
     --icon-scale: 1.125em;
 

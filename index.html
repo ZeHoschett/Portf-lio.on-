@@ -101,14 +101,15 @@
               <li><a class="site-nav__link" href="#contato">Contato</a></li>
             </ul>
 
-            <!-- One DOM node for both layouts: stacked inside the overlay below 1280px, a row in the bar above it -->
+            <!-- One DOM node for both layouts: stacked inside the overlay below 1024px, a row in the bar above it -->
             <div class="site-nav__actions" data-nav-actions>
               <a class="btn btn--secondary btn--sm" href="#projetos">Ver projetos</a>
               <a class="btn btn--primary btn--sm" href="#contato" data-magnetic>Fale comigo</a>
-              <!-- Icon only, so the row still fits at 1280px. Below that the hero keeps its own. -->
-              <a class="btn btn--whatsapp btn--icon site-nav__whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer" hidden>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
-                <span class="visually-hidden">Conversar no WhatsApp (abre em nova aba)</span>
+              <!-- Labelled in the overlay; a circular icon button in the bar (the label stays for screen readers) -->
+              <a class="btn btn--secondary btn--sm site-nav__github" data-link="github" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-github"></use></svg>
+                <span class="site-nav__github-label">GitHub</span>
+                <span class="visually-hidden">(abre em nova aba)</span>
               </a>
             </div>
           </div>

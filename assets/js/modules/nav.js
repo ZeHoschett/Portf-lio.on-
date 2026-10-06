@@ -9,7 +9,7 @@ import { onScrollFrame } from '../utils/scroll.js';
 import { createScrollspy } from './scrollspy.js';
 
 const SCROLLED_THRESHOLD_PX = 40;
-const DESKTOP_QUERY = '(min-width: 1280px)';
+const DESKTOP_QUERY = '(min-width: 1024px)';
 const LABELS = { open: 'Abrir menu', close: 'Fechar menu' };
 
 /**

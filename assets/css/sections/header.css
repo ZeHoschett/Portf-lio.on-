@@ -1,4 +1,4 @@
-/* Site header, navigation and scroll progress. Mobile-first; desktop nav from 1280px. */
+/* Site header, navigation and scroll progress. Mobile-first; desktop nav from 1024px. */
 @layer sections {
   /* ============================== Reading progress ============================== */
   .scroll-progress {
@@ -13,8 +13,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    background: var(--gradient-accent);
-    box-shadow: var(--glow-accent);
+    background: var(--t1);
     transform: scaleX(0);
     transform-origin: left center;
   }
@@ -28,30 +27,26 @@
   }
 
   /*
-   * Glass lives on a pseudo-element: backdrop-filter on .site-header itself would turn it into
-   * the containing block of the fixed mobile menu and clip the overlay to the header's box.
+   * Edge-to-edge glass bar. The glass lives on a pseudo-element: backdrop-filter on .site-header
+   * itself would turn it into the containing block of the fixed mobile menu and clip the overlay
+   * to the header's box.
    */
   .site-header::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: var(--z-below);
-    background: var(--color-glass);
-    -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(var(--glass-saturate));
-    backdrop-filter: blur(var(--blur-glass)) saturate(var(--glass-saturate));
-    border-bottom: var(--border-thin) solid var(--color-border);
-    opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-out-quart);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border-bottom: var(--border-thin) solid var(--hairline);
+    box-shadow: var(--edge);
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .site-header::before {
-      background: var(--color-bg-elev);
+      background: var(--glass-fallback);
     }
-  }
-
-  .site-header.is-scrolled::before {
-    opacity: 1;
   }
 
   .site-header__inner {
@@ -71,29 +66,21 @@
     height: var(--tap-min);
     font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
-    letter-spacing: var(--ls-snug);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-normal);
+    color: var(--t1);
     text-decoration: none;
-    background: var(--color-bg-elev);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-md);
-    transition:
-      border-color var(--dur-fast) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
-  }
-
-  .site-header__monogram {
-    color: transparent;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
+    background: var(--glass-strong);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-sm);
+    box-shadow: var(--edge);
+    transition: border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .site-header__logo:hover,
     .site-nav__toggle:hover {
-      border-color: var(--color-accent);
-      box-shadow: var(--glow-accent);
+      border-color: var(--glass-line-hi);
     }
   }
 
@@ -107,14 +94,12 @@
     width: var(--tap-min);
     height: var(--tap-min);
     margin-inline-start: auto;
-    color: var(--color-text);
-    background: var(--color-bg-elev);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-md);
+    color: var(--t1);
+    background: transparent;
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
     -webkit-tap-highlight-color: transparent;
-    transition:
-      border-color var(--dur-fast) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
+    transition: border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   .site-nav__toggle-icon {
@@ -130,7 +115,7 @@
     width: 100%;
     height: var(--border-thick);
     background: currentColor;
-    border-radius: var(--radius-full);
+    border-radius: var(--r-pill);
     transition: transform var(--dur-base) var(--ease-out-expo);
   }
 
@@ -151,6 +136,7 @@
   }
 
   /* ============================== Menu overlay (mobile) ============================== */
+  /* Glass over the whole page: the overlay itself carries the backdrop-filter (no ancestor does) */
   .site-nav__menu {
     position: fixed;
     inset: 0;
@@ -162,12 +148,20 @@
     padding-inline: var(--space-gutter);
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: var(--gradient-menu), var(--color-bg);
+    background: var(--menu-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     visibility: hidden;
     opacity: 0;
     transition:
       opacity var(--dur-base) var(--ease-out-quart),
       visibility 0s linear var(--dur-base);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-nav__menu {
+      background: var(--bg);
+    }
   }
 
   .is-menu-open .site-nav__menu {
@@ -200,46 +194,45 @@
   }
 
   .site-nav__link {
+    position: relative;
     display: flex;
     align-items: baseline;
     gap: var(--space-4);
     min-height: var(--tap-min);
     padding-block: var(--space-2);
     font-family: var(--font-display);
-    font-size: var(--fs-2xl);
-    font-weight: var(--fw-bold);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-medium);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-tight);
-    text-transform: uppercase;
     text-decoration: none;
-    color: var(--color-text-muted);
+    color: var(--t2);
     counter-increment: nav-link;
-    transition:
-      color var(--dur-fast) var(--ease-out-quart),
-      transform var(--dur-base) var(--ease-out-expo);
+    transition: color var(--dur-hover) var(--ease-out-quart);
   }
 
   .site-nav__link::before {
     content: counter(nav-link, decimal-leading-zero);
     content: counter(nav-link, decimal-leading-zero) / ''; /* decorative: hidden from assistive tech */
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
-    color: var(--color-accent-text);
+    letter-spacing: var(--ls-label);
+    color: var(--t3);
   }
 
   .site-nav__link.is-active {
-    color: var(--color-text);
+    color: var(--t1);
   }
 
+  /* The active link is a light pill (desktop), not a sliding underline */
   .site-nav__indicator {
     display: none;
   }
 
   /*
    * Header CTAs. One DOM node serving both layouts: stacked inside the overlay on mobile
-   * (entering after the links, hence --i set by nav.js), a row in the bar from 1280px.
+   * (entering after the links, hence --i set by nav.js), a row in the bar from 1024px.
    */
   .site-nav__actions {
     display: grid;
@@ -262,27 +255,19 @@
     width: 100%;
   }
 
-  /*
-   * WhatsApp in the bar is desktop only: below 1280px the hero already carries its own button
-   * (plus the floating one), and the bar has no room for a fourth control.
-   */
-  .site-nav__whatsapp {
-    display: none;
-  }
-
   @media (hover: hover) and (pointer: fine) {
     .site-nav__link:hover {
-      color: var(--color-text);
+      color: var(--t1);
     }
   }
 
   /*
-   * Desktop navigation. 1280px, not 1024px: the bar holds 8 links plus 3 buttons, which do not
-   * fit in 1024px without overflowing horizontally.
+   * Desktop navigation from 1024px: logo, the seven links and three buttons (GitHub as an icon)
+   * in one row. Measured to fit at 1024px with the scrollbar; the links tighten up to 1280px.
    */
-  @media (min-width: 1280px) {
+  @media (min-width: 1024px) {
     .site-header__inner {
-      gap: var(--space-5);
+      gap: var(--space-4);
     }
 
     .site-nav {
@@ -301,10 +286,12 @@
       display: flex;
       flex-direction: row; /* the overlay base sets column */
       align-items: center;
-      gap: var(--space-5);
+      gap: var(--space-4);
       padding: 0;
       overflow: visible;
       background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
       visibility: visible;
       opacity: 1;
       transition: none;
@@ -319,7 +306,7 @@
 
     .site-nav__actions {
       display: flex;
-      gap: var(--space-3);
+      gap: var(--space-2);
       margin-block-start: 0;
       opacity: 1;
       transform: none;
@@ -330,11 +317,19 @@
       width: auto;
     }
 
-    .site-nav__whatsapp {
-      --btn-border: transparent;
+    /* GitHub becomes a circular icon button; its label stays for screen readers */
+    .site-nav__actions .site-nav__github {
+      width: var(--tap-min);
+      padding: 0;
+    }
 
-      display: inline-flex;
-      width: var(--tap-min); /* restores the square shape .btn--icon gives it */
+    .site-nav__github-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
 
     .site-nav__list > li {
@@ -344,52 +339,46 @@
     }
 
     .site-nav__link {
+      isolation: isolate; /* keeps the pill (z-index −1) inside the link */
       align-items: center;
-      /* Tighter between 1280 and 1536px, where 8 links plus 4 buttons leave little slack */
-      padding-inline: var(--space-2);
+      padding-inline: var(--nav-link-pad);
       font-family: var(--font-body);
-      font-size: var(--fs-sm);
+      font-size: var(--fs-nav);
       font-weight: var(--fw-medium);
       line-height: var(--lh-snug);
       letter-spacing: var(--ls-normal);
-      text-transform: none;
+      color: var(--t3);
     }
 
     .site-nav__link::before {
       content: none;
     }
 
-    .site-nav__indicator {
+    /* Visual pill shorter than the 44px hit area */
+    .site-nav__link::after {
+      content: '';
       position: absolute;
-      bottom: var(--space-1);
-      left: 0;
-      display: block;
-      width: var(--indicator-base);
-      height: var(--border-thick);
-      background: var(--gradient-accent);
-      border-radius: var(--radius-full);
-      box-shadow: var(--glow-accent);
-      opacity: 0;
-      transform: translateX(var(--indicator-x, 0)) scaleX(var(--indicator-scale, 0));
-      transform-origin: left center;
-      pointer-events: none;
+      inset: var(--nav-pill-inset) 0;
+      z-index: var(--z-below);
+      background: transparent;
+      border-radius: var(--r-pill);
+      transition: background-color var(--dur-hover) var(--ease-out-quart);
     }
 
-    .site-nav__indicator.is-visible {
-      opacity: 1;
+    .site-nav__link.is-active {
+      color: var(--t1);
     }
 
-    .site-nav__indicator.is-animated {
-      transition:
-        transform var(--dur-slow) var(--ease-out-expo),
-        opacity var(--dur-base) var(--ease-out-quart);
+    .site-nav__link.is-active::after {
+      background: var(--nav-pill-bg);
     }
   }
 
   /* Room to breathe again once the bar is wide enough */
-  @media (min-width: 1536px) {
+  @media (min-width: 1280px) {
     .site-nav__link {
-      padding-inline: var(--space-3);
+      --nav-link-pad: var(--space-3);
+      --fs-nav: var(--fs-sm);
     }
   }
 }
