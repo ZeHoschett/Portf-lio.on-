@@ -1,49 +1,46 @@
-/* About (#sobre): portrait + text, stacked on mobile (text first), two columns from 1024px. */
+/*
+ * About (#sobre): two columns from 768px, portrait 4:5 on the left and the bio with the chips on
+ * the right. Stacked on phones with the text first (the hero already opens with the portrait).
+ */
 @layer sections {
   .about__inner {
     display: grid;
-    align-items: center;
+    align-items: start;
     gap: var(--space-stack);
   }
 
-  /* ---------- Portrait with glow and offset frame ---------- */
+  /* ---------- Portrait: framed like the hero's, cropped tighter ---------- */
   .about__media {
     position: relative;
-    isolation: isolate;
-    order: 1; /* text first on phones: the hero already opens with the portrait */
+    order: 1;
     justify-self: center;
     width: min(100%, var(--about-photo-max));
+    aspect-ratio: var(--hero-photo-ratio);
+    overflow: hidden;
+    background: var(--bg-2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--hero-photo-shadow);
   }
 
-  .about__media::before,
+  /* Light edge over the picture */
   .about__media::after {
     content: '';
     position: absolute;
-    z-index: var(--z-below);
-    border-radius: var(--radius-xl);
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--edge);
     pointer-events: none;
   }
 
-  .about__media::before {
-    inset: var(--space-6);
-    background: var(--gradient-accent);
-    opacity: 0.35;
-    filter: blur(var(--blur-lg));
-  }
-
-  .about__media::after {
-    inset: 0;
-    border: var(--border-thin) solid color-mix(in srgb, var(--color-accent) var(--tint-border), transparent);
-    translate: var(--about-frame-offset) var(--about-frame-offset);
-  }
-
+  /* Same photo as the hero, but a closer crop so the second portrait never repeats the first */
   .about__photo {
     width: 100%;
-    aspect-ratio: var(--hero-photo-ratio);
+    height: 100%;
     object-fit: cover;
-    background: var(--color-surface);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-xl);
+    object-position: var(--about-photo-focus);
+    scale: var(--about-photo-zoom);
+    transform-origin: var(--about-photo-focus);
   }
 
   /* ---------- Text ---------- */
@@ -61,20 +58,27 @@
     display: grid;
     gap: var(--space-4);
     max-width: var(--measure);
-    font-size: var(--fs-lg);
+    font-size: var(--fs-md);
     line-height: var(--lh-normal);
-    color: var(--color-text);
+    color: var(--t2);
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .about__inner {
-      grid-template-columns: 5fr 7fr;
-      gap: var(--space-9);
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: var(--space-7);
     }
 
     .about__media {
       order: 0;
       justify-self: stretch;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about__inner {
+      gap: var(--space-9);
     }
   }
 }

@@ -1,4 +1,7 @@
-/* Stack (#stack): two-way infinite marquee + technology groups (no skill percentages). */
+/*
+ * Stack (#stack): monochrome two-way marquee (the only continuous animation of the site) and five
+ * relief cards, one per group. No skill percentages anywhere.
+ */
 @layer sections {
   .stack {
     overflow-x: clip;
@@ -10,7 +13,7 @@
     gap: var(--space-2);
     margin-block-end: var(--space-stack);
     padding-block: var(--space-4);
-    border-block: var(--border-thin) solid var(--color-border);
+    border-block: var(--border-thin) solid var(--hairline);
     -webkit-mask-image: var(--marquee-mask);
     mask-image: var(--marquee-mask);
   }
@@ -23,7 +26,7 @@
     display: flex;
     width: max-content;
     list-style: none;
-    animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+    animation: marquee-left var(--marquee-duration, var(--marquee-duration-default)) linear infinite;
   }
 
   .marquee__row--right .marquee__track {
@@ -35,6 +38,7 @@
     animation-play-state: paused;
   }
 
+  /* Decorative and aria-hidden: large, faint type is allowed here (never for real copy) */
   .marquee__item {
     display: flex;
     flex-shrink: 0;
@@ -45,22 +49,21 @@
     font-size: var(--fs-marquee);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
-    letter-spacing: var(--ls-tight);
+    letter-spacing: var(--ls-h2);
     text-transform: uppercase;
     white-space: nowrap;
-    color: var(--color-text);
+    color: var(--marquee-ink);
   }
 
   .marquee__item::after {
-    content: '✦';
-    font-size: var(--marquee-separator-scale);
-    color: var(--color-accent);
+    content: '·';
+    color: var(--marquee-ink-faint);
     -webkit-text-stroke: 0;
   }
 
   .marquee__item--outline {
     color: transparent;
-    -webkit-text-stroke: var(--border-thin) var(--marquee-stroke);
+    -webkit-text-stroke: var(--border-thin) var(--marquee-ink);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -69,7 +72,7 @@
     }
   }
 
-  /* ============================== Groups ============================== */
+  /* ============================== Groups (relief) ============================== */
   .stack__groups {
     display: grid;
     gap: var(--space-4);
@@ -77,44 +80,14 @@
   }
 
   .stack-group {
-    position: relative;
-    isolation: isolate;
     display: grid;
     align-content: start;
     gap: var(--space-4);
-    padding: var(--space-6);
-    overflow: hidden;
-    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-lg);
-    transition:
-      border-color var(--dur-base) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart),
-      translate var(--dur-base) var(--ease-out-expo);
-  }
-
-  /* Identity line on top (Python: blue → yellow) */
-  .stack-group::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: var(--border-thick);
-    background: linear-gradient(90deg, var(--stack-color), var(--stack-color-2, transparent));
-    box-shadow: 0 0 var(--space-5) var(--stack-color);
-  }
-
-  .stack-group::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: var(--z-below);
-    background: radial-gradient(
-      80% 60% at 50% 0%,
-      color-mix(in srgb, var(--stack-color) var(--tint-glow), transparent) 0%,
-      transparent 70%
-    );
-    opacity: 0.5;
-    transition: opacity var(--dur-base) var(--ease-out-quart);
+    padding: var(--space-5);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
   }
 
   .stack-group__meta {
@@ -123,33 +96,16 @@
     justify-content: space-between;
     gap: var(--space-3);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
+    letter-spacing: var(--ls-label);
     text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  .stack-group__index {
-    color: var(--stack-text);
+    color: var(--t3);
   }
 
   .stack-group__title {
-    font-size: var(--fs-xl);
+    font-size: var(--fs-h3);
     letter-spacing: var(--ls-tight);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .stack-group:hover {
-      border-color: color-mix(in srgb, var(--stack-color) var(--tint-border), transparent);
-      box-shadow: 0 var(--space-5) var(--space-8) calc(var(--space-6) * -1)
-        color-mix(in srgb, var(--stack-color) var(--tint-glow), transparent);
-      translate: 0 calc(var(--space-1) * -1);
-    }
-
-    .stack-group:hover::after {
-      opacity: 1;
-    }
   }
 
   @media (min-width: 768px) {
@@ -163,9 +119,14 @@
     }
   }
 
+  /* Five cards in one row */
   @media (min-width: 1280px) {
     .stack__groups {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .stack-group--tools {
+      grid-column: auto;
     }
   }
 }
