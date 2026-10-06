@@ -243,35 +243,60 @@
   }
 
   /* ============================== Project card ============================== */
+  /*
+   * Solid surface (.surface-solid on the same node: material, specular). Reading order: title,
+   * subtitle, summary, tags, mockup, footer. The footer's "Estudo de caso" button is the one
+   * main control; its ::after stretches over the whole card. The access icons sit above it.
+   */
   .project-card {
-    position: relative;
     isolation: isolate;
-    display: grid;
-    grid-template-rows: auto 1fr;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    padding: var(--space-3);
     overflow: hidden;
-    background: var(--solid-bg);
-    border: var(--border-thin) solid var(--solid-line);
     border-radius: var(--r-lg);
-    box-shadow: var(--edge);
     transition:
       translate var(--dur-hover) var(--ease-out-expo),
       border-color var(--dur-hover) var(--ease-out-quart);
   }
 
-  /* Specular light that follows the pointer (--mx/--my from modules/specular.js) */
-  .project-card__glow {
-    position: absolute;
-    inset: 0;
-    z-index: var(--z-raised);
-    background: radial-gradient(
-      var(--specular-size) circle at var(--mx, 50%) var(--my, 0%),
-      var(--specular),
-      transparent 60%
-    );
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--dur-base) var(--ease-out-quart);
+  .project-card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-2) var(--space-2);
+  }
+
+  .project-card__title {
+    font-size: var(--fs-h4);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-snug);
+  }
+
+  /* What the project is, on its own line under the name */
+  .project-card__subtitle {
+    margin-block-start: calc(var(--space-2) * -1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .project-card__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--fs-sm);
+    color: var(--t2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .project-card__body .tag-list {
+    margin-block-start: var(--space-1);
   }
 
   .project-card__media {
@@ -280,56 +305,34 @@
     /* Definite track: lets the mockup's height: 100% resolve (auto rows would size to content) */
     grid-template: minmax(0, 1fr) / minmax(0, 1fr);
     aspect-ratio: var(--card-media-ratio);
-    padding: var(--space-5);
-    overflow: hidden;
-    background: var(--bg-2);
-    border-bottom: var(--border-thin) solid var(--hairline);
+    margin-block: var(--space-3) var(--space-4);
   }
 
-  .project-card__body {
-    display: grid;
-    align-content: start;
-    gap: var(--space-3);
-    padding: var(--space-5) var(--space-6) var(--space-6);
-  }
-
-  .project-card__meta {
+  /* ---------- Footer: two levels of access ---------- */
+  .project-card__footer {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    margin-block-start: auto;
+    padding: var(--space-4) var(--space-2) var(--space-1);
+    border-top: var(--border-thin) solid var(--hairline);
   }
 
-  .project-card__type {
-    color: var(--t2);
-  }
-
-  .project-card__title {
-    font-size: var(--fs-lg);
-    letter-spacing: var(--ls-tight);
-  }
-
-  /* What the project is, on its own line under the name */
-  .project-card__subtitle {
-    margin-block-start: calc(var(--space-2) * -1);
-    font-size: var(--fs-base);
-    font-weight: 500;
-    line-height: var(--lh-snug);
-    color: var(--color-text);
-  }
-
-  /* One main control per card; its ::after stretches over the whole card */
   .project-card__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
     padding: 0;
     font: inherit;
-    letter-spacing: inherit;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t1);
     text-align: start;
-    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
   }
 
   .project-card__trigger::after {
@@ -337,6 +340,12 @@
     position: absolute;
     inset: 0;
     z-index: var(--z-content);
+  }
+
+  .project-card__arrow {
+    --icon-size: var(--icon-scale);
+
+    transition: translate var(--dur-hover) var(--ease-out-expo);
   }
 
   .project-card__trigger:focus-visible {
@@ -355,41 +364,30 @@
     }
   }
 
-  .project-card__summary {
-    display: -webkit-box;
-    overflow: hidden;
-    font-size: var(--fs-sm);
-    color: var(--t2);
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-  }
-
   /* Secondary controls sit above the stretched trigger */
   .project-card__links {
     position: relative;
     z-index: var(--z-front);
     display: flex;
-    flex-wrap: wrap;
     gap: var(--space-2);
-    margin-block-start: var(--space-1);
   }
 
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: var(--tap-min);
-    padding-inline: var(--space-4);
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-medium);
-    color: var(--t1);
-    text-decoration: none;
+  .project-card__access {
+    display: grid;
+    place-items: center;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    color: var(--t2);
     border: var(--border-thin) solid var(--glass-line);
     border-radius: var(--r-pill);
     transition:
-      border-color var(--dur-hover) var(--ease-out-quart),
-      background-color var(--dur-hover) var(--ease-out-quart);
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .project-card__access .icon {
+    --icon-size: var(--icon-scale);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -398,45 +396,42 @@
       translate: 0 var(--hover-lift);
     }
 
-    .project-card:hover .project-card__glow {
-      opacity: 1;
+    .project-card:hover .project-card__arrow {
+      translate: var(--space-1) 0;
     }
 
     .project-card:hover .mockup__image {
       scale: var(--card-image-zoom);
     }
 
-    .project-link:hover {
+    .project-card__access:hover {
+      color: var(--t1);
       background-color: var(--glass-strong);
       border-color: var(--glass-line-hi);
     }
   }
 
-  /* Featured cards get a side-by-side layout when their grid cell is wide enough */
+  /* Featured cards: text beside the mockup when their grid cell is wide enough */
   @container (min-width: 40rem) {
     .project-card {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      grid-template-rows: none;
-    }
-
-    .project-card__media {
-      /* The text column sets the row height and the media fills it: `contain: size` keeps the
-         mockup's intrinsic height out of the row, and `auto` stops the stretched height from
-         being transferred through the ratio (which would widen the media over the text) */
-      align-self: stretch;
-      aspect-ratio: auto;
-      contain: size;
-      border-right: var(--border-thin) solid var(--hairline);
-      border-bottom: 0;
+      display: grid;
+      grid-template: 'body media' 1fr 'footer footer' auto / minmax(0, 1fr) minmax(0, 1.25fr);
+      column-gap: var(--space-5);
     }
 
     .project-card__body {
+      grid-area: body;
       align-content: center;
-      padding: var(--space-7);
     }
 
-    .project-card__title {
-      font-size: var(--fs-2xl);
+    .project-card__media {
+      grid-area: media;
+      align-self: center;
+      margin-block: 0 var(--space-4);
+    }
+
+    .project-card__footer {
+      grid-area: footer;
     }
   }
 

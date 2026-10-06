@@ -7,8 +7,7 @@
 import { watchFinePointer, watchReducedMotion } from '../utils/motion.js';
 import { onScrollFrame } from '../utils/scroll.js';
 
-// TODO(restyle): drop [data-tilt] once render-projects.js marks cards with data-specular (phase 6)
-const SELECTOR = '.surface-glass, .surface-solid, [data-specular], [data-tilt]';
+const SELECTOR = '.surface-glass, .surface-solid, [data-specular]';
 
 export function initSpecular() {
   /** @type {HTMLElement | null} */

@@ -46,10 +46,7 @@
     <link rel="stylesheet" href="assets/css/sections/about.css">
     <link rel="stylesheet" href="assets/css/sections/stack.css">
     <link rel="stylesheet" href="assets/css/sections/projects.css">
-    <link rel="stylesheet" href="assets/css/sections/project-java.css">
-    <link rel="stylesheet" href="assets/css/sections/project-python.css">
     <link rel="stylesheet" href="assets/css/sections/project-cobol.css">
-    <link rel="stylesheet" href="assets/css/sections/project-web.css">
     <link rel="stylesheet" href="assets/css/sections/education.css">
     <link rel="stylesheet" href="assets/css/sections/certificates.css">
     <link rel="stylesheet" href="assets/css/sections/contact.css">
@@ -295,79 +292,63 @@
       </section>
 
       <!-- ============================== PROJETOS ============================== -->
-      <section class="projects" id="projetos" aria-labelledby="projects-title">
-        <div class="container projects__intro">
-          <header class="section__header" data-reveal>
-            <p class="section__eyebrow">03 · Projetos</p>
-            <h2 class="section__title" id="projects-title">Projetos</h2>
-          </header>
-        </div>
+      <section class="projects" id="projetos" aria-labelledby="projects-title" data-stack="java" data-projects-area>
+        <div class="container projects__inner">
+          <div class="projects__head">
+            <header class="section__header" data-reveal>
+              <p class="section__eyebrow">03 · Projetos</p>
+              <h2 class="section__title" id="projects-title">Projetos</h2>
+            </header>
 
-        <!-- In-page anchors (not an ARIA tablist): all four subsections stay visible on the page -->
-        <nav class="projects-tabs" aria-label="Projetos por stack" data-projects-tabs>
-          <ul class="projects-tabs__list container" role="list">
-            <li><a class="projects-tabs__link" href="#projetos-java" data-stack="java">Java</a></li>
-            <li><a class="projects-tabs__link" href="#projetos-python" data-stack="python">Python</a></li>
-            <li><a class="projects-tabs__link" href="#projetos-cobol" data-stack="cobol">COBOL</a></li>
-            <li><a class="projects-tabs__link" href="#projetos-web" data-stack="web">Web</a></li>
-          </ul>
-        </nav>
+            <!-- Tabs that filter in place. The count after each name comes from data/projects.js
+                 (modules/projects-tabs.js). All four panels stay in the HTML, inactive ones hidden. -->
+            <div class="projects-tabs" role="tablist" aria-label="Projetos por stack" data-projects-tabs>
+              <button class="tabs__tab projects-tabs__tab" type="button" role="tab" id="projetos-tab-java" aria-controls="projetos-java" aria-selected="true">Java<span data-project-count></span></button>
+              <button class="tabs__tab projects-tabs__tab" type="button" role="tab" id="projetos-tab-python" aria-controls="projetos-python" aria-selected="false" tabindex="-1">Python<span data-project-count></span></button>
+              <button class="tabs__tab projects-tabs__tab" type="button" role="tab" id="projetos-tab-cobol" aria-controls="projetos-cobol" aria-selected="false" tabindex="-1">COBOL<span data-project-count></span></button>
+              <button class="tabs__tab projects-tabs__tab" type="button" role="tab" id="projetos-tab-web" aria-controls="projetos-web" aria-selected="false" tabindex="-1">Web<span data-project-count></span></button>
+            </div>
+          </div>
 
-        <!-- ---------- Java ---------- -->
-        <section class="project-stack project-stack--java" id="projetos-java" aria-labelledby="projetos-java-title" data-stack="java">
-          <canvas class="project-stack__canvas" data-animation="java-network" aria-hidden="true" role="presentation"></canvas>
-          <div class="container project-stack__inner">
-            <header class="project-stack__header" data-reveal>
+          <!-- ---------- Java ---------- -->
+          <section class="project-stack" id="projetos-java" role="tabpanel" aria-labelledby="projetos-tab-java" data-stack="java">
+            <header class="project-stack__header">
               <p class="project-stack__eyebrow">Stack 01 · Enterprise</p>
               <h3 class="project-stack__title" id="projetos-java-title">Java</h3>
               <p class="project-stack__lead">Back-end com Java e Spring Boot.</p>
             </header>
             <ul class="project-grid" role="list" data-projects="java"></ul>
-          </div>
-        </section>
+          </section>
 
-        <!-- ---------- Python ---------- -->
-        <section class="project-stack project-stack--python" id="projetos-python" aria-labelledby="projetos-python-title" data-stack="python">
-          <!-- Neon sign of the Python logo: purely decorative background art, composited with
-               `screen` so the black plate of the image disappears into the section. -->
-          <img class="python-neon" src="assets/img/python-neon.webp" alt="" aria-hidden="true"
-               width="768" height="768" loading="lazy" decoding="async">
-          <div class="container project-stack__inner">
-            <header class="project-stack__header" data-reveal>
+          <!-- ---------- Python ---------- -->
+          <section class="project-stack" id="projetos-python" role="tabpanel" aria-labelledby="projetos-tab-python" data-stack="python" hidden>
+            <header class="project-stack__header">
               <p class="project-stack__eyebrow">Stack 02 · Dados</p>
               <h3 class="project-stack__title" id="projetos-python-title">Python</h3>
               <p class="project-stack__lead">APIs, sistemas web e automação com Python.</p>
             </header>
             <ul class="project-grid" role="list" data-projects="python"></ul>
-          </div>
-        </section>
+          </section>
 
-        <!-- ---------- COBOL ---------- -->
-        <section class="project-stack project-stack--cobol" id="projetos-cobol" aria-labelledby="projetos-cobol-title" data-stack="cobol">
-          <!-- COBOL is the dinosaur of programming languages. Purely decorative: the shape and the
-               shading come from a CSS mask, so the colour is the phosphor token, not the file's own. -->
-          <div class="cobol-dino" aria-hidden="true" data-lazy-art></div>
-
-          <div class="container project-stack__inner">
+          <!-- ---------- COBOL: ISPF panel chrome and the .CBL program, white on black ---------- -->
+          <section class="project-stack project-stack--cobol" id="projetos-cobol" role="tabpanel" aria-labelledby="projetos-tab-cobol" data-stack="cobol" hidden>
             <div class="ispf" aria-hidden="true">
               <p class="ispf__row"><span>COMMAND ===&gt;</span><span class="ispf__input"></span><span>SCROLL ===&gt; PAGE</span></p>
               <p class="ispf__row"><span>PORTFOLIO.PROJETOS.COBOL</span><span>ROW 000001</span></p>
             </div>
 
-            <header class="project-stack__header" data-reveal>
+            <header class="project-stack__header">
               <p class="project-stack__eyebrow">Stack 03 · Mainframe</p>
               <h3 class="project-stack__title" id="projetos-cobol-title">COBOL</h3>
               <p class="project-stack__lead">Mainframe com COBOL, CICS, DB2 e z/OS.</p>
             </header>
 
-            <!-- Source of truth for the typing animation: the full text stays in the DOM for assistive tech -->
-            <figure class="cobol-terminal" data-cobol-terminal>
+            <figure class="cobol-terminal">
               <figcaption class="visually-hidden">Programa COBOL de apresentação</figcaption>
               <div class="cobol-terminal__bar" aria-hidden="true">
                 <span>EDIT&nbsp;&nbsp;PORTFOLIO.CBL</span>
                 <span>COLUMNS 00001 00072</span>
               </div>
-              <div class="cobol-terminal__screen">
 <pre class="cobol-terminal__code"><code>       IDENTIFICATION DIVISION.
        PROGRAM-ID. PORTFOLIO.
        AUTHOR. JOSE-HOSCHETT.
@@ -375,27 +356,23 @@
            DISPLAY 'COBOL | CICS | DB2 | Z/OS'.
            DISPLAY 'STATUS: DISPONIVEL PARA NOVOS PROJETOS'.
            STOP RUN.</code></pre>
-              </div>
             </figure>
 
             <ul class="project-grid" role="list" data-projects="cobol"></ul>
 
             <p class="ispf__footer" aria-hidden="true">PF1=HELP&nbsp;&nbsp;PF3=EXIT&nbsp;&nbsp;PF7=UP&nbsp;&nbsp;PF8=DOWN</p>
-          </div>
-        </section>
+          </section>
 
-        <!-- ---------- Web ---------- -->
-        <section class="project-stack project-stack--web" id="projetos-web" aria-labelledby="projetos-web-title" data-stack="web">
-          <canvas class="project-stack__canvas" data-animation="web-dotgrid" aria-hidden="true" role="presentation"></canvas>
-          <div class="container project-stack__inner">
-            <header class="project-stack__header" data-reveal>
+          <!-- ---------- Web ---------- -->
+          <section class="project-stack" id="projetos-web" role="tabpanel" aria-labelledby="projetos-tab-web" data-stack="web" hidden>
+            <header class="project-stack__header">
               <p class="project-stack__eyebrow">Stack 04 · Front-end</p>
               <h3 class="project-stack__title" id="projetos-web-title">Web</h3>
               <p class="project-stack__lead">Interfaces com HTML, CSS e JavaScript.</p>
             </header>
             <ul class="project-grid" role="list" data-projects="web"></ul>
-          </div>
-        </section>
+          </section>
+        </div>
       </section>
 
       <!-- ============================== FORMAÇÃO ============================== -->

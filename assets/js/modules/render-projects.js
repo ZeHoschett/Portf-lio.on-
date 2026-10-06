@@ -338,10 +338,12 @@ const getTags = (project) => toTextList(project.tags ?? []);
 /**
  * Repository / demo / documentation links — only rendered when the URL exists and is safe.
  * The documentation is a file in the site itself, so it downloads instead of opening a tab.
+ * With `iconOnly` (card footer) the label is kept for screen readers only.
  * @param {Project} project
  * @param {string} className
+ * @param {{ iconOnly?: boolean }} [options]
  */
-function createLinks(project, className) {
+function createLinks(project, className, { iconOnly = false } = {}) {
   const links = [
     { href: sanitizeUrl(project.repo), label: 'Repositório', iconName: 'github' },
     { href: sanitizeUrl(project.demo), label: 'Demo', iconName: 'external' },
@@ -360,7 +362,7 @@ function createLinks(project, className) {
         },
         [
           icon(link.iconName),
-          el('span', { text: link.label }),
+          el('span', { className: iconOnly ? 'visually-hidden' : '', text: link.label }),
           el('span', {
             className: 'visually-hidden',
             text: link.download
@@ -599,35 +601,42 @@ function openProjectModal(project, trigger) {
 
 // ============================== Card ==============================
 
-/** @param {Project} project */
+/**
+ * Reading order: title, subtitle, summary, tags, mockup, then the footer with the two levels of
+ * access: "Estudo de caso" (the one main control; its ::after covers the whole card) and the
+ * circular repo/demo/docs icons, which sit above that area. Solid surface: cards repeat many
+ * times per screen, so they never get a backdrop-filter.
+ * @param {Project} project
+ */
 function createCard(project) {
   const titleId = `project-${slug(project.id)}-title`;
   const tags = getTags(project);
-  const links = createLinks(project, 'project-link');
+  const links = createLinks(project, 'project-card__access', { iconOnly: true });
 
-  const trigger = el('button', {
-    className: 'project-card__trigger',
-    attrs: { type: 'button', 'aria-haspopup': 'dialog' },
-    text: project.title,
-  });
+  const trigger = el(
+    'button',
+    {
+      className: 'project-card__trigger',
+      attrs: { type: 'button', 'aria-haspopup': 'dialog' },
+    },
+    [
+      el('span', { text: 'Estudo de caso' }),
+      el('span', { className: 'visually-hidden', text: ` de ${project.title}` }),
+      icon('arrow', 'icon project-card__arrow'),
+    ],
+  );
   trigger.addEventListener('click', () => openProjectModal(project, trigger));
 
   const card = el(
     'article',
     {
-      className: 'project-card',
-      attrs: { 'aria-labelledby': titleId, 'data-tilt': true },
+      className: 'project-card surface-solid',
+      attrs: { 'aria-labelledby': titleId },
       dataset: { stack: project.stack },
     },
     [
-      el('div', { className: 'project-card__glow', attrs: { 'aria-hidden': 'true' } }),
-      el('div', { className: 'project-card__media' }, [createMockup(project, 'card')]),
       el('div', { className: 'project-card__body' }, [
-        el('p', { className: 'project-card__meta' }, [
-          el('span', { className: 'project-card__type', text: TYPE_LABELS[resolveType(project)] }),
-          Number.isFinite(project.year) ? el('span', { text: String(project.year) }) : null,
-        ]),
-        el('h4', { className: 'project-card__title', attrs: { id: titleId } }, [trigger]),
+        el('h4', { className: 'project-card__title', attrs: { id: titleId }, text: project.title }),
         text(project.subtitle)
           ? el('p', { className: 'project-card__subtitle', text: project.subtitle })
           : null,
@@ -635,6 +644,10 @@ function createCard(project) {
           ? el('p', { className: 'project-card__summary', text: project.summary })
           : null,
         tags.length ? createTagList(tags) : null,
+      ]),
+      el('div', { className: 'project-card__media' }, [createMockup(project, 'card')]),
+      el('div', { className: 'project-card__footer' }, [
+        trigger,
         links.length ? el('div', { className: 'project-card__links' }, links) : null,
       ]),
     ],
@@ -654,6 +667,7 @@ function createCard(project) {
 /** @param {Project['stack']} stack */
 function createEmptyState(stack) {
   if (stack === 'cobol') {
+    // Static block cursor: the marquee is the only continuous animation of the site
     return el('li', { className: 'project-empty project-empty--terminal' }, [
       el('span', { className: 'project-empty__text', text: EMPTY_MESSAGES.cobol }),
       el('span', { className: 'project-empty__cursor', attrs: { 'aria-hidden': 'true' } }),

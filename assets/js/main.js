@@ -2,12 +2,8 @@
  * Entry point (loaded as type="module", so it runs after the HTML is parsed).
  * Each feature is initialised in isolation: if one fails, the rest of the site keeps working.
  */
-import { initCobolTerminal } from './animations/cobol-terminal.js';
-import { initJavaNetwork } from './animations/java-network.js';
-import { initWebDotgrid } from './animations/web-dotgrid.js';
 import { initClipboard } from './modules/clipboard.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
-import { initLazyArt } from './modules/lazy-art.js';
 import { initMagnetic } from './modules/magnetic.js';
 import { initMarquee } from './modules/marquee.js';
 import { initNav } from './modules/nav.js';
@@ -20,7 +16,6 @@ import { initReveal } from './modules/reveal.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
 import { initSpecular } from './modules/specular.js';
 import { initWhatsappFloat } from './modules/whatsapp-float.js';
-import { whenIdle } from './utils/animation-loop.js';
 
 /**
  * Runs an initializer and contains any error it throws.
@@ -58,11 +53,3 @@ safeInit('parallax', initParallax);
 safeInit('magnetic', initMagnetic);
 safeInit('clipboard', initClipboard);
 safeInit('whatsapp-float', initWhatsappFloat);
-safeInit('lazy-art', initLazyArt);
-
-// Canvas animations start when the main thread is idle: they never block the first render
-whenIdle(() => {
-  safeInit('java-network', initJavaNetwork);
-  safeInit('cobol-terminal', initCobolTerminal);
-  safeInit('web-dotgrid', initWebDotgrid);
-});

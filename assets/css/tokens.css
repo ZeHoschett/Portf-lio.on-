@@ -259,9 +259,6 @@
     --phone-island-h: 0.8rem;
     --phone-island-top: 0.45rem;
     --screen-reflection: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, transparent 38%);
-    --color-terminal-bg: #020a04;
-    --color-phosphor-bright: #b8ffcb;
-    --glow-phosphor: 0 0 6px rgba(51, 255, 102, 0.45);
     --modal-max: 64rem;
     --modal-media-ratio: 16 / 9;
     --modal-enter-scale: 0.97;
@@ -276,73 +273,15 @@
     --detail-video-h: 28rem;
     --code-sample-max-h: 28rem;
 
-    /* ---------- Stack subsection backgrounds (phase 6) ---------- */
-    /* Canvas fades towards the content side so text and cards stay the focus */
-    --stack-canvas-mask: radial-gradient(ellipse 90% 80% at 75% 30%, #000 0%, transparent 80%);
-    --stack-canvas-mask-mobile: linear-gradient(
-      to bottom,
-      #000 0%,
-      rgba(0, 0, 0, 0.35) 60%,
-      transparent 100%
-    );
-    --stack-canvas-opacity-mobile: 0.75;
-
-    /* ---------- COBOL CRT monitor ---------- */
-    --color-phosphor-muted: #5fd97f; /* ~11:1 on --color-terminal-bg */
-    --glow-phosphor-text: 0 0 2px rgba(51, 255, 102, 0.8), 0 0 12px rgba(51, 255, 102, 0.45);
-    --crt-backdrop: radial-gradient(
-      70% 55% at 50% 30%,
-      rgba(51, 255, 102, 0.06) 0%,
-      transparent 70%
-    );
-    --crt-scanlines: repeating-linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.35) 0,
-      rgba(0, 0, 0, 0.35) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    --crt-scanline-opacity: 0.55;
-    --crt-vignette: radial-gradient(
-      ellipse 120% 90% at 50% 50%,
-      transparent 55%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
-    --crt-glass: radial-gradient(90% 60% at 20% 0%, rgba(51, 255, 102, 0.07) 0%, transparent 60%);
-    --crt-flicker-dur: 7s;
-    --crt-screen:
-      radial-gradient(120% 90% at 50% 40%, rgba(51, 255, 102, 0.06) 0%, transparent 70%), #010703;
-    --crt-screen-shadow: inset 0 0 4rem rgba(0, 0, 0, 0.85), 0 0 2rem rgba(51, 255, 102, 0.12);
-    --fs-cobol-code: clamp(1rem, 0.8rem + 1vw, 1.5rem);
-    --dino-w: clamp(12rem, 34vw, 30rem);
-    --dino-ratio: 677 / 851; /* intrinsic ratio of assets/img/trex-head.webp */
-    --dino-opacity: 0.42;
-    --dino-opacity-mobile: 0.14; /* it sits behind the text on phones */
-    --dino-glow: 0 0 2.5rem rgba(51, 255, 102, 0.4);
-    --java-backdrop: radial-gradient(
-      60% 45% at 85% 10%,
-      rgba(242, 159, 61, 0.08) 0%,
-      transparent 70%
-    );
-    --web-backdrop: radial-gradient(
-      60% 45% at 80% 15%,
-      rgba(124, 92, 255, 0.1) 0%,
-      transparent 70%
-    );
-    --dotgrid-spacing-default: 28px; /* matches SPACING.desktop in web-dotgrid.js */
-    --dotgrid-dot-color: rgba(201, 204, 214, 0.16);
-    --dotgrid-dot-radius: 0.8px;
-    --dotgrid-dot-feather: 0.6px;
-    --python-backdrop:
-      radial-gradient(55% 45% at 78% 30%, rgba(55, 118, 171, 0.16) 0%, transparent 70%),
-      radial-gradient(45% 40% at 78% 70%, rgba(255, 143, 45, 0.09) 0%, transparent 70%),
-      linear-gradient(180deg, #05070c 0%, #04050a 100%);
-    --python-neon-w: clamp(13rem, 36vw, 32rem);
-    --python-neon-opacity: 0.9;
-    --python-neon-opacity-mobile: 0.4; /* the text sits over it on phones */
-    --python-neon-glow: 0 0 5rem rgba(55, 118, 171, 0.35);
-    /* The art is a lit sign on black: fade its edges so the plate never shows as a square */
-    --python-neon-mask: radial-gradient(closest-side, #000 55%, transparent 100%);
+    /* ---------- Projects area ---------- */
+    /* The selected stack's light at the top of the area. Only the parts that do not depend on
+       the stack live here: a var(--stack-bloom) inside a :root token would be resolved at :root,
+       where no stack is set, and the whole gradient would silently drop. */
+    --projects-bloom-shape: 52% 60% at 50% 0%;
+    --projects-bloom-alpha: calc(var(--bloom-amount) * 0.95);
+    --projects-bloom-fade: 72%;
+    --projects-bloom-inset: -6% -14% 35%;
+    --fs-cobol-code: clamp(0.75rem, 0.62rem + 0.6vw, 1.0625rem); /* the .CBL program, monospace */
 
     /* ---------- Education timeline (phase 7) ---------- */
     --timeline-gutter: 2.5rem; /* space reserved for the line and its marker */

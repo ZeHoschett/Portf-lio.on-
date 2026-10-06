@@ -1,119 +1,95 @@
 /*
- * Projects (#projetos): intro, sticky stack tabs, the shared base of the 4 stack subsections,
- * the project grid, empty states and the project detail shown in the modal.
- * Stack-specific backgrounds/animations live in project-<stack>.css (phase 6).
+ * Projects (#projetos): one area with tabs that filter in place (modules/projects-tabs.js), the
+ * four stack panels, the project grid, empty states and the project detail shown in the modal.
+ * The light behind the area follows the selected stack through data-stack → --stack-bloom.
  */
 @layer sections {
   .projects {
     position: relative;
-    padding-block-start: var(--space-section);
-  }
-
-  .projects__intro .section__header {
-    margin-block-end: var(--space-6);
-  }
-
-  /* ============================== Sticky tabs ============================== */
-  .projects-tabs {
-    position: sticky;
-    top: calc(var(--header-h) + env(safe-area-inset-top, 0));
-    z-index: var(--z-sticky);
-    padding-block: var(--space-2);
-    background: var(--color-glass);
-    -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(var(--glass-saturate));
-    backdrop-filter: blur(var(--blur-glass)) saturate(var(--glass-saturate));
-    border-block: var(--border-thin) solid var(--color-border);
-  }
-
-  .projects-tabs__list {
-    position: relative; /* offsetParent for centring the active tab */
-    display: flex;
-    gap: var(--space-1);
-    overflow-x: auto;
-    list-style: none;
-    scrollbar-width: none;
-  }
-
-  .projects-tabs__list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .projects-tabs__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: var(--tap-min);
-    padding-inline: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    border: var(--border-thin) solid transparent;
-    border-radius: var(--radius-full);
-    transition:
-      color var(--dur-fast) var(--ease-out-quart),
-      background-color var(--dur-base) var(--ease-out-quart),
-      border-color var(--dur-base) var(--ease-out-quart);
-  }
-
-  .projects-tabs__link::before {
-    content: '';
-    width: var(--chip-dot);
-    height: var(--chip-dot);
-    background: var(--stack-color);
-    border-radius: var(--radius-full);
-    opacity: 0.5;
-    transition: opacity var(--dur-base) var(--ease-out-quart);
-  }
-
-  .projects-tabs__link.is-active {
-    color: var(--color-text);
-    background: color-mix(in srgb, var(--stack-color) var(--tint-subtle), transparent);
-    border-color: color-mix(in srgb, var(--stack-color) var(--tint-border), transparent);
-  }
-
-  .projects-tabs__link.is-active::before {
-    opacity: 1;
-    box-shadow: 0 0 var(--space-3) var(--stack-color);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .projects-tabs__link:hover {
-      color: var(--color-text);
-    }
-  }
-
-  /* ============================== Stack subsections ============================== */
-  .project-stack {
-    position: relative;
     isolation: isolate;
     padding-block: var(--space-section);
-    overflow: clip;
-    /* Land below the fixed header AND the sticky tabs */
-    scroll-margin-top: calc(var(--header-h) + var(--tabs-h) + var(--space-4));
+    overflow-x: clip; /* the light bleeds sideways on purpose; it must never widen the page */
   }
 
-  .project-stack + .project-stack {
-    border-top: var(--border-thin) solid var(--color-border);
-  }
-
-  .project-stack__canvas {
+  /* The selected stack's light, out of focus at the top of the area */
+  .projects::before {
+    content: '';
     position: absolute;
-    inset: 0;
+    inset: var(--projects-bloom-inset);
     z-index: var(--z-below);
-    width: 100%;
-    height: 100%;
+    background: radial-gradient(
+      var(--projects-bloom-shape),
+      rgba(var(--stack-bloom), var(--projects-bloom-alpha)),
+      transparent var(--projects-bloom-fade)
+    );
     pointer-events: none;
   }
 
-  .project-stack__inner {
-    position: relative;
+  .projects__inner {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* `contents`: the tab bar must be a child of the whole area, or `sticky` would stop at the
+     end of this short wrapper */
+  .projects__head {
+    display: contents;
+  }
+
+  .projects__head .section__header {
+    margin-block-end: 0;
+  }
+
+  /* ============================== Tabs (glass, sticky) ============================== */
+  /* Glass: the tab bar stays over the cards while they scroll underneath */
+  .projects-tabs {
+    position: sticky;
+    top: calc(var(--header-h) + env(safe-area-inset-top, 0) + var(--space-3));
+    z-index: var(--z-sticky);
+    display: flex;
+    gap: var(--space-1);
+    justify-self: start;
+    max-width: 100%;
+    padding: var(--space-1);
+    overflow-x: auto;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
+    scrollbar-width: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .projects-tabs {
+      background: var(--glass-fallback);
+    }
+  }
+
+  .projects-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Inside the pill the tabs need no outline of their own; the selected one is solid white */
+  .projects-tabs__tab:not([aria-selected='true']) {
+    border-color: transparent;
+  }
+
+  .projects-tabs__tab:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1 - var(--space-px));
+  }
+
+  /* ============================== Stack panels ============================== */
+  .project-stack {
     display: grid;
     gap: var(--space-stack);
+    /* A link to #projetos-<stack> lands below the header and the sticky tab bar */
+    scroll-margin-top: calc(var(--header-h) + var(--tabs-h) + var(--space-5));
+  }
+
+  .project-stack[hidden] {
+    display: none;
   }
 
   .project-stack__header {
@@ -123,40 +99,29 @@
   }
 
   .project-stack__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wider);
+    letter-spacing: var(--ls-label);
     text-transform: uppercase;
-    color: var(--stack-text);
-  }
-
-  .project-stack__eyebrow::before {
-    content: '';
-    width: var(--eyebrow-line);
-    height: var(--border-thin);
-    background: linear-gradient(90deg, var(--stack-color), var(--stack-color-2, transparent));
+    color: var(--t3);
   }
 
   .project-stack__title {
-    font-size: var(--fs-display);
-    line-height: var(--lh-none);
-    letter-spacing: var(--ls-tighter);
-    text-transform: uppercase;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
   }
 
   .project-stack__lead {
     font-size: var(--fs-md);
-    color: var(--color-text-muted);
+    color: var(--t2);
   }
 
   /* ============================== Grid ============================== */
   .project-grid {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-4);
     list-style: none;
   }
 
@@ -181,7 +146,7 @@
     }
   }
 
-  /* ============================== Empty states ============================== */
+  /* ============================== Empty states (relief) ============================== */
   .project-empty {
     display: flex;
     grid-column: 1 / -1;
@@ -189,26 +154,27 @@
     gap: var(--space-4);
     padding: var(--space-6);
     font-size: var(--fs-md);
-    color: var(--color-text-muted);
-    background: color-mix(in srgb, var(--color-surface) 70%, transparent);
-    border: var(--border-thin) dashed
-      color-mix(in srgb, var(--stack-color) var(--tint-border), transparent);
-    border-radius: var(--radius-lg);
+    color: var(--t2);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
   }
 
   .project-empty__icon {
     --icon-size: var(--fs-2xl);
 
-    color: var(--stack-text);
+    color: var(--t3);
   }
 
+  /* COBOL: a terminal message, white on black, with a static block cursor */
   .project-empty--terminal {
-    font-family: var(--font-terminal);
-    font-size: var(--fs-lg);
-    color: var(--stack-cobol);
-    text-shadow: var(--glow-phosphor);
-    background: var(--color-terminal-bg);
-    border-style: solid;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    background: var(--bg-2);
+    border-color: var(--hairline);
+    box-shadow: var(--edge);
   }
 
   .project-empty__cursor {
@@ -216,8 +182,6 @@
     width: 0.6em;
     height: 1.1em;
     background: currentColor;
-    box-shadow: var(--glow-phosphor);
-    animation: blink 1s steps(1) infinite;
   }
 
   /* ============================== Project detail (inside the modal) ============================== */

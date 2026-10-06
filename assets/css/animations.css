@@ -63,29 +63,7 @@
     }
   }
 
-  @keyframes blink {
-    50% {
-      opacity: 0;
-    }
-  }
 
-  /* Barely perceptible CRT brightness flicker (opacity only) */
-  @keyframes crt-flicker {
-    0%,
-    8%,
-    55%,
-    100% {
-      opacity: 1;
-    }
-
-    4% {
-      opacity: 0.92;
-    }
-
-    52% {
-      opacity: 0.96;
-    }
-  }
 
   @keyframes modal-in {
     from {
