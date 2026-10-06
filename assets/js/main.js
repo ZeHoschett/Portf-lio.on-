@@ -7,7 +7,6 @@ import { initJavaNetwork } from './animations/java-network.js';
 import { initWebDotgrid } from './animations/web-dotgrid.js';
 import { initClipboard } from './modules/clipboard.js';
 import { applyConfigBindings } from './modules/config-bindings.js';
-import { initCursorGlow } from './modules/cursor.js';
 import { initHeroTitle } from './modules/hero-title.js';
 import { initLazyArt } from './modules/lazy-art.js';
 import { initMagnetic } from './modules/magnetic.js';
@@ -20,7 +19,7 @@ import { renderEducation } from './modules/render-education.js';
 import { renderProjects } from './modules/render-projects.js';
 import { initReveal } from './modules/reveal.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
-import { initTilt } from './modules/tilt.js';
+import { initSpecular } from './modules/specular.js';
 import { initWhatsappFloat } from './modules/whatsapp-float.js';
 import { whenIdle } from './utils/animation-loop.js';
 
@@ -48,18 +47,17 @@ safeInit('config-bindings', () => applyConfigBindings());
 safeInit('current-year', setCurrentYear);
 safeInit('nav', initNav);
 safeInit('scroll-progress', initScrollProgress);
-// Data-driven content first, so reveal/tilt see the rendered cards
+// Data-driven content first, so reveal sees the rendered cards
 safeInit('projects', () => renderProjects());
 safeInit('education', () => renderEducation());
 safeInit('certificates', () => renderCertificates());
 safeInit('projects-tabs', initProjectsTabs);
-safeInit('tilt', initTilt);
+safeInit('specular', initSpecular);
 safeInit('reveal', initReveal);
 safeInit('marquee', initMarquee);
 safeInit('hero-title', initHeroTitle);
 safeInit('parallax', initParallax);
 safeInit('magnetic', initMagnetic);
-safeInit('cursor-glow', initCursorGlow);
 safeInit('clipboard', initClipboard);
 safeInit('whatsapp-float', initWhatsappFloat);
 safeInit('lazy-art', initLazyArt);

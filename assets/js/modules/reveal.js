@@ -1,5 +1,5 @@
 /**
- * Scroll reveal: `[data-reveal]` elements fade in, rise and sharpen when they enter the viewport.
+ * Scroll reveal: `[data-reveal]` elements fade in and rise when they enter the viewport.
  *
  * - Only elements OFF screen at startup are hidden, so nothing already visible flashes
  *   (deep links included: the landing position of #fragment is predicted).

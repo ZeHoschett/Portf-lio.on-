@@ -102,21 +102,20 @@
   }
 
   /* ============================== Scroll reveal (modules/reveal.js) ============================== */
+  /* Opacity + translate only: a filter here would also make every glass panel inside stop
+     blurring the page while the entrance runs (a filtered ancestor becomes the backdrop root) */
   .reveal {
     opacity: 0;
     translate: 0 var(--reveal-distance);
-    filter: blur(var(--reveal-blur));
     transition:
-      opacity var(--dur-slower) var(--ease-out-expo),
-      translate var(--dur-slower) var(--ease-out-expo),
-      filter var(--dur-slow) var(--ease-out-quart);
+      opacity var(--dur-slow) var(--ease-out-expo),
+      translate var(--dur-slow) var(--ease-out-expo);
     transition-delay: var(--reveal-delay, 0ms);
   }
 
   .reveal.is-revealed {
     opacity: 1;
     translate: 0 0;
-    filter: blur(0);
   }
 
   /* If the preference changes mid-visit, never leave content hidden */
@@ -124,7 +123,6 @@
     .reveal {
       opacity: 1;
       translate: none;
-      filter: none;
     }
   }
 }

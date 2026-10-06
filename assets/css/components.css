@@ -1,32 +1,102 @@
 /* Components: buttons, tags, cards, mockups, modal, toast. */
 @layer components {
   /* ============================== Stack identity ============================== */
-  /* Any element with data-stack exposes its identity colors to descendants */
+  /*
+   * Any element with data-stack exposes --stack-bloom: a bare RGB triplet for the out-of-focus
+   * light behind the glass. It is only ever used inside a background radial-gradient, never on
+   * text, borders, icons or states (the interface itself is black and white).
+   */
   [data-stack='java'] {
-    --stack-color: var(--stack-java);
-    --stack-text: var(--stack-java);
+    --stack-bloom: var(--bloom-java);
   }
 
   [data-stack='python'] {
-    --stack-color: var(--stack-python-a);
-    --stack-color-2: var(--stack-python-b);
-    --stack-text: var(--stack-python-text);
+    --stack-bloom: var(--bloom-python);
   }
 
   [data-stack='cobol'] {
-    --stack-color: var(--stack-cobol);
-    --stack-text: var(--stack-cobol);
+    --stack-bloom: var(--bloom-cobol);
   }
 
   [data-stack='web'] {
-    --stack-color: var(--stack-web);
-    --stack-text: var(--stack-web-text);
+    --stack-bloom: var(--bloom-web);
   }
 
-  /* Editors and assistants: no stack of their own, so they take the site accent */
+  /* Editors and assistants: no stack of their own */
   [data-stack='tools'] {
-    --stack-color: var(--color-accent);
-    --stack-text: var(--color-accent-text);
+    --stack-bloom: var(--bloom-neutro);
+  }
+
+  /* TODO(restyle): monochrome stand-ins for sections/projects.css and sections/stack.css until
+     phases 5 and 6 rewrite them; removed there. */
+  [data-stack] {
+    --stack-color: var(--t3);
+    --stack-color-2: var(--t3);
+    --stack-text: var(--t2);
+  }
+
+  /* ============================== Surfaces ============================== */
+  /*
+   * Three materials, one rule:
+   * - glass: the element overlaps other content (header, modal, menu, hero and contact panels)
+   * - relief: it only rests on the page (stack groups, timeline items, empty states)
+   * - solid: it repeats many times per screen (project and certificate cards, mockups, code)
+   * At most three backdrop-filter surfaces may be visible at once.
+   * What sells the glass is the edge (light line on top, shade below) plus the specular.
+   */
+  .surface-glass {
+    position: relative;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--lift);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .surface-glass {
+      background: var(--glass-fallback);
+    }
+  }
+
+  .surface-relief {
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
+  }
+
+  .surface-solid {
+    position: relative;
+    background: var(--solid-bg);
+    border: var(--border-thin) solid var(--solid-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge);
+  }
+
+  /* Specular: --mx/--my come from modules/specular.js (fine pointer only) */
+  .surface-glass::after,
+  .surface-solid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      var(--specular-size) circle at var(--mx, 50%) var(--my, 0%),
+      var(--specular),
+      transparent 60%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .surface-glass:hover::after,
+    .surface-solid:hover::after {
+      opacity: 1;
+    }
   }
 
   /* ============================== Chips ============================== */
@@ -45,20 +115,11 @@
     padding: var(--space-2) var(--space-4);
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
-    color: var(--color-text);
-    background: var(--color-surface);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-full);
-  }
-
-  .chip::before {
-    content: '';
-    flex-shrink: 0;
-    width: var(--chip-dot);
-    height: var(--chip-dot);
-    background: var(--stack-color, var(--color-accent));
-    border-radius: var(--radius-full);
-    box-shadow: 0 0 var(--space-3) var(--stack-color, var(--color-accent));
+    color: var(--t2);
+    background: var(--glass);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
   }
 
   /* ============================== Tags ============================== */
@@ -68,25 +129,18 @@
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
     line-height: var(--lh-normal);
-    color: var(--stack-text, var(--color-text-muted));
-    background: color-mix(
-      in srgb,
-      var(--stack-color, var(--color-text-muted)) var(--tint-subtle),
-      transparent
-    );
-    border: var(--border-thin) solid
-      color-mix(
-        in srgb,
-        var(--stack-color, var(--color-text-muted)) var(--tint-border),
-        transparent
-      );
-    border-radius: var(--radius-full);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t2);
+    background: transparent;
+    border: var(--border-thin) solid var(--tag-line);
+    border-radius: var(--r-pill);
   }
 
-  /* Technology marks inherit the tag colour, so each stack tints its own logos */
+  /* Technology marks inherit the tag colour (white, like everything else) */
   .tag .icon {
     --icon-size: var(--icon-scale);
   }
@@ -121,10 +175,10 @@
     -webkit-tap-highlight-color: transparent;
     transition:
       translate var(--dur-slow) var(--ease-out-expo),
-      transform var(--dur-base) var(--ease-out-expo),
-      box-shadow var(--dur-base) var(--ease-out-quart),
-      border-color var(--dur-fast) var(--ease-out-quart),
-      color var(--dur-fast) var(--ease-out-quart);
+      transform var(--dur-hover) var(--ease-out-expo),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart),
+      color var(--dur-hover) var(--ease-out-quart);
   }
 
   .btn .icon {
@@ -135,15 +189,19 @@
     transform: scale(var(--press-scale));
   }
 
+  /* Solid white with near-black text: the strongest contrast replaces the old accent */
   .btn--primary {
-    --btn-bg: var(--gradient-button);
-    --btn-color: var(--color-on-accent);
-    --btn-shadow: var(--shadow-inset-highlight);
+    --btn-bg: var(--t1);
+    --btn-color: var(--ink);
   }
 
-  .btn--secondary {
-    --btn-bg: var(--color-glass);
-    --btn-border: var(--color-border-strong);
+  /* Ghost: glass tint with the light edge. No backdrop-filter of its own: buttons sit on glass
+     panels already, and every extra blur counts against the three-surface budget. */
+  .btn--secondary,
+  .btn--icon {
+    --btn-bg: var(--glass);
+    --btn-border: var(--glass-line);
+    --btn-shadow: var(--edge);
   }
 
   .btn--whatsapp {
@@ -155,22 +213,21 @@
     padding-inline: var(--space-4);
   }
 
+  /* Circular icon button (GitHub, close, arrows): label it with visually-hidden text */
   .btn--icon {
-    --btn-border: var(--color-border-strong);
-
     width: var(--tap-min);
     padding: 0;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .btn--primary:hover {
-      --btn-shadow: var(--shadow-inset-highlight), var(--glow-accent-strong);
+      --btn-bg: var(--btn-primary-hover);
     }
 
     .btn--secondary:hover,
     .btn--icon:hover {
-      --btn-border: var(--color-accent);
-      --btn-shadow: var(--glow-accent);
+      --btn-bg: var(--glass-strong);
+      --btn-border: var(--glass-line-hi);
     }
 
     .btn--whatsapp:hover {
@@ -185,27 +242,6 @@
     pointer-events: none;
   }
 
-  /* ============================== Cursor glow (desktop) ============================== */
-  .cursor-glow {
-    position: fixed;
-    top: calc(var(--cursor-glow-size) / -2);
-    left: calc(var(--cursor-glow-size) / -2);
-    z-index: var(--z-cursor);
-    width: var(--cursor-glow-size);
-    height: var(--cursor-glow-size);
-    background: var(--cursor-glow);
-    border-radius: var(--radius-full);
-    pointer-events: none;
-    opacity: 0;
-    mix-blend-mode: screen;
-    transition: opacity var(--dur-slow) var(--ease-out-quart);
-  }
-
-  .cursor-glow.is-visible {
-    opacity: 1;
-    will-change: transform;
-  }
-
   /* ============================== Project card ============================== */
   .project-card {
     position: relative;
@@ -214,32 +250,27 @@
     grid-template-rows: auto 1fr;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg-elev) 100%);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-lg);
+    background: var(--solid-bg);
+    border: var(--border-thin) solid var(--solid-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge);
     transition:
-      transform var(--dur-slow) var(--ease-out-expo),
-      border-color var(--dur-base) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
+      translate var(--dur-hover) var(--ease-out-expo),
+      border-color var(--dur-hover) var(--ease-out-quart);
   }
 
-  .project-card.is-tilting {
-    transition-duration: var(--dur-fast), var(--dur-base), var(--dur-base);
-  }
-
-  /* Radial light that follows the cursor (--mx/--my from modules/tilt.js) */
+  /* Specular light that follows the pointer (--mx/--my from modules/specular.js) */
   .project-card__glow {
     position: absolute;
     inset: 0;
     z-index: var(--z-raised);
     background: radial-gradient(
-      var(--card-glow-size) circle at var(--mx, 50%) var(--my, 0%),
-      color-mix(in srgb, var(--stack-color, var(--color-accent)) var(--tint-glow), transparent) 0%,
-      transparent 70%
+      var(--specular-size) circle at var(--mx, 50%) var(--my, 0%),
+      var(--specular),
+      transparent 60%
     );
     opacity: 0;
     pointer-events: none;
-    mix-blend-mode: screen;
     transition: opacity var(--dur-base) var(--ease-out-quart);
   }
 
@@ -251,14 +282,8 @@
     aspect-ratio: var(--card-media-ratio);
     padding: var(--space-5);
     overflow: hidden;
-    background:
-      radial-gradient(
-        120% 90% at 50% 0%,
-        color-mix(in srgb, var(--stack-color, var(--color-accent)) var(--tint-glow), transparent) 0%,
-        transparent 65%
-      ),
-      var(--color-bg);
-    border-bottom: var(--border-thin) solid var(--color-border);
+    background: var(--bg-2);
+    border-bottom: var(--border-thin) solid var(--hairline);
   }
 
   .project-card__body {
@@ -281,7 +306,7 @@
   }
 
   .project-card__type {
-    color: var(--stack-text, var(--color-accent-text));
+    color: var(--t2);
   }
 
   .project-card__title {
@@ -319,13 +344,13 @@
   }
 
   .project-card:has(.project-card__trigger:focus-visible) {
-    outline: var(--focus-width) solid var(--color-focus);
+    outline: var(--focus-width) solid var(--focus-ring);
     outline-offset: var(--focus-offset);
   }
 
   @supports not selector(:has(*)) {
     .project-card__trigger:focus-visible {
-      outline: var(--focus-width) solid var(--color-focus);
+      outline: var(--focus-width) solid var(--focus-ring);
       outline-offset: var(--focus-offset);
     }
   }
@@ -334,7 +359,7 @@
     display: -webkit-box;
     overflow: hidden;
     font-size: var(--fs-sm);
-    color: var(--color-text-muted);
+    color: var(--t2);
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     line-clamp: 3;
@@ -358,24 +383,19 @@
     padding-inline: var(--space-4);
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
-    color: var(--color-text);
+    color: var(--t1);
     text-decoration: none;
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-full);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
     transition:
-      border-color var(--dur-fast) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
+      border-color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .project-card:hover {
-      border-color: color-mix(
-        in srgb,
-        var(--stack-color, var(--color-accent)) var(--tint-border),
-        transparent
-      );
-      box-shadow: 0 var(--space-6) var(--space-9) calc(var(--space-7) * -1)
-        color-mix(in srgb, var(--stack-color, var(--color-accent)) var(--tint-glow), transparent);
+      border-color: var(--glass-line-hi);
+      translate: 0 var(--hover-lift);
     }
 
     .project-card:hover .project-card__glow {
@@ -387,9 +407,8 @@
     }
 
     .project-link:hover {
-      border-color: var(--stack-color, var(--color-accent));
-      box-shadow: 0 0 var(--space-5)
-        color-mix(in srgb, var(--stack-color, var(--color-accent)) var(--tint-glow), transparent);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
     }
   }
 
@@ -407,7 +426,7 @@
       align-self: stretch;
       aspect-ratio: auto;
       contain: size;
-      border-right: var(--border-thin) solid var(--color-border);
+      border-right: var(--border-thin) solid var(--hairline);
       border-bottom: 0;
     }
 
@@ -437,9 +456,9 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: var(--color-bg-elev);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-md);
+    background: var(--mockup-bg);
+    border: var(--border-thin) solid var(--mockup-line);
+    border-radius: var(--r-md);
     box-shadow: var(--shadow-lg);
   }
 
@@ -451,9 +470,9 @@
     padding: var(--space-2) var(--space-3);
     font-family: var(--font-mono);
     font-size: var(--fs-2xs);
-    color: var(--color-text-muted);
-    background: var(--color-surface-2);
-    border-bottom: var(--border-thin) solid var(--color-border);
+    color: var(--t3);
+    background: transparent;
+    border-bottom: var(--border-thin) solid var(--hairline);
   }
 
   .mockup__dots {
@@ -465,12 +484,8 @@
   .mockup__dot {
     width: var(--mockup-dot);
     height: var(--mockup-dot);
-    background: var(--color-border-strong);
-    border-radius: var(--radius-full);
-  }
-
-  .mockup__dot:first-child {
-    background: var(--stack-color, var(--color-accent));
+    background: var(--mockup-dot-color);
+    border-radius: var(--r-pill);
   }
 
   .mockup__title,
@@ -485,8 +500,8 @@
     flex: 1;
     padding: var(--space-1) var(--space-3);
     text-align: center;
-    background: var(--color-bg);
-    border-radius: var(--radius-full);
+    background: var(--glass);
+    border-radius: var(--r-pill);
   }
 
   .mockup__body {
@@ -616,9 +631,9 @@
     padding: var(--space-4);
     overflow: hidden;
     font-family: var(--font-mono);
-    font-size: var(--fs-2xs);
+    font-size: var(--fs-code);
     line-height: var(--lh-relaxed);
-    color: var(--color-text);
+    color: var(--t2);
     white-space: pre;
     tab-size: 2;
   }
@@ -627,46 +642,25 @@
     outline-offset: calc(var(--focus-width) * -1);
   }
 
+  /* Highlighting by weight and brightness only: colour never touches text */
   .code__token--keyword {
-    color: var(--stack-text, var(--color-accent-text));
+    font-weight: var(--fw-medium);
+    color: var(--t1);
   }
 
-  .code__token--string {
-    color: var(--code-string);
-  }
-
+  .code__token--string,
   .code__token--number {
-    color: var(--code-number);
+    color: var(--t1);
   }
 
   .code__token--comment {
     font-style: italic;
-    color: var(--color-text-muted);
+    color: var(--t3);
   }
 
-  /* Mainframe terminals glow in phosphor green */
-  [data-stack='cobol'] .mockup--terminal .mockup__body {
-    background: var(--color-terminal-bg);
-  }
-
-  [data-stack='cobol'] .code {
-    font-family: var(--font-terminal);
-    font-size: var(--fs-sm);
-    color: var(--stack-cobol);
-    text-shadow: var(--glow-phosphor);
-  }
-
-  [data-stack='cobol'] .code__token {
-    font-style: normal;
-    color: inherit;
-  }
-
-  [data-stack='cobol'] .code__token--keyword {
-    color: var(--color-phosphor-bright);
-  }
-
+  /* COBOL keeps its mainframe flavour through the monospace and the program name, not phosphor */
   [data-stack='cobol'] .code__token--comment {
-    color: var(--stack-cobol-dim);
+    font-style: normal;
   }
 
   /* ============================== Carousel ============================== */
@@ -722,14 +716,13 @@
     place-items: center;
     width: var(--tap-min);
     height: var(--tap-min);
-    color: var(--color-text);
+    color: var(--t1);
     background: var(--color-glass);
-    -webkit-backdrop-filter: blur(var(--blur-sm));
-    backdrop-filter: blur(var(--blur-sm));
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-full);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
     pointer-events: auto;
-    transition: border-color var(--dur-fast) var(--ease-out-quart);
+    transition: border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   .carousel__status {
@@ -743,7 +736,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     .carousel__button:hover {
-      border-color: var(--stack-color, var(--color-accent));
+      border-color: var(--glass-line-hi);
     }
   }
 
@@ -765,7 +758,7 @@
   }
 
   /* ============================== Tabs ============================== */
-  /* modules/tabs.js — the stack colour tints the selected tab when there is one */
+  /* modules/tabs.js — the selected tab is solid white with dark text (state never by colour) */
   .tabs {
     display: grid;
     gap: var(--space-3);
@@ -790,37 +783,31 @@
     min-height: var(--tap-min);
     padding-inline: var(--space-4);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
-    color: var(--color-text-muted);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t3);
     white-space: nowrap;
     background: transparent;
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-full);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
     cursor: pointer;
     transition:
-      color var(--dur-fast) var(--ease-out-quart),
-      background-color var(--dur-base) var(--ease-out-quart),
-      border-color var(--dur-base) var(--ease-out-quart);
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   .tabs__tab[aria-selected='true'] {
-    color: var(--color-text);
-    background: color-mix(
-      in srgb,
-      var(--stack-color, var(--color-accent)) var(--tint-subtle),
-      transparent
-    );
-    border-color: color-mix(
-      in srgb,
-      var(--stack-color, var(--color-accent)) var(--tint-border),
-      transparent
-    );
+    color: var(--ink);
+    background: var(--t1);
+    border-color: var(--t1);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .tabs__tab:hover {
-      color: var(--color-text);
+    .tabs__tab:hover:not([aria-selected='true']) {
+      color: var(--t1);
     }
   }
 
@@ -853,7 +840,7 @@
     background: var(--color-bg-elev);
     border: var(--border-thin) solid var(--color-border-strong);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lg), var(--glow-accent);
+    box-shadow: var(--edge), var(--lift);
   }
 
   .modal[open] .modal__panel {
@@ -883,13 +870,13 @@
     place-items: center;
     width: var(--tap-min);
     height: var(--tap-min);
-    color: var(--color-text-muted);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-full);
+    color: var(--t2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
     transition:
-      color var(--dur-fast) var(--ease-out-quart),
-      border-color var(--dur-fast) var(--ease-out-quart),
-      box-shadow var(--dur-base) var(--ease-out-quart);
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   .icon-link .icon {
@@ -898,14 +885,14 @@
 
   @media (hover: hover) and (pointer: fine) {
     .icon-link:hover {
-      color: var(--color-text);
-      border-color: var(--color-accent);
-      box-shadow: var(--glow-accent);
+      color: var(--t1);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
     }
   }
 
   /* ============================== Empty state ============================== */
-  /* Shared by the data-driven lists (education, certificates) */
+  /* Shared by the data-driven lists (education, certificates). Relief: it rests on the page. */
   .empty-state {
     display: flex;
     grid-column: 1 / -1;
@@ -913,16 +900,17 @@
     gap: var(--space-4);
     padding: var(--space-6);
     font-size: var(--fs-md);
-    color: var(--color-text-muted);
-    background: var(--color-surface);
-    border: var(--border-thin) dashed var(--color-border-strong);
-    border-radius: var(--radius-lg);
+    color: var(--t2);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
   }
 
   .empty-state__icon {
     --icon-size: var(--fs-2xl);
 
-    color: var(--color-accent-text);
+    color: var(--t3);
   }
 
   /* ============================== Toast ============================== */
@@ -948,11 +936,13 @@
     padding: var(--space-3) var(--space-5);
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
-    color: var(--color-text);
-    background: var(--color-surface-2);
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-md);
+    color: var(--t1);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge), var(--lift);
     opacity: 0;
     translate: 0 var(--space-4);
     transition:
@@ -969,12 +959,15 @@
     --icon-size: var(--icon-scale);
   }
 
-  .toast--success .icon {
-    color: var(--color-whatsapp);
+  /* Success and error differ by icon and text, never by colour */
+  .toast .icon {
+    color: var(--t1);
   }
 
-  .toast--error .icon {
-    color: var(--stack-java);
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .toast {
+      background: var(--glass-fallback);
+    }
   }
 
   @media (min-width: 480px) {

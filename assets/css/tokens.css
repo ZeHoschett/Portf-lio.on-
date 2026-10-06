@@ -30,6 +30,12 @@
     --solid-bg: rgba(16, 16, 19, 0.86);
     --solid-line: rgba(255, 255, 255, 0.08);
     --hairline: rgba(255, 255, 255, 0.07); /* dividers inside surfaces */
+    --tag-line: rgba(255, 255, 255, 0.14);
+    --mockup-bg: rgba(12, 12, 15, 0.9);
+    --mockup-line: rgba(255, 255, 255, 0.1);
+    --mockup-dot-color: rgba(255, 255, 255, 0.22);
+    --btn-primary-hover: #e9e9ec;
+    --hover-lift: -2px;
 
     /* ---------- Text (contrast on --bg) ---------- */
     --t1: #ffffff;
@@ -144,6 +150,7 @@
     --ls-display: -0.05em;
     --ls-h2: -0.035em;
     --ls-label: 0.18em;
+    --ls-tag: 0.1em;
 
     --lh-none: 0.9;
     --lh-tight: 1.05;
@@ -236,18 +243,16 @@
     --marquee-mask: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
     --marquee-stroke: rgba(201, 204, 214, 0.55);
     --marquee-separator-scale: 0.3em;
-    --chip-dot: 0.5rem;
+    --chip-dot: 0.5rem; /* project tab dots until phase 6 */
     --tint-subtle: 10%; /* color-mix share for tinted backgrounds */
     --tint-border: 35%;
     --tint-glow: 22%;
 
     /* ---------- Reveal ---------- */
-    --reveal-distance: 2rem;
-    --reveal-blur: 6px;
+    --reveal-distance: 1rem; /* 16px rise, no blur: blur plus backdrop-filter smears and stutters */
 
     /* ---------- Projects: cards, mockups, code, modal ---------- */
     --card-media-ratio: 16 / 11;
-    --card-glow-size: 22rem;
     --card-image-zoom: 1.04;
     --mockup-dot: 0.5rem;
     --phone-ratio: 9 / 19.5;
@@ -261,8 +266,6 @@
     --phone-island-h: 0.8rem;
     --phone-island-top: 0.45rem;
     --screen-reflection: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, transparent 38%);
-    --code-string: #9ee6b8;
-    --code-number: #ffb86b;
     --color-terminal-bg: #020a04;
     --color-phosphor-bright: #b8ffcb;
     --glow-phosphor: 0 0 6px rgba(51, 255, 102, 0.45);
@@ -375,14 +378,6 @@
     --float-icon: 1.5rem;
     --float-offset: var(--space-5);
 
-    /* ---------- Cursor glow ---------- */
-    --cursor-glow-size: 32rem;
-    --cursor-glow: radial-gradient(
-      circle,
-      rgba(124, 92, 255, 0.14) 0%,
-      rgba(79, 123, 255, 0.06) 35%,
-      transparent 70%
-    );
 
     /* ---------- Borders & radii ---------- */
     --border-thin: 1px;
@@ -423,7 +418,6 @@
     --z-progress: 250;
     --z-float: 400;
     --z-toast: 600;
-    --z-cursor: 700;
     --z-skip: 900;
 
     /* ---------- Motion ---------- */
