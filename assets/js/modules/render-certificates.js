@@ -1,5 +1,6 @@
 /**
- * Renders `data/certificates.js` into the grid of #certificados (`[data-certificates]`).
+ * Renders `data/certificates.js` into the horizontal rail of #certificados (`[data-certificates]`;
+ * navigation in modules/rail.js, which runs afterwards).
  * A certificate with an image gets a title button that opens it enlarged in the modal
  * (lightbox); without an image the title is plain text (there would be nothing to enlarge).
  * `description` (one short sentence) is shown on the card and repeated in the lightbox.
@@ -126,7 +127,7 @@ function createCard(certificate) {
     title = el('h3', { className: 'cert-card__name', text: certificate.name });
   }
 
-  const card = el('article', { className: 'cert-card' }, [
+  const card = el('article', { className: 'cert-card surface-solid' }, [
     el('div', { className: 'cert-card__media' }, [
       image
         ? el('img', {
@@ -151,7 +152,9 @@ function createCard(certificate) {
     ]),
   ]);
 
-  return el('li', { className: 'cert-grid__item', attrs: { 'data-reveal': true } }, [card]);
+  // The rail itself carries data-reveal: cards clipped sideways by the scroller would never
+  // count as entering the viewport
+  return el('li', { className: 'rail__item', attrs: { 'data-rail-item': true } }, [card]);
 }
 
 const createEmptyState = () =>
@@ -161,7 +164,7 @@ const createEmptyState = () =>
   ]);
 
 /**
- * Renders the certificate grid. Call again with another list to re-render.
+ * Renders the certificate rail. Call again with another list to re-render.
  * @param {Certificate[]} [list]
  */
 export function renderCertificates(list = defaultCertificates) {

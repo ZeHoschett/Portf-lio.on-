@@ -393,56 +393,78 @@
             <p class="section__eyebrow">05 · Certificados</p>
             <h2 class="section__title" id="certificates-title">Certificados</h2>
           </header>
-          <ul class="cert-grid" role="list" data-certificates></ul>
+          <!-- Horizontal rail (modules/rail.js): the section never grows with the count -->
+          <div class="rail" data-rail data-reveal>
+            <div class="rail__head" data-rail-head>
+              <p class="rail__count" data-rail-count></p>
+              <div class="rail__nav">
+                <button class="btn btn--icon" type="button" data-rail-prev>
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-chevron-left"></use></svg>
+                  <span class="visually-hidden">Certificado anterior</span>
+                </button>
+                <button class="btn btn--icon" type="button" data-rail-next>
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-chevron-right"></use></svg>
+                  <span class="visually-hidden">Próximo certificado</span>
+                </button>
+              </div>
+            </div>
+            <div class="rail__viewport" role="group" aria-label="Certificados: use as setas do teclado para navegar" tabindex="0" data-rail-viewport>
+              <ul class="rail__track" role="list" data-certificates></ul>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- ============================== CONTATO ============================== -->
       <section class="section contact" id="contato" aria-labelledby="contact-title">
         <div class="container">
-          <header class="section__header contact__header" data-reveal>
-            <p class="section__eyebrow">06 · Contato</p>
-            <h2 class="contact__title" id="contact-title">Vamos conversar?</h2>
-            <p class="section__lead">Aberto a oportunidades e novos projetos. Escolha o canal que preferir.</p>
-          </header>
+          <!-- One glass panel; each row is a link to the channel (its ::after covers the row) -->
+          <div class="contact__panel surface-glass" data-reveal>
+            <header class="contact__header">
+              <p class="section__eyebrow">06 · Contato</p>
+              <h2 class="contact__title" id="contact-title">Vamos conversar?</h2>
+              <p class="section__lead">Aberto a oportunidades e novos projetos. Escolha o canal que preferir.</p>
+            </header>
 
-          <ul class="contact-list" role="list">
-            <li class="contact-item contact-item--email" data-reveal>
-              <span class="contact-item__label">E-mail</span>
-              <a class="contact-item__link" href="mailto:dev.jose841@gmail.com" data-link="email">
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-mail"></use></svg>
-                <span data-bind="email">dev.jose841@gmail.com</span>
-              </a>
-              <button class="btn btn--icon" type="button" data-copy-email>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-copy"></use></svg>
-                <span class="visually-hidden">Copiar e-mail</span>
-              </button>
-            </li>
-            <li class="contact-item" data-requires="linkedin" data-reveal>
-              <span class="contact-item__label">LinkedIn</span>
-              <a class="contact-item__link" href="https://www.linkedin.com/in/josehoschett/" data-link="linkedin" target="_blank" rel="noopener noreferrer">
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-linkedin"></use></svg>
-                <span>Perfil no LinkedIn</span>
-                <span class="visually-hidden">(abre em nova aba)</span>
-              </a>
-            </li>
-            <li class="contact-item" data-requires="github" data-reveal hidden>
-              <span class="contact-item__label">GitHub</span>
-              <a class="contact-item__link" data-link="github" target="_blank" rel="noopener noreferrer">
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-github"></use></svg>
-                <span>Perfil no GitHub</span>
-                <span class="visually-hidden">(abre em nova aba)</span>
-              </a>
-            </li>
-            <li class="contact-item contact-item--whatsapp" data-requires="whatsapp" data-reveal hidden>
-              <span class="contact-item__label">WhatsApp</span>
-              <a class="btn btn--whatsapp" data-link="whatsapp" target="_blank" rel="noopener noreferrer">
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-whatsapp"></use></svg>
-                <span>Conversar no WhatsApp</span>
-                <span class="visually-hidden">(abre em nova aba)</span>
-              </a>
-            </li>
-          </ul>
+            <ul class="contact-list" role="list">
+              <li class="contact-row">
+                <a class="contact-row__link" href="mailto:dev.jose841@gmail.com" data-link="email">
+                  <span class="contact-row__label">E-mail</span>
+                  <span class="contact-row__value" data-bind="email">dev.jose841@gmail.com</span>
+                </a>
+                <!-- Above the row's click area: copy instead of opening the mail client -->
+                <button class="btn btn--icon contact-row__action" type="button" data-copy-email>
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-copy"></use></svg>
+                  <span class="visually-hidden">Copiar e-mail</span>
+                </button>
+              </li>
+              <li class="contact-row" data-requires="linkedin">
+                <a class="contact-row__link" href="https://www.linkedin.com/in/josehoschett/" data-link="linkedin" target="_blank" rel="noopener noreferrer">
+                  <span class="contact-row__label">LinkedIn</span>
+                  <span class="contact-row__value">Perfil no LinkedIn</span>
+                  <span class="visually-hidden">(abre em nova aba)</span>
+                </a>
+                <svg class="icon contact-row__go" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-external"></use></svg>
+              </li>
+              <li class="contact-row" data-requires="github" hidden>
+                <a class="contact-row__link" data-link="github" target="_blank" rel="noopener noreferrer">
+                  <span class="contact-row__label">GitHub</span>
+                  <span class="contact-row__value">Perfil no GitHub</span>
+                  <span class="visually-hidden">(abre em nova aba)</span>
+                </a>
+                <svg class="icon contact-row__go" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-external"></use></svg>
+              </li>
+              <!-- The number is never shown as text: only the link -->
+              <li class="contact-row" data-requires="whatsapp" hidden>
+                <a class="contact-row__link" data-link="whatsapp" target="_blank" rel="noopener noreferrer">
+                  <span class="contact-row__label">WhatsApp</span>
+                  <span class="contact-row__value">Conversar no WhatsApp</span>
+                  <span class="visually-hidden">(abre em nova aba)</span>
+                </a>
+                <svg class="icon contact-row__go" aria-hidden="true" focusable="false"><use href="assets/icons/sprite.svg#icon-external"></use></svg>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
     </main>

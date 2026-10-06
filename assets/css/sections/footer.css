@@ -2,8 +2,7 @@
 @layer sections {
   .site-footer {
     padding-block: var(--space-7) calc(var(--space-7) + env(safe-area-inset-bottom, 0));
-    border-top: var(--border-thin) solid var(--color-border);
-    background: var(--color-bg-elev);
+    border-top: var(--border-thin) solid var(--hairline);
   }
 
   .site-footer__inner {
@@ -19,23 +18,23 @@
     height: var(--tap-min);
     font-family: var(--font-display);
     font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
-    letter-spacing: var(--ls-snug);
+    font-weight: var(--fw-semibold);
+    color: var(--t1);
     text-decoration: none;
-    color: transparent;
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    background-clip: text;
-    border: var(--border-thin) solid var(--color-border-strong);
-    border-radius: var(--radius-md);
+    background: var(--glass-strong);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-sm);
+    box-shadow: var(--edge);
+    transition: border-color var(--dur-hover) var(--ease-out-quart);
   }
 
   .site-footer__copy,
   .site-footer__made {
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: var(--ls-wide);
-    color: var(--color-text-muted);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
   }
 
   .site-footer__social {
@@ -50,13 +49,13 @@
     gap: var(--space-3);
     min-height: var(--tap-min);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     font-weight: var(--fw-medium);
-    letter-spacing: var(--ls-wide);
+    letter-spacing: var(--ls-label);
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--t3);
     text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out-quart);
+    transition: color var(--dur-hover) var(--ease-out-quart);
   }
 
   .site-footer__top .icon {
@@ -67,11 +66,11 @@
 
   @media (hover: hover) and (pointer: fine) {
     .site-footer__logo:hover {
-      border-color: var(--color-accent);
+      border-color: var(--glass-line-hi);
     }
 
     .site-footer__top:hover {
-      color: var(--color-text);
+      color: var(--t1);
     }
 
     .site-footer__top:hover .icon {

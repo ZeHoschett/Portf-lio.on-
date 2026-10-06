@@ -196,11 +196,6 @@
     --btn-shadow: var(--edge);
   }
 
-  .btn--whatsapp {
-    --btn-bg: var(--color-whatsapp);
-    --btn-color: var(--color-on-whatsapp);
-  }
-
   .btn--sm {
     padding-inline: var(--space-4);
   }
@@ -220,10 +215,6 @@
     .btn--icon:hover {
       --btn-bg: var(--glass-strong);
       --btn-border: var(--glass-line-hi);
-    }
-
-    .btn--whatsapp:hover {
-      --btn-shadow: var(--glow-whatsapp);
     }
   }
 
@@ -984,10 +975,14 @@
     place-items: center;
     width: var(--float-size);
     height: var(--float-size);
-    color: var(--color-on-whatsapp);
-    background: var(--color-whatsapp);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-md);
+    color: var(--t1);
+    /* Glass, monochrome: no brand green (colour never touches a control) */
+    background: var(--glass-strong);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge), var(--lift);
     /* Not reachable until it is shown (scrolled past the hero) */
     visibility: hidden;
     opacity: 0;
@@ -1014,7 +1009,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     .whatsapp-float:hover {
-      box-shadow: var(--shadow-md), var(--glow-whatsapp);
+      border-color: var(--glass-line-hi);
     }
   }
 }

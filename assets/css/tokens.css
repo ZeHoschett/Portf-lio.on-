@@ -112,11 +112,6 @@
     --stack-web: #7c5cff;
     --stack-web-text: var(--color-accent-text);
 
-    /* ---------- Colors: brands ---------- */
-    --color-whatsapp: #25d366; /* use dark text on it: ~10:1 with --color-bg */
-    --color-on-whatsapp: var(--color-bg);
-    --glow-whatsapp: 0 0 0 1px rgba(37, 211, 102, 0.5), 0 0 32px rgba(37, 211, 102, 0.35);
-
     /* ---------- Typography ---------- */
     --font-display: 'Inter Tight', 'Helvetica Neue', Arial, system-ui, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -237,9 +232,6 @@
     --marquee-ink-faint: rgba(255, 255, 255, 0.12);
     --marquee-duration-default: 40s;
     --chip-dot: 0.5rem; /* project tab dots until phase 6 */
-    --tint-subtle: 10%; /* color-mix share for tinted backgrounds */
-    --tint-border: 35%;
-    --tint-glow: 22%;
 
     /* ---------- Reveal ---------- */
     --reveal-distance: 1rem; /* 16px rise, no blur: blur plus backdrop-filter smears and stutters */
@@ -290,21 +282,26 @@
     /* ---------- Education timeline (phase 7) ---------- */
     --timeline-gutter: 2.5rem; /* space reserved for the line and its marker */
     --timeline-marker: 1rem;
-    --timeline-marker-core: 0.375rem;
-    --timeline-marker-top: 1.4rem; /* aligns the marker with the first text line */
-    --timeline-line: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-accent) 60%, transparent) 0%,
-      var(--color-border) 100%
-    );
+    --timeline-marker-top: 2.3rem; /* aligns the marker with the card's first line (period + status pill) */
+    --timeline-ring: 4px;
 
-    /* ---------- Certificates ---------- */
-    --cert-min: 15rem;
+    /* ---------- Certificates rail ---------- */
+    --rail-gap: var(--space-4);
+    --rail-visible: 1; /* whole cards per view on phones, then md / lg / xl */
+    --rail-visible-md: 2;
+    --rail-visible-lg: 3;
+    --rail-visible-xl: 4;
+    --rail-peek: 0.5; /* plus half a card, always cut at the right edge */
+    --rail-fade: linear-gradient(90deg, #000000 82%, transparent 100%);
     --cert-ratio: 1.4 / 1;
     --lightbox-image-max-h: 70dvh;
 
     /* ---------- Contact ---------- */
-    --contact-item-min: 18rem;
+    --contact-label-w: 8.5rem;
+    --contact-bloom-inset: -10% -20%;
+    --contact-bloom:
+      radial-gradient(40% 50% at 18% 30%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 0.55)), transparent 70%),
+      radial-gradient(36% 46% at 86% 78%, rgba(var(--bloom-neutro), calc(var(--bloom-amount) * 0.35)), transparent 70%);
 
     /* ---------- Toast ---------- */
     --toast-max: 24rem;
