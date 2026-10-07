@@ -172,6 +172,13 @@
       visibility 0s;
   }
 
+  /* The floating WhatsApp button sits above the header layer: hide it while the menu covers the
+     page (it is inert then anyway, like the rest of the background) */
+  .site-header.is-menu-open ~ .whatsapp-float {
+    visibility: hidden;
+    opacity: 0;
+  }
+
   .site-nav__list {
     display: grid;
     gap: var(--space-1);

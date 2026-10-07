@@ -66,6 +66,7 @@ export const STACKS = ['java', 'python', 'cobol', 'web'];
 
 const AGENDAFLOW_IMG = 'assets/img/projects/agendaflow';
 const AGENDAFLOW_VIDEO = 'assets/video/projects/agendaflow';
+const PORTFOLIO_IMG = 'assets/img/projects/portfolio';
 
 /** @type {Project[]} */
 export const projects = [
@@ -2214,112 +2215,219 @@ CREATE TABLE contas (
   {
     id: 'portfolio',
     title: 'Portfólio Pessoal',
+    subtitle: 'Este site, em HTML, CSS e JavaScript puros',
     stack: 'web',
     type: 'web',
     summary:
-      'Este site: página única responsiva e interativa, feita com HTML, CSS e JavaScript puros, sem frameworks.',
-    description:
-      'Arte de fundo com identidade por stack (rede hexagonal em Canvas para Java, letreiro de neon para Python, terminal CRT para COBOL e grade interativa para Web), foco em acessibilidade (WCAG 2.1 AA), performance e código modular com ES Modules.',
-    tags: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Acessibilidade'],
-    images: [], // TODO(jose): print do site publicado
+      'Página única feita sem framework nem etapa de build, no sistema de vidro em preto e branco, com estudos de caso, abas acessíveis e código real numa tela de editor.',
+    description: [
+      'Este portfólio é o próprio projeto: uma página única para recrutadores, feita com HTML, CSS e JavaScript puros, sem framework, sem dependência e sem etapa de build. O conteúdo vem de arquivos de dados e é montado no navegador só com textContent, e cada projeto ganha um estudo de caso com números medidos, capturas e trechos reais de código.',
+      'O visual segue um sistema de vidro: fundo quase preto, painéis de vidro fosco e uma interface toda em preto e branco, em que a única cor é a luz fora de foco atrás do vidro, com uma tinta por stack. O código é a exceção e aparece numa tela de editor no tema VS Code Dark+.',
+      'Acessibilidade e desempenho foram medidos, e não supostos: contraste AA conferido nos pixels reais atrás de cada texto, navegação completa por teclado, movimento reduzido respeitado e no máximo três superfícies com desfoque visíveis ao mesmo tempo. O site é publicado no Render a cada push, com política de segurança de conteúdo.',
+    ],
+    tags: ['HTML5', 'CSS3', 'JavaScript', 'ES Modules', 'Cascade Layers', 'WCAG 2.1 AA'],
+    images: [
+      { src: `${PORTFOLIO_IMG}/desktop-01-inicio.webp`, alt: 'Início do portfólio: painel de vidro com o nome, o cargo, os botões e a foto', width: 2000, height: 1250 },
+      { src: `${PORTFOLIO_IMG}/desktop-02-projetos.webp`, alt: 'Aba COBOL da área de projetos, com o cartão em destaque do CB7 Bank e o código numa tela de editor', width: 2000, height: 1250 },
+      { src: `${PORTFOLIO_IMG}/desktop-03-estudo-de-caso.webp`, alt: 'Estudo de caso do CB7 Bank aberto, com as abas de código em destaque', width: 2000, height: 1250 },
+      { src: `${PORTFOLIO_IMG}/desktop-04-certificados.webp`, alt: 'Trilho horizontal de certificados, com o contador e as setas', width: 2000, height: 1250 },
+    ],
+    mobileImages: [
+      { src: `${PORTFOLIO_IMG}/mobile-01-inicio.webp`, alt: 'Início do portfólio no celular', width: 780, height: 1688 },
+      { src: `${PORTFOLIO_IMG}/mobile-02-projetos.webp`, alt: 'Aba COBOL no celular, com o cartão do CB7 Bank', width: 780, height: 1688 },
+      { src: `${PORTFOLIO_IMG}/mobile-03-menu.webp`, alt: 'Menu de navegação aberto no celular', width: 780, height: 1688 },
+    ],
+    stats: [
+      { value: '0', label: 'dependências de runtime e nenhuma etapa de build' },
+      { value: '26', label: 'módulos JavaScript nativos, um por responsabilidade' },
+      { value: '246', label: 'tokens de design: o único lugar com valores crus' },
+      { value: '100', label: 'em acessibilidade, boas práticas e SEO no Lighthouse mobile' },
+    ],
+    highlights: [
+      'Sistema de vidro com três materiais (vidro, relevo e sólido): interface em preto e branco e cor só na luz de fundo, com uma tinta por stack.',
+      'Projetos numa área só, com abas acessíveis que filtram no lugar e mostram quantos projetos cada stack tem.',
+      'Estudo de caso de cada projeto num modal com leitura principal, coluna de apoio, carrossel de capturas, vídeos e código.',
+      'Código real dos projetos numa tela de editor no tema VS Code Dark+, com realce de sintaxe próprio e números de linha.',
+      'Certificados num trilho horizontal com contador e setas, com imagens geradas em alta resolução a partir dos PDFs originais.',
+      'Menu no celular com foco preso, Esc para fechar e fundo inerte; anel de foco visível em todos os controles.',
+      'Movimento reduzido respeitado: com a preferência ligada, nada anima e nada fica invisível.',
+      'Publicado no Render como site estático, com CSP, cabeçalhos de segurança e cache por tipo de arquivo.',
+    ],
+    architecture: [
+      {
+        title: 'HTML',
+        description:
+          'index.html semântico com todo o texto fixo do site, um h1 e uma section por assunto. Título, descrição, Open Graph e JSON-LD ficam estáticos, porque buscadores não executam JavaScript.',
+      },
+      {
+        title: 'CSS',
+        description:
+          'Sete cascade layers declaradas uma única vez, de reset a utilities; tokens.css é o único lugar com valores crus e cada seção tem o seu arquivo. As três superfícies e a paleta do editor são componentes reutilizados no site inteiro.',
+      },
+      {
+        title: 'JavaScript',
+        description:
+          'main.js inicia cada módulo isolado, de modo que um erro não derruba o resto. Os dados de projetos, formação e certificados são renderizados com el() e textContent, nunca com innerHTML, e todo URL passa por sanitizeUrl().',
+      },
+      {
+        title: 'Publicação',
+        description:
+          'render.yaml copia só os arquivos públicos, define a CSP (apenas o próprio site e o Google Fonts) e o cache: CSS e JS revalidados a cada visita, imagens por um dia.',
+      },
+    ],
+    challenges: [
+      {
+        challenge: 'A luz da área de projetos sumia sem nenhum erro no console.',
+        solution:
+          'Um token no :root com var(--stack-bloom) é resolvido no :root, onde nenhuma stack existe, e o gradiente inteiro cai em silêncio. O gradiente passou a ser montado no próprio elemento, e uma verificação automática garante que todo var() do tokens.css aponta para um token do próprio arquivo.',
+      },
+      {
+        challenge: 'Vidro quase transparente sobre a luz mais forte deixava texto pequeno abaixo do contraste AA.',
+        solution:
+          'O contraste foi medido nos pixels reais atrás de cada texto, com capturas da página com e sem o texto. Uma película escura sob o vidro levou o pior caso acima de 4.5:1, com e sem backdrop-filter.',
+      },
+      {
+        challenge: 'Desfoque em muitas superfícies ao mesmo tempo engasga a rolagem no celular.',
+        solution:
+          'Teto de três superfícies com backdrop-filter visíveis, conferido rolando a página e contando: os cartões que se repetem são sólidos, os botões sobre vidro não têm desfoque próprio e o botão flutuante some ao chegar no Contato.',
+      },
+      {
+        challenge: 'Com os nomes de arquivo sem hash, quem visitou o site no dia anterior receberia o HTML novo com o CSS e o JS antigos.',
+        solution:
+          'CSS e JS passaram a ser revalidados a cada visita (uma resposta 304 rápida quando não mudaram), enquanto imagens, vídeos e ícones continuam guardados por um dia.',
+      },
+    ],
     codeSamples: [
       {
-        fileName: 'index.html',
-        language: 'html',
+        fileName: 'assets/css/components.css',
+        language: 'css',
         caption:
-          'O esqueleto semântico da página: um <h1> no hero, uma <section> por assunto e os pontos onde o JavaScript injeta o conteúdo.',
+          'O material de vidro: grão, vidro branco e uma película escura em três camadas, o desfoque e a aresta de luz, com versão opaca onde não há backdrop-filter.',
         code: `
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>José Hoschett | Desenvolvedor COBOL · Java</title>
-    <!-- SEO, Open Graph e JSON-LD ficam estáticos: buscadores não executam JavaScript -->
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <!-- ... um arquivo por camada: tokens, base, layout, components, sections ... -->
-    <script type="module" src="assets/js/main.js"></script>
-  </head>
+  .surface-glass {
+    position: relative;
+    background:
+      var(--texture-grain-glass) 0 0 / var(--grain-size),
+      linear-gradient(var(--glass), var(--glass)),
+      var(--glass-scrim);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--lift);
+  }
 
-  <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .surface-glass {
+      background: var(--glass-fallback);
+    }
+  }
+  /* ... */
+  /* Specular: --mx/--my come from modules/specular.js (fine pointer only) */
+  .surface-glass::after,
+  .surface-solid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      var(--specular-size) circle at var(--mx, 50%) var(--my, 0%),
+      var(--specular),
+      transparent 60%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+  }
 
-    <header class="site-header" data-header>
-      <!-- logo, navegação e CTAs; abaixo de 1280px vira menu sobreposto -->
-    </header>
+  @media (hover: hover) and (pointer: fine) {
+    .surface-glass:hover::after,
+    .surface-solid:hover::after {
+      opacity: 1;
+    }
+  }
 
-    <main id="conteudo" tabindex="-1">
-      <section class="hero" id="inicio" aria-labelledby="hero-title">
-        <img class="hero__art" src="assets/img/hero-keycap.webp" alt="" aria-hidden="true">
-        <h1 class="hero__title" id="hero-title" data-hero-title>...</h1>
-      </section>
-
-      <section class="section about" id="sobre" aria-labelledby="about-title">...</section>
-      <section class="section stack" id="stack" aria-labelledby="stack-title">...</section>
-
-      <section class="projects" id="projetos" aria-labelledby="projects-title">
-        <!-- uma subseção por stack, cada uma com a sua arte de fundo -->
-        <section class="project-stack" id="projetos-java" data-stack="java">
-          <ul class="project-grid" data-projects="java"></ul>
-        </section>
-        <!-- ... python, cobol, web ... -->
-      </section>
-
-      <section class="section education" id="formacao" aria-labelledby="education-title">
-        <ol class="timeline" data-education></ol>
-      </section>
-
-      <section class="section certificates" id="certificados" aria-labelledby="certificates-title">
-        <ul class="cert-grid" data-certificates></ul>
-      </section>
-
-      <section class="section contact" id="contato" aria-labelledby="contact-title">...</section>
-    </main>
-
-    <footer class="site-footer">...</footer>
-  </body>
-</html>
 `,
       },
       {
-        fileName: 'assets/css/reset.css',
+        fileName: 'assets/css/tokens.css',
         language: 'css',
         caption:
-          'A ordem das camadas é declarada uma única vez: quem vem depois vence, sem depender de especificidade nem de !important.',
+          'A luz que troca com a aba: só as partes fixas ficam no :root, porque um var() para uma propriedade do elemento seria resolvido no lugar errado.',
         code: `
-/* Cascade layer order, declared once, in the first stylesheet loaded. */
-@layer reset, tokens, base, layout, components, sections, utilities;
+    /* ---------- Projects area ---------- */
+    /* The selected stack's light at the top of the area. Only the parts that do not depend on
+       the stack live here: a var(--stack-bloom) inside a :root token would be resolved at :root,
+       where no stack is set, and the whole gradient would silently drop. */
+    --projects-bloom-shape: 52% 60% at 50% 0%;
+    --projects-bloom-alpha: calc(var(--bloom-amount) * 0.95);
+    --projects-bloom-fade: 72%;
+    --projects-bloom-inset: -6% -14% 35%;
+`,
+      },
+      {
+        fileName: 'assets/js/modules/rail.js',
+        language: 'javascript',
+        caption:
+          'O trilho de certificados: o contador e as setas leem a rolagem nativa, e as setas andam exatamente um cartão.',
+        code: `
+  let frameId = 0;
+  const sync = () => {
+    frameId = 0;
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    const left = viewport.scrollLeft;
+    const atStart = left <= EDGE_TOLERANCE_PX;
+    const atEnd = left >= max - EDGE_TOLERANCE_PX;
+    // The first card in view; at the far end the last one, so the count can reach the total
+    const index = atEnd ? items.length : Math.min(items.length, Math.round(left / step()) + 1);
 
-@layer reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-}
+    if (count) count.textContent = \`\${pad(index)} de \${pad(items.length)}\`;
+    setDisabled(prev, atStart);
+    setDisabled(next, atEnd);
+    rail.classList.toggle('is-at-end', atEnd);
+  };
 
-/* tokens.css: o único lugar com valores crus */
-@layer tokens {
-  :root {
-    --color-bg: #07070a;
-    --color-accent: #7c5cff;
-    --space-5: 1.5rem;
-    --radius-lg: 1rem;
+  /** @param {number} direction  -1 or 1 */
+  const move = (direction) => {
+    viewport.scrollBy({
+      left: step() * direction,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
+  };
+`,
+      },
+      {
+        fileName: 'assets/js/utils/highlight.js',
+        language: 'javascript',
+        caption:
+          'O realce de sintaxe da tela de editor: uma única expressão regular por linguagem, em que a ordem dos grupos decide o tipo de cada palavra.',
+        code: `
+function getPattern(language) {
+  if (!patterns.has(language)) {
+    const control = toAlternation(CONTROL[language] ?? '');
+    const string = language === 'python' ? \`\${TRIPLE_STRING}|\${STRING}\` : STRING;
+    // Order matters: the first group that matches wins
+    const groups = [
+      \`(?<comment>\${COMMENTS[language]})\`,
+      \`(?<string>\${string})\`,
+      WITH_ANNOTATIONS.has(language) ? \`(?<annotation>\${ANNOTATION})\` : '',
+      control ? \`(?<control>\${wholeWord(control)})\` : '',
+      \`(?<keyword>\${wholeWord(toAlternation(KEYWORDS[language]))})\`,
+      WITH_IDENTIFIERS.has(language)
+        ? \`(?<function>\${FUNCTION})|(?<type>\${TYPE})|(?<variable>\${VARIABLE})\`
+        : '',
+      \`(?<number>\${NUMBER})\`,
+    ].filter(Boolean);
+    const flags = CASE_INSENSITIVE.has(language) ? 'gim' : 'gm';
+    patterns.set(language, new RegExp(groups.join('|'), flags));
   }
-}
-
-/* sections/certificates.css: as regras só consomem tokens */
-@layer sections {
-  .cert-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--cert-min), 1fr));
-    gap: var(--space-5);
-  }
+  return /** @type {RegExp} */ (patterns.get(language));
 }
 `,
       },
     ],
     repo: 'https://github.com/ZeHoschett/Portf-lio.on-',
+    demo: 'https://jose-hoschett-portfolio.onrender.com',
     year: 2026,
     featured: true,
   },
