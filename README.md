@@ -341,6 +341,34 @@ Lighthouse mobile, mediana de três execuções, antes e depois:
 
 ---
 
+## Depois do restyle (07/10/2026)
+
+O que entrou no dia seguinte ao restyle, já publicado no Render:
+
+| Mudança | O que foi feito |
+| --- | --- |
+| **Certificados em alta resolução** | Os 14 foram gerados de novo a partir dos PDFs originais, em 2000px (antes ~1300px e muito comprimidos), com miniatura de 640px para o cartão do trilho. O da FGV voltou a mostrar o certificado inteiro. |
+| **Código como no editor** | Onde há código, ele aparece numa tela no tema VS Code Dark+: aba com o nome do arquivo, números de linha e cores de sintaxe, todas com contraste AA. É a única exceção à regra de preto e branco. |
+| **CB7 Bank** | Novo projeto em destaque, o primeiro da aba COBOL, com estudo de caso completo e trechos reais de COBOL, Java e SQL. Aparece também como recomendação na aba Java (campo `alsoIn`), sem contar como projeto Java. |
+| **Estudo de caso do portfólio** | A entrada "Portfólio Pessoal" descreve o site novo, com 7 capturas do site publicado e 4 trechos do código atual. |
+| **Correções** | Um estudo de caso aberto logo depois de fechar outro não é mais apagado; dois cartões em destaque seguidos não deixam vão na grade; o botão do WhatsApp some com o menu do celular aberto; CSS e JS são revalidados a cada visita, para nunca ficarem diferentes do HTML. |
+
+Verificado no site publicado: console limpo, sem rolagem horizontal de 360 a 1920px, os 14 estudos de
+caso abrindo, foco visível em todos os controles e nenhuma falha de contraste. Lighthouse mobile:
+67 / 100 / 100 / 100.
+
+### Para continuar
+
+1. **Segunda foto do Sobre:** coloque a foto em `assets/img/` e troque o `src` do `.about__photo`
+   no `index.html` (hoje é a mesma do Início, num recorte mais fechado).
+2. **Capturas em alta resolução dos projetos:** AgendaFlow, AURA e Funil têm prints de 1600px e
+   393px, abaixo do que o modal pede em telas de alta densidade. Tire novas capturas em densidade 2x
+   (no DevTools, modo responsivo com DPR 2) e substitua os arquivos em `assets/img/projects/<id>/`,
+   anotando `width`/`height` no dado.
+3. Os itens de "Falta preencher", mais abaixo (bio, links de projetos, frase de apoio).
+
+---
+
 ## Publicar
 
 Todos os caminhos são relativos, então o site funciona na raiz de um domínio ou em subpasta.
@@ -430,6 +458,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **Segunda foto** | `index.html` (`TODO(jose)` no Sobre) | uma foto diferente para o Sobre | a mesma foto do Início, num recorte mais fechado |
+| **Capturas 2x** | `assets/img/projects/<id>/` | prints novos em densidade 2x do AgendaFlow, da AURA e do Funil | 1600px no desktop e 393px no celular, com compressão alta |
 
 ### Ordem sugerida
 
