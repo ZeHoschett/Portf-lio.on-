@@ -39,6 +39,7 @@ const VIDEO_FALLBACK = { width: 390, height: 844 };
 const MODAL_TITLE_ID = 'modal-project-title';
 
 /** @typedef {import('../data/projects.js').Project} Project */
+/** @typedef {import('../data/projects.js').ProjectRecommendation} ProjectRecommendation */
 /** @typedef {{ src: string, alt: string, width: number, height: number }} Image */
 /** @typedef {{ src: string, poster: string, title: string, width: number, height: number }} Video */
 /** @typedef {{ fileName: string, language: string, caption: string, code: string }} CodeSample */
@@ -681,6 +682,77 @@ function createCard(project) {
   );
 }
 
+/**
+ * Recommendation card: a project that lives in another tab but matters for this one (`alsoIn`).
+ * Full width, after the tab's own projects, never counted as one of them. It shows why it is
+ * recommended here, the tags and real code for this stack, "Estudo de caso" (same modal) and a
+ * link to the project's own tab.
+ * @param {Project} project
+ * @param {ProjectRecommendation} recommendation
+ */
+function createRecommendation(project, recommendation) {
+  const titleId = `project-${slug(project.id)}-${recommendation.stack}-title`;
+  const tags = toTextList(recommendation.tags ?? project.tags ?? []);
+  const snippet = text(recommendation.codeSnippet) ? trimCode(recommendation.codeSnippet) : '';
+  const homeLabel = STACK_LABELS[project.stack];
+
+  const trigger = el(
+    'button',
+    { className: 'project-card__trigger', attrs: { type: 'button', 'aria-haspopup': 'dialog' } },
+    [
+      el('span', { text: 'Estudo de caso' }),
+      el('span', { className: 'visually-hidden', text: ` de ${project.title}` }),
+      icon('arrow', 'icon project-card__arrow'),
+    ],
+  );
+  trigger.addEventListener('click', () => openProjectModal(project, trigger));
+
+  const homeLink = el('a', { className: 'project-card__home', attrs: { href: `#projetos-${project.stack}` } }, [
+    el('span', { text: `Ver na aba ${homeLabel}` }),
+  ]);
+
+  const card = el(
+    'article',
+    {
+      className: 'project-card project-card--recommendation surface-solid',
+      attrs: { 'aria-labelledby': titleId },
+      dataset: { stack: project.stack },
+    },
+    [
+      el('div', { className: 'project-card__body' }, [
+        el('p', { className: 'project-card__eyebrow', text: `Recomendado · projeto ${homeLabel}` }),
+        el('h4', { className: 'project-card__title', attrs: { id: titleId }, text: project.title }),
+        text(project.subtitle)
+          ? el('p', { className: 'project-card__subtitle', text: project.subtitle })
+          : null,
+        text(recommendation.note)
+          ? el('p', { className: 'project-card__summary', text: recommendation.note })
+          : null,
+        tags.length ? createTagList(tags) : null,
+      ]),
+      snippet
+        ? el('div', { className: 'project-card__media' }, [
+            createWindow(
+              'terminal',
+              el('span', { className: 'mockup__title', text: text(recommendation.fileName) || defaultFileName(project) }),
+              createCodeBlock(snippet, project.stack, 'card', { language: recommendation.language }),
+            ),
+          ])
+        : null,
+      el('div', { className: 'project-card__footer' }, [
+        trigger,
+        el('div', { className: 'project-card__links' }, [homeLink]),
+      ]),
+    ],
+  );
+
+  return el(
+    'li',
+    { className: 'project-grid__item project-grid__item--wide', attrs: { 'data-reveal': true } },
+    [card],
+  );
+}
+
 /** @param {Project['stack']} stack */
 function createEmptyState(stack) {
   if (stack === 'cobol') {
@@ -709,6 +781,15 @@ export function renderProjects(list = defaultProjects) {
     const grid = document.querySelector(`[data-projects="${stack}"]`);
     if (!grid) return;
     const items = valid.filter((project) => project.stack === stack);
-    grid.replaceChildren(...(items.length ? items.map(createCard) : [createEmptyState(stack)]));
+    // Projects from other tabs recommended here (alsoIn), after this tab's own projects
+    const recommended = valid.flatMap((project) =>
+      toArray(project.alsoIn)
+        .filter((rec) => rec?.stack === stack && project.stack !== stack)
+        .map((rec) => createRecommendation(project, rec)),
+    );
+    grid.replaceChildren(
+      ...(items.length ? items.map(createCard) : [createEmptyState(stack)]),
+      ...recommended,
+    );
   });
 }

@@ -350,6 +350,43 @@
     }
   }
 
+  /* ---------- Recommendation (a project from another tab, see alsoIn) ---------- */
+  .project-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* Text link to the project's own tab, a pill like the access icons */
+  .project-card__home {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    padding-inline: var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t2);
+    text-decoration: none;
+    white-space: nowrap;
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    transition:
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-card__home:hover {
+      color: var(--t1);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
+    }
+  }
+
   /* Secondary controls sit above the stretched trigger */
   .project-card__links {
     position: relative;

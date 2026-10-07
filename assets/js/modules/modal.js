@@ -15,6 +15,9 @@ let scrollArea = null;
 let returnFocusTo = null;
 
 function onClose() {
+  // The `close` event is queued as a task. If another case study was opened before it fired,
+  // the dialog is open again with new content: this late event must not wipe it.
+  if (dialog?.open) return;
   document.documentElement.classList.remove('is-scroll-locked');
   content?.replaceChildren();
   dialog?.removeAttribute('aria-labelledby');

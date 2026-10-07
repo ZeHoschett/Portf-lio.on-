@@ -119,8 +119,10 @@
   }
 
   /* ============================== Grid ============================== */
+  /* dense: a featured card that does not fit beside another one never leaves an empty cell */
   .project-grid {
     display: grid;
+    grid-auto-flow: dense;
     gap: var(--space-4);
     list-style: none;
   }
@@ -137,6 +139,11 @@
 
     .project-grid__item--featured {
       grid-column: span 2;
+    }
+
+    /* Recommendation of a project from another tab: closes the grid on its own row */
+    .project-grid__item--wide {
+      grid-column: 1 / -1;
     }
   }
 

@@ -4,6 +4,7 @@
  *   in the page and indexable; modules/tabs.js gives them the WAI-ARIA behaviour.
  * - Each tab shows how many projects its panel holds ("Java · 2"), counted from the cards that
  *   render-projects.js built from data/projects.js (invalid entries are already skipped there).
+ *   Recommendation cards (`alsoIn`, a project that lives in another tab) do not count.
  * - The area's data-stack follows the selected tab, which switches the background light.
  * - A link to #projetos-<stack> opens that tab.
  * Must run after renderProjects().
@@ -35,7 +36,9 @@ export function initProjectsTabs() {
 
   tabs.forEach((tab, index) => {
     const count = qs('[data-project-count]', tab);
-    if (count) count.textContent = ` · ${panels[index].querySelectorAll('.project-card').length}`;
+    // Recommendation cards (a project from another tab) are not counted
+    const own = panels[index].querySelectorAll('.project-card:not(.project-card--recommendation)').length;
+    if (count) count.textContent = ` · ${own}`;
   });
 
   // After a switch, a shorter panel may leave the visitor below the area: bring its top back

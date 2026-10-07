@@ -185,13 +185,20 @@ preenchido, então um projeto pequeno e um completo convivem no mesmo layout. O 
   docs: 'assets/docs/api-pagamentos-documentacao-tecnica.docx', // download da documentação (vazio = botão não aparece)
   year: 2026,
   featured: false,                    // true = ocupa 2 colunas
+  alsoIn: [                           // opcional: recomendar o projeto em outra aba
+    { stack: 'java', note: 'Por que ele interessa a quem procura Java.',
+      tags: ['Java 17', 'Spring Boot'], fileName: 'Servico.java', language: 'java',
+      codeSnippet: `...` },        // trecho real, mostrado no editor do cartão
+  ],
 },
 ```
 
 Os trechos de código devem ser **copiados do projeto real**, nunca escritos para o portfólio.
 
-O projeto aparece **somente** na aba da sua `stack`, e a contagem da aba (`Java · 2`) se atualiza
-sozinha. Abas sem projetos exibem um estado vazio.
+O projeto aparece na aba da sua `stack`, e a contagem da aba (`Java · 2`) se atualiza sozinha.
+Com `alsoIn`, ele ganha também um **cartão de recomendação** em outra aba (largura toda, depois dos
+projetos dela), que abre o mesmo estudo de caso e leva à aba de origem; esse cartão não entra na
+contagem. Abas sem projetos exibem um estado vazio.
 
 ## Como adicionar formação
 
@@ -419,7 +426,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | Pendência | Onde | O que precisa | Como está hoje |
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
-| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
+| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: CB7 Bank (em destaque, com recomendação na aba Java), FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; portfólio sem print |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **Projeto "Portfólio Pessoal"** | `data/projects.js` | atualizar a descrição para o visual novo | os destaques ainda citam Canvas, neon e terminal CRT; a tag "Canvas API" e os dois trechos de código mostram o visual antigo |

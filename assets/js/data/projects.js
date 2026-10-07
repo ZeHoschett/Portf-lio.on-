@@ -1,5 +1,6 @@
 /**
- * Projects shown in #projetos. Each project appears ONLY in the subsection of its `stack`.
+ * Projects shown in #projetos. Each project lives in the tab of its `stack`; `alsoIn` adds a
+ * recommendation card (not a second project) to other tabs.
  * How to add one: see README.md → "Como adicionar um novo projeto".
  *
  * Only `id`, `title` and `stack` are required. Everything else is optional and each section of
@@ -49,6 +50,15 @@
  * @property {string} [docs]                              technical document to download, e.g. 'assets/docs/<id>-documentacao-tecnica.docx'
  * @property {number} [year]
  * @property {boolean} [featured]                         spans 2 columns on larger screens
+ * @property {ProjectRecommendation[]} [alsoIn]           also recommended in other stacks' tabs (not counted there)
+ *
+ * @typedef {Object} ProjectRecommendation
+ * @property {'java'|'python'|'cobol'|'web'} stack        tab where the recommendation card appears
+ * @property {string} note                                why it matters for that stack (one or two sentences)
+ * @property {string[]} [tags]                            tags for that stack (default: the project's tags)
+ * @property {string} [codeSnippet]                       real excerpt shown in the card's editor
+ * @property {string} [fileName]                          editor tab title
+ * @property {'python'|'sql'|'typescript'|'javascript'|'java'|'cobol'|'html'|'css'} [language]  grammar of the snippet
  */
 
 /** @type {ReadonlyArray<Project['stack']>} */
@@ -1226,6 +1236,283 @@ async function submit() {
       },
     ],
     year: 2026,
+  },
+  {
+    id: 'cb7-bank',
+    title: 'CB7 Bank',
+    subtitle: 'Sistema bancário em COBOL com API em Java',
+    stack: 'cobol',
+    type: 'mainframe',
+    summary:
+      'Núcleo bancário de estudo em três frentes sobre o mesmo dado: COBOL batch, COBOL com SQL embutido no PostgreSQL e uma API REST em Java e Spring Boot, todos com as mesmas regras de depósito, saque e transferência.',
+    description: [
+      'O CB7 Bank simula o núcleo de um banco e mostra o caminho de um sistema COBOL até uma arquitetura integrada. Um programa batch lê clientes, contas e transações em arquivos de largura fixa, como um job noturno, atualiza os saldos e emite um relatório. Dois programas COBOL com SQL embutido fazem a consulta de clientes e o processamento de transações direto no PostgreSQL, e uma API REST em Java 17 e Spring Boot opera as mesmas tabelas.',
+      'As regras são as mesmas nas três frentes: o valor precisa ser maior que zero, o saque não passa do saldo e a transferência exige origem e destino existentes e diferentes. Débito e crédito acontecem juntos ou nenhum acontece, e uma operação recusada fica com status NEGADA e o motivo, sem tocar em nenhum saldo. Um JCL de exemplo descreve o mesmo fluxo em três etapas, como seria agendado em um mainframe.',
+      'O projeto foi construído em nove fases, do COBOL interativo até a API com testes automatizados, e cada fase virou um commit. É um projeto de estudo: autenticação, autorização e os controles de um serviço financeiro real ficam fora do escopo, e o README registra esses limites.',
+    ],
+    tags: ['COBOL', 'GnuCOBOL', 'SQL embutido', 'JCL', 'PostgreSQL', 'Java 17', 'Spring Boot', 'JUnit'],
+    stats: [
+      { value: '7', label: 'programas COBOL: interativo, batch, SQL embutido e leitores de arquivo' },
+      { value: '6', label: 'endpoints REST na API Spring Boot sobre o mesmo banco' },
+      { value: '11', label: 'testes automatizados da API com JUnit, MockMvc e H2' },
+      { value: '4', label: 'tabelas PostgreSQL compartilhadas pelo COBOL e pelo Java' },
+    ],
+    highlights: [
+      'Processamento batch de clientes, contas e transações em arquivos sequenciais de largura fixa.',
+      'Depósito, saque e transferência com aprovação ou recusa e o motivo de cada recusa.',
+      'Saídas do batch: contas atualizadas, transações processadas e relatório com totais e saldos finais.',
+      'Consulta de cliente por CPF e processamento de transações em COBOL com SQL embutido, com COMMIT e ROLLBACK.',
+      'API REST para consultar cliente, conta e extrato e para depositar, sacar e transferir.',
+      'Respostas HTTP por tipo de falha: 400 para corpo inválido, 404 para conta inexistente e 422 para regra de negócio.',
+      'JCL de exemplo com três etapas encadeadas: validação, processamento e relatório.',
+      'Dez cenários do batch documentados em casos de teste, nove executados com sucesso e um registrado como limitação do layout.',
+    ],
+    architecture: [
+      {
+        title: 'COBOL batch',
+        description:
+          'CB7-BATCH carrega clientes e contas em tabelas em memória, processa TRANSACOES.dat e grava CONTAS-ATUALIZADAS.dat, TRANSACOES-PROCESSADAS.dat e RELATORIO.txt. Não acessa o banco: roda em GnuCOBOL só com arquivos.',
+      },
+      {
+        title: 'COBOL com SQL embutido',
+        description:
+          'CB7DBCON consulta clientes por CPF e CB7DBTRS processa transações direto nas tabelas do PostgreSQL, com COMMIT só no fim de cada operação e ROLLBACK em qualquer falha. Precisam de um pré-processador SQL para compilar.',
+      },
+      {
+        title: 'API Java',
+        description:
+          'cb7-api em Spring Boot 3 com controllers, DTOs, um serviço transacional e repositórios JPA. Mapeia o schema existente sem alterá-lo (ddl-auto=validate) e usa bloqueio pessimista nas contas durante as operações.',
+      },
+      {
+        title: 'Banco e operação',
+        description:
+          'Schema PostgreSQL com clientes, contas, cartões e transações, índices, CHECK de saldo não negativo e trigger de atualização. O JCL descreve o job em um z/OS; os testes da API usam H2 em memória.',
+      },
+    ],
+    challenges: [
+      {
+        challenge: 'Uma transferência pela metade, com o débito feito e o crédito não, faz o dinheiro sumir.',
+        solution:
+          'No CB7DBTRS o débito é um UPDATE que só acontece se houver saldo (AND SALDO >= valor), o programa confere em SQLERRD(3) que exatamente uma linha mudou e só faz COMMIT depois do crédito e do registro da transação; qualquer falha leva ao ROLLBACK. No batch, os dois novos saldos são calculados antes e gravados só se ambos couberem nos campos.',
+      },
+      {
+        challenge: 'Na API, dois saques ao mesmo tempo podem ler o mesmo saldo e aprovar juntos mais do que existe.',
+        solution:
+          'As contas são lidas com bloqueio pessimista (PESSIMISTIC_WRITE) dentro da transação. Na transferência as duas contas são bloqueadas sempre na mesma ordem, a de menor id primeiro, para que duas transferências opostas não travem uma à outra.',
+      },
+      {
+        challenge: 'Um saldo maior que a capacidade do campo seria truncado sem aviso.',
+        solution:
+          'No COBOL, ADD e COMPUTE usam ON SIZE ERROR e recusam a operação com o motivo. Na API, o teto 9999999999999.99 é o máximo de NUMERIC(15,2), o tipo do saldo no banco, e o próprio banco tem CHECK (saldo >= 0).',
+      },
+      {
+        challenge: 'O valor da transação no arquivo do batch é PIC 9(11)V99, um campo sem sinal que não representa valor negativo.',
+        solution:
+          'O cenário ficou documentado nos casos de teste como limitação do layout, com o caminho para resolver (campo com sinal ou validação da entrada em texto). Na API, valor negativo é recusado e coberto por teste automatizado.',
+      },
+    ],
+    codeSnippet: `
+       PROCESSAR-TRANSFERENCIA.
+           PERFORM BUSCAR-CONTA-DESTINO
+      * ...
+               EXEC SQL
+                   UPDATE CONTAS
+                      SET SALDO = SALDO - :HV-VALOR
+                    WHERE ID = :HV-ID-ORIGEM
+                      AND SALDO >= :HV-VALOR
+               END-EXEC
+
+               IF SQLCODE NOT = 0
+                   PERFORM TRATAR-ERRO-SQL
+               ELSE
+                   IF SQLERRD(3) NOT = 1
+                       MOVE "Saldo insuficiente" TO WS-MOTIVO
+                       PERFORM REJEITAR-TRANSACAO
+                   ELSE
+                       PERFORM CREDITAR-CONTA-DESTINO
+                   END-IF
+               END-IF
+`,
+    fileName: 'CB7DBTRS.cob',
+    codeSamples: [
+      {
+        fileName: 'src/CB7DBTRS.cob',
+        caption:
+          'A transferência no PostgreSQL: o débito só acontece se houver saldo, no mesmo UPDATE, e qualquer falha desfaz tudo.',
+        code: `
+       PROCESSAR-TRANSFERENCIA.
+           PERFORM BUSCAR-CONTA-DESTINO
+
+           IF WS-PODE-PROCESSAR = "S"
+               IF HV-ID-ORIGEM = HV-ID-DESTINO
+                   MOVE "Conta destino igual a origem" TO WS-MOTIVO
+                   PERFORM REJEITAR-TRANSACAO
+               END-IF
+           END-IF
+
+           IF WS-PODE-PROCESSAR = "S"
+               MOVE "Transferencia processada via CB7DBTRS"
+                   TO HV-DESCRICAO
+
+               EXEC SQL
+                   UPDATE CONTAS
+                      SET SALDO = SALDO - :HV-VALOR
+                    WHERE ID = :HV-ID-ORIGEM
+                      AND SALDO >= :HV-VALOR
+               END-EXEC
+
+               IF SQLCODE NOT = 0
+                   PERFORM TRATAR-ERRO-SQL
+               ELSE
+                   IF SQLERRD(3) NOT = 1
+                       MOVE "Saldo insuficiente" TO WS-MOTIVO
+                       PERFORM REJEITAR-TRANSACAO
+                   ELSE
+                       PERFORM CREDITAR-CONTA-DESTINO
+                   END-IF
+               END-IF
+           END-IF.
+      * ...
+       REJEITAR-TRANSACAO.
+           MOVE "N" TO WS-PODE-PROCESSAR
+           EXEC SQL ROLLBACK END-EXEC
+           IF SQLCODE NOT = 0
+               DISPLAY "Erro no ROLLBACK. SQLCODE: " SQLCODE
+               MOVE "S" TO WS-ERRO-FATAL
+           END-IF.
+`,
+      },
+      {
+        fileName: 'src/CB7-BATCH.cob',
+        caption:
+          'No batch, os dois novos saldos são calculados antes; só quando ambos cabem nos campos é que a transferência é aplicada.',
+        code: `
+       CALCULAR-TRANSFERENCIA.
+           MOVE "S" TO WS-CALCULOS-OK
+           COMPUTE WS-NOVO-SALDO-ORIGEM =
+               WS-CONTA-SALDO(WS-INDICE-ORIGEM)
+               - FD-TRANS-VALOR
+               ON SIZE ERROR
+                   MOVE "N" TO WS-CALCULOS-OK
+                   MOVE "Erro no calculo do saldo origem"
+                       TO WS-MOTIVO
+           END-COMPUTE
+
+           IF WS-CALCULOS-OK = "S"
+               COMPUTE WS-NOVO-SALDO-DESTINO =
+                   WS-CONTA-SALDO(WS-INDICE-DESTINO)
+                   + FD-TRANS-VALOR
+                   ON SIZE ERROR
+                       MOVE "N" TO WS-CALCULOS-OK
+                       MOVE "Limite do saldo destino excedido"
+                           TO WS-MOTIVO
+               END-COMPUTE
+           END-IF
+
+           IF WS-CALCULOS-OK = "S"
+               MOVE WS-NOVO-SALDO-ORIGEM
+                   TO WS-CONTA-SALDO(WS-INDICE-ORIGEM)
+               MOVE WS-NOVO-SALDO-DESTINO
+                   TO WS-CONTA-SALDO(WS-INDICE-DESTINO)
+               MOVE "APROVADA" TO WS-STATUS-TRANSACAO
+           END-IF.
+`,
+      },
+      {
+        fileName: 'cb7-api/src/main/java/com/cb7bank/api/service/BankingService.java',
+        language: 'java',
+        caption:
+          'A mesma transferência na API: as duas contas são bloqueadas sempre na mesma ordem, dentro de uma transação.',
+        code: `
+    @Transactional
+    public OperacaoResponse transferir(String contaOrigemNumero, String contaDestinoNumero, BigDecimal valor) {
+        validarValor(valor);
+        if (contaOrigemNumero.equals(contaDestinoNumero)) {
+            throw new RegraNegocioException("Conta destino deve ser diferente da conta origem");
+        }
+        // ...
+        Long primeiroId = Math.min(origemEncontrada.getId(), destinoEncontrada.getId());
+        Long segundoId = Math.max(origemEncontrada.getId(), destinoEncontrada.getId());
+        Conta primeiraConta = contaRepository.findByIdForUpdate(primeiroId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Conta não encontrada"));
+        Conta segundaConta = contaRepository.findByIdForUpdate(segundoId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Conta não encontrada"));
+        Conta origem = origemEncontrada.getId().equals(primeiroId) ? primeiraConta : segundaConta;
+        Conta destino = destinoEncontrada.getId().equals(primeiroId) ? primeiraConta : segundaConta;
+
+        if (origem.getSaldo().compareTo(valor) < 0) {
+            throw new RegraNegocioException("Saldo insuficiente");
+        }
+
+        BigDecimal novoSaldoDestino = validarSaldo(destino.getSaldo().add(valor));
+        BigDecimal novoSaldoOrigem = origem.getSaldo().subtract(valor);
+        origem.setSaldo(novoSaldoOrigem);
+        destino.setSaldo(novoSaldoDestino);
+        Transacao transacao = transacaoRepository.save(
+                new Transacao(origem, destino, "TRANSFERENCIA", valor, "Transferência via API")
+        );
+        return OperacaoResponse.aprovada(transacao.getId(), novoSaldoOrigem);
+    }
+`,
+      },
+      {
+        fileName: 'sql/schema.sql',
+        language: 'sql',
+        caption: 'A tabela de contas que o COBOL e a API compartilham: o próprio banco recusa saldo negativo.',
+        code: `
+CREATE TABLE contas (
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    uuid            UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
+    cliente_id      BIGINT NOT NULL REFERENCES clientes(id),
+    agencia         CHAR(4)  NOT NULL DEFAULT '0001',
+    numero_conta    VARCHAR(12) NOT NULL,
+    tipo            VARCHAR(20) NOT NULL
+                    CHECK (tipo IN ('CORRENTE','POUPANCA','PAGAMENTO')),
+    saldo           NUMERIC(15,2) NOT NULL DEFAULT 0.00
+                    CHECK (saldo >= 0),
+    limite          NUMERIC(15,2) NOT NULL DEFAULT 0.00,
+    status          VARCHAR(20) NOT NULL DEFAULT 'ATIVA'
+                    CHECK (status IN ('ATIVA','ENCERRADA','BLOQUEADA')),
+    criado_em       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    atualizado_em   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    UNIQUE (agencia, numero_conta)
+);
+`,
+      },
+    ],
+    // Lives in COBOL; recommended in the Java tab too, showing the API's own code
+    alsoIn: [
+      {
+        stack: 'java',
+        note: 'O sistema está na aba COBOL, mas tem uma API REST em Java 17 e Spring Boot sobre o mesmo banco: transações com bloqueio pessimista, respostas 400, 404 e 422 e onze testes automatizados.',
+        tags: ['Java 17', 'Spring Boot 3', 'Spring Data JPA', 'PostgreSQL', 'JUnit', 'MockMvc'],
+        fileName: 'BankingService.java',
+        language: 'java',
+        codeSnippet: `
+    @Transactional
+    public OperacaoResponse sacar(String numeroConta, BigDecimal valor) {
+        validarValor(valor);
+        Conta conta = contaRepository.findByNumeroContaForUpdate(numeroConta)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Conta não encontrada"));
+
+        if (conta.getSaldo().compareTo(valor) < 0) {
+            throw new RegraNegocioException("Saldo insuficiente");
+        }
+
+        BigDecimal novoSaldo = conta.getSaldo().subtract(valor);
+        conta.setSaldo(novoSaldo);
+        Transacao transacao = transacaoRepository.save(
+                new Transacao(conta, null, "SAQUE", valor, "Saque via API")
+        );
+        return OperacaoResponse.aprovada(transacao.getId(), novoSaldo);
+    }
+`,
+      },
+    ],
+    repo: 'https://github.com/ZeHoschett/cobol-banking-system',
+    demo: '',
+    year: 2026,
+    featured: true,
   },
   {
     id: 'flowcnab',
