@@ -204,27 +204,47 @@ Em `assets/js/data/education.js`, substitua o placeholder por itens reais (o mai
 
 ## Como adicionar certificado
 
-Coloque a imagem em `assets/img/certificates/` e adicione em `assets/js/data/certificates.js`:
+Gere as duas imagens (veja abaixo) em `assets/img/certificates/` e adicione em
+`assets/js/data/certificates.js`:
 
 ```js
 { id: 'java-se', name: 'Nome do certificado', issuer: 'Emissor', date: '2025-03',
   description: 'Uma frase curta sobre o curso (carga horária, temas).',
-  image: { src: 'assets/img/certificates/java-se.webp', alt: 'Certificado ...', width: 1400, height: 1000 },
+  image: { src: 'assets/img/certificates/java-se.webp',        // 2000px, abre no lightbox
+           thumb: 'assets/img/certificates/java-se-sm.webp',   // 640px, usada no cartão do trilho
+           alt: 'Certificado ...', width: 2000, height: 1350 },
   credentialUrl: 'https://...' },
 ```
 
 `description` aparece no card e se repete no lightbox; sem ela, o card mostra só nome, emissor e
-data. `date` e `credentialUrl` são opcionais — o que o certificado não traz, não se inventa.
+data. `date` e `credentialUrl` são opcionais: o que o certificado não traz, não se inventa.
+`thumb` também é opcional; sem ela, o cartão carrega a imagem grande.
 
-**Do PDF para a imagem:** os certificados costumam vir em PDF. Para gerar o `.webp` da primeira
-página (recortando as margens brancas da impressão):
+**Do PDF para a imagem:** gere sempre a partir do PDF original, nunca de um `.webp` já
+comprimido. O certificado é renderizado em alta resolução, recortado nas margens e salvo em
+duas larguras: 2000px (o lightbox aparece com até ~1000px e telas de alta densidade pedem o
+dobro) e 640px para o cartão.
 
 ```bash
-python -m pip install pymupdf
-python -c "import pymupdf; p=pymupdf.open('cert.pdf')[0]; p.get_pixmap(matrix=pymupdf.Matrix(1400/p.rect.width, 1400/p.rect.width)).save('cert.png')"
+python -m pip install pymupdf pillow
+python - <<'EOF'
+import io, pymupdf
+from PIL import Image, ImageChops
+page = pymupdf.open('cert.pdf')[0]
+clip = page.rect  # PDF impresso do navegador (Alura): use o retângulo do cartão, ex. pymupdf.Rect(15.5, 28.5, 814.1, 567.7)
+zoom = 2600 / clip.width
+img = Image.open(io.BytesIO(page.get_pixmap(matrix=pymupdf.Matrix(zoom, zoom), clip=clip, alpha=False).tobytes('png'))).convert('RGB')
+bg = Image.new('RGB', img.size, (255, 255, 255))  # recorta as margens brancas
+box = ImageChops.difference(img, bg).convert('L').point(lambda v: 255 if v > 18 else 0).getbbox()
+img = img.crop(box) if box else img
+for width, quality, name in ((2000, 86, 'cert.webp'), (640, 82, 'cert-sm.webp')):
+    out = img.resize((width, round(img.height * width / img.width)), Image.LANCZOS)
+    out.save(name, 'WEBP', quality=quality, method=6)
+    print(name, out.size)
+EOF
 ```
 
-Depois converta o `.png` em `.webp` (qualidade ~82) e anote `width`/`height` reais no dado.
+Anote no dado o `width`/`height` impressos para `cert.webp`.
 
 ## Imagem de compartilhamento (og-image)
 

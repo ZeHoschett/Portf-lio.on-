@@ -2,7 +2,8 @@
  * Certificates shown in #certificados. An empty list renders the empty state.
  *
  * @typedef {Object} CertificateImage
- * @property {string} src     e.g. 'assets/img/certificates/<id>.webp'
+ * @property {string} src     e.g. 'assets/img/certificates/<id>.webp' (~2000px, for the lightbox)
+ * @property {string} [thumb] e.g. 'assets/img/certificates/<id>-sm.webp' (640px, for the rail card)
  * @property {string} alt
  * @property {number} width
  * @property {number} height
@@ -28,9 +29,10 @@ export const certificates = [
       '10 horas sobre a estrutura da linguagem, comandos e variáveis, operadores aritméticos e relacionais, lógica com parágrafos, repetições e variáveis de índice.',
     image: {
       src: 'assets/img/certificates/cobol-primeiros-passos.webp',
+      thumb: 'assets/img/certificates/cobol-primeiros-passos-sm.webp',
       alt: 'Certificado de conclusão do curso Cobol: primeiros passos, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1348,
     },
     credentialUrl: 'https://cursos.alura.com.br/certificate/2cae4d28-4376-4912-9fb7-a3373d7fac0c',
   },
@@ -43,9 +45,10 @@ export const certificates = [
       '8 horas de introdução ao Java, construindo a primeira aplicação do código à execução.',
     image: {
       src: 'assets/img/certificates/java-primeira-aplicacao.webp',
+      thumb: 'assets/img/certificates/java-primeira-aplicacao-sm.webp',
       alt: 'Certificado de conclusão do curso Java: criando a sua primeira aplicação, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/java-criando-primeira-aplicacao/certificate',
@@ -58,9 +61,10 @@ export const certificates = [
     description: '4 horas de exercícios de orientação a objetos com classes, atributos e métodos.',
     image: {
       src: 'assets/img/certificates/java-orientacao-objetos.webp',
+      thumb: 'assets/img/certificates/java-orientacao-objetos-sm.webp',
       alt: 'Certificado de conclusão do curso Praticando Java: orientação a objetos com classes, atributos e métodos, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/praticando-java-orientacao-objetos-classes-atributos-metodos/certificate',
@@ -73,9 +77,10 @@ export const certificates = [
     description: '6 horas de exercícios de herança, polimorfismo e interfaces em Java.',
     image: {
       src: 'assets/img/certificates/java-heranca-polimorfismo.webp',
+      thumb: 'assets/img/certificates/java-heranca-polimorfismo-sm.webp',
       alt: 'Certificado de conclusão do curso Praticando Java: herança, polimorfismo e interfaces, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/praticando-java-heranca-polimorfismo-interfaces/certificate',
@@ -88,9 +93,10 @@ export const certificates = [
     description: '4 horas de exercícios de encapsulamento e controle de acesso aos atributos.',
     image: {
       src: 'assets/img/certificates/java-encapsulamento.webp',
+      thumb: 'assets/img/certificates/java-encapsulamento-sm.webp',
       alt: 'Certificado de conclusão do curso Praticando Java: encapsulamento, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/praticando-java-encapsulamento/certificate',
@@ -103,9 +109,10 @@ export const certificates = [
     description: '4 horas de exercícios com as coleções do Java e a API de streams.',
     image: {
       src: 'assets/img/certificates/java-colecoes-streams.webp',
+      thumb: 'assets/img/certificates/java-colecoes-streams-sm.webp',
       alt: 'Certificado de conclusão do curso Praticando Java: coleções e streams, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/praticando-java-colecoes-streams/certificate',
@@ -119,9 +126,10 @@ export const certificates = [
       '4 horas de exercícios de manipulação de texto em Java com Strings e expressões regulares.',
     image: {
       src: 'assets/img/certificates/java-strings-regex.webp',
+      thumb: 'assets/img/certificates/java-strings-regex-sm.webp',
       alt: 'Certificado de conclusão do curso Praticando Java: Strings e Regex, da Alura',
-      width: 1307,
-      height: 881,
+      width: 2000,
+      height: 1349,
     },
     credentialUrl:
       'https://cursos.alura.com.br/user/josehoschett841/course/praticando-java-strings-regex/certificate',
@@ -134,9 +142,10 @@ export const certificates = [
     description: 'Curso autoinstrucional de 15 horas sobre a administração de bancos de dados.',
     image: {
       src: 'assets/img/certificates/administrando-banco-de-dados.webp',
+      thumb: 'assets/img/certificates/administrando-banco-de-dados-sm.webp',
       alt: 'Certificado de conclusão do curso Administrando banco de dados, da Escola Virtual da Fundação Bradesco',
-      width: 1370,
-      height: 918,
+      width: 2000,
+      height: 1339,
     },
   },
   {
@@ -148,9 +157,10 @@ export const certificates = [
       '15 horas sobre versionamento de código com Git e trabalho com repositórios no GitHub.',
     image: {
       src: 'assets/img/certificates/git-github.webp',
+      thumb: 'assets/img/certificates/git-github-sm.webp',
       alt: 'Declaração de participação no curso Introdução ao Git e GitHub, da FGV Online',
-      width: 1269,
-      height: 873,
+      width: 2000,
+      height: 1297,
     },
   },
   {
@@ -161,9 +171,10 @@ export const certificates = [
     description: 'Curso autoinstrucional de 10 horas sobre visualização de dados no Power BI.',
     image: {
       src: 'assets/img/certificates/powerbi-visualizando.webp',
+      thumb: 'assets/img/certificates/powerbi-visualizando-sm.webp',
       alt: 'Certificado de conclusão do curso Visualizando dados no Power BI, da Escola Virtual da Fundação Bradesco',
-      width: 1392,
-      height: 933,
+      width: 2000,
+      height: 1339,
     },
   },
   {
@@ -174,9 +185,10 @@ export const certificates = [
     description: 'Curso oficial da Anthropic com os fundamentos do Claude Code no terminal.',
     image: {
       src: 'assets/img/certificates/claude-code-101.webp',
+      thumb: 'assets/img/certificates/claude-code-101-sm.webp',
       alt: 'Certificado de conclusão do curso Claude Code 101, da Anthropic',
-      width: 1316,
-      height: 998,
+      width: 2000,
+      height: 1516,
     },
   },
   {
@@ -187,9 +199,10 @@ export const certificates = [
     description: 'Curso oficial da Anthropic sobre o Claude Code aplicado ao fluxo de trabalho.',
     image: {
       src: 'assets/img/certificates/claude-code-in-action.webp',
+      thumb: 'assets/img/certificates/claude-code-in-action-sm.webp',
       alt: 'Certificado de conclusão do curso Claude Code in Action, da Anthropic',
-      width: 1316,
-      height: 998,
+      width: 2000,
+      height: 1516,
     },
     credentialUrl: 'https://verify.skilljar.com/c/2gitxfps6wpw',
   },
@@ -201,9 +214,10 @@ export const certificates = [
       'Curso oficial da Anthropic sobre subagentes: delegar partes da tarefa a agentes especializados.',
     image: {
       src: 'assets/img/certificates/claude-subagents.webp',
+      thumb: 'assets/img/certificates/claude-subagents-sm.webp',
       alt: 'Certificado de conclusão do curso Introduction to subagents, da Anthropic',
-      width: 1316,
-      height: 998,
+      width: 2000,
+      height: 1516,
     },
   },
   {
@@ -215,9 +229,10 @@ export const certificates = [
       'Curso oficial da Anthropic sobre o MCP, o protocolo que conecta agentes a ferramentas e fontes de dados.',
     image: {
       src: 'assets/img/certificates/claude-mcp.webp',
+      thumb: 'assets/img/certificates/claude-mcp-sm.webp',
       alt: 'Certificado de conclusão do curso Introduction to Model Context Protocol, da Anthropic',
-      width: 1316,
-      height: 998,
+      width: 2000,
+      height: 1516,
     },
     credentialUrl: 'https://verify.skilljar.com/c/78piw8odr8wa',
   },

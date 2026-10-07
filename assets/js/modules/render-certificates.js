@@ -18,7 +18,15 @@ const DEFAULT_IMAGE_SIZE = { width: 1400, height: 1000 };
 const dateFormat = new Intl.DateTimeFormat('pt-BR', { month: 'short', year: 'numeric' });
 
 /** @typedef {import('../data/certificates.js').Certificate} Certificate */
-/** @typedef {{ src: string, alt: string, width: number, height: number }} Image */
+/** @typedef {{ src: string, thumb: string, alt: string, width: number, height: number }} Image */
+
+/**
+ * Rendered width of a rail card (see certificates.css: N cards and a half per view). The browser
+ * uses it to pick the 640px thumbnail or the full image for the screen's pixel density.
+ */
+const CARD_SIZES = '(min-width: 1280px) 250px, (min-width: 1024px) 26vw, (min-width: 768px) 36vw, 48vw';
+/** Width of the rail thumbnails (assets/img/certificates/<id>-sm.webp). */
+const THUMB_WIDTH = 640;
 
 /** @param {unknown} value */
 const text = (value) => (typeof value === 'string' ? value.trim() : '');
@@ -50,6 +58,7 @@ function normaliseImage(certificate) {
   if (!src) return null;
   return {
     src,
+    thumb: sanitizeUrl(certificate.image?.thumb),
     alt: text(certificate.image?.alt) || `Certificado: ${certificate.name}`,
     width: Number(certificate.image?.width) || DEFAULT_IMAGE_SIZE.width,
     height: Number(certificate.image?.height) || DEFAULT_IMAGE_SIZE.height,
@@ -133,7 +142,10 @@ function createCard(certificate) {
         ? el('img', {
             className: 'cert-card__image',
             attrs: {
-              src: image.src,
+              src: image.thumb || image.src,
+              // With a thumbnail, small cards load 640px and high-density screens the full image
+              srcset: image.thumb ? `${image.thumb} ${THUMB_WIDTH}w, ${image.src} ${image.width}w` : null,
+              sizes: image.thumb ? CARD_SIZES : null,
               alt: '', // decorative here: the title already names the certificate
               width: image.width,
               height: image.height,
