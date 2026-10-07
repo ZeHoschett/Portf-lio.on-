@@ -371,10 +371,11 @@
     color: var(--t2);
   }
 
+  /* Legacy single snippet: the same editor screen as the code windows */
   .project-detail__code {
     overflow: hidden;
-    background: var(--mockup-bg);
-    border: var(--border-thin) solid var(--mockup-line);
+    background: var(--code-bg);
+    border: var(--border-thin) solid var(--code-line);
     border-radius: var(--r-md);
   }
 

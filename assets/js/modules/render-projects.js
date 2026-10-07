@@ -9,7 +9,7 @@
  */
 import { projects as defaultProjects, STACKS } from '../data/projects.js';
 import { el, icon, sanitizeUrl } from '../utils/dom.js';
-import { highlightCode } from '../utils/highlight.js';
+import { highlightCode, lineNumbers } from '../utils/highlight.js';
 import { createCarousel } from './carousel.js';
 import { openModal } from './modal.js';
 import { createTabs } from './tabs.js';
@@ -157,14 +157,19 @@ const createPlaceholder = () =>
  * @param {{ language?: string, label?: string }} [options]
  */
 function createCodeBlock(code, stack, context, { language, label = 'Trecho de código' } = {}) {
+  // Editor gutter; skipped when the code numbers its own lines (fixed-format COBOL)
+  const numbers = lineNumbers(code);
   return el(
     'pre',
     {
-      className: 'code',
+      className: numbers ? 'code code--numbered' : 'code',
       // In cards the snippet is a visual preview (the modal repeats it); in the modal it scrolls
       attrs: context === 'modal' ? { tabindex: 0, 'aria-label': label } : { 'aria-hidden': 'true' },
     },
-    [el('code', {}, [highlightCode(code, stack, language)])],
+    [
+      numbers ? el('span', { className: 'code__gutter', text: numbers, attrs: { 'aria-hidden': 'true' } }) : null,
+      el('code', {}, [highlightCode(code, stack, language)]),
+    ],
   );
 }
 
@@ -204,13 +209,17 @@ const createDots = () =>
   );
 
 /**
- * Window-style mockup (terminal or browser).
+ * Window-style mockup (terminal or browser). A window that holds code becomes a code editor
+ * (`mockup--editor`: VS Code Dark+ screen, file name as the active tab); one that holds a
+ * screenshot keeps the plain chrome.
  * @param {'terminal' | 'browser'} variant
  * @param {Node} barLabel
  * @param {Node} body
  */
 const createWindow = (variant, barLabel, body) =>
-  el('div', { className: `mockup mockup--${variant}` }, [
+  el('div', {
+    className: `mockup mockup--${variant}${body instanceof HTMLElement && body.classList.contains('code') ? ' mockup--editor' : ''}`,
+  }, [
     el('div', { className: 'mockup__window' }, [
       el('div', { className: 'mockup__bar', attrs: { 'aria-hidden': 'true' } }, [
         createDots(),

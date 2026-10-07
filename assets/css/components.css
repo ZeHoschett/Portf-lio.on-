@@ -605,7 +605,11 @@
     }
   }
 
-  /* ---------- Code (terminal mockups) ---------- */
+  /* ---------- Code: a VS Code Dark+ editor screen ---------- */
+  /*
+   * Code is the one place where colour touches text (José's choice): wherever there is code, it
+   * reads like an editor. Everything else on the site stays black and white.
+   */
   .code {
     height: 100%;
     margin: 0;
@@ -614,34 +618,95 @@
     font-family: var(--font-mono);
     font-size: var(--fs-code);
     line-height: var(--lh-relaxed);
-    color: var(--t2);
+    color: var(--code-fg);
     white-space: pre;
     tab-size: 2;
+    background: var(--code-bg);
   }
 
   .code:focus-visible {
     outline-offset: calc(var(--focus-width) * -1);
   }
 
-  /* Highlighting by weight and brightness only: colour never touches text */
-  .code__token--keyword {
-    font-weight: var(--fw-medium);
-    color: var(--t1);
+  /* Line numbers: a column beside the code that stays put when the code scrolls sideways */
+  .code--numbered {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-4);
+    padding-inline-start: 0;
   }
 
-  .code__token--string,
+  .code__gutter {
+    position: sticky;
+    left: 0;
+    padding-inline: var(--space-4) 0;
+    color: var(--code-gutter);
+    text-align: right;
+    user-select: none;
+    background: var(--code-bg);
+  }
+
+  .code__token--keyword {
+    color: var(--code-keyword);
+  }
+
+  .code__token--control {
+    color: var(--code-control);
+  }
+
+  .code__token--string {
+    color: var(--code-string);
+  }
+
   .code__token--number {
-    color: var(--t1);
+    color: var(--code-number);
   }
 
   .code__token--comment {
-    font-style: italic;
-    color: var(--t3);
+    color: var(--code-comment);
   }
 
-  /* COBOL keeps its mainframe flavour through the monospace and the program name, not colour */
-  [data-stack='cobol'] .code__token--comment {
-    font-style: normal;
+  .code__token--type {
+    color: var(--code-type);
+  }
+
+  .code__token--function,
+  .code__token--annotation {
+    color: var(--code-function);
+  }
+
+  .code__token--variable {
+    color: var(--code-variable);
+  }
+
+  /* The window around code becomes the editor: tab strip with the file as the active tab */
+  .mockup--editor .mockup__window {
+    background: var(--code-bg);
+    border-color: var(--code-line);
+  }
+
+  .mockup--editor .mockup__bar {
+    align-items: stretch;
+    min-height: var(--code-tab-h);
+    padding-block: 0;
+    background: var(--code-chrome);
+    border-bottom: 0;
+  }
+
+  .mockup--editor .mockup__dots {
+    align-self: center;
+  }
+
+  .mockup--editor .mockup__title {
+    display: block;
+    padding-inline: var(--space-4);
+    line-height: var(--code-tab-h);
+    color: var(--code-tab-fg);
+    background: var(--code-bg);
+  }
+
+  .mockup--editor .mockup__body {
+    background: var(--code-bg);
   }
 
   /* ============================== Carousel ============================== */

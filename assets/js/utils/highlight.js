@@ -1,7 +1,9 @@
 /**
- * Tiny, safe syntax highlighter for the terminal mockups. Produces text nodes and <span>s
- * (textContent only — never innerHTML), coloured by CSS classes `code__token--{type}`.
- * Deliberately simple: comments, strings, keywords and numbers.
+ * Tiny, safe syntax highlighter for the code editors (VS Code Dark+ palette in CSS). Produces
+ * text nodes and <span>s (textContent only — never innerHTML), coloured by CSS classes
+ * `code__token--{type}`. Token types: comment, string, annotation, control (flow keywords),
+ * keyword, function (a name followed by "("), type (PascalCase), variable, number.
+ * Deliberately simple: a single regex pass, no parser.
  */
 import { el } from './dom.js';
 
@@ -38,6 +40,21 @@ const KEYWORDS = {
     OVER PARTITION DESC ASC CAST INTERVAL COALESCE`,
 };
 
+/** Flow-control words, drawn apart from the other keywords (VS Code's purple). */
+const CONTROL = {
+  java: 'if else for while do switch case default break continue return throw try catch finally',
+  python: 'if elif else for while break continue return raise try except finally with yield pass',
+  cobol: 'IF ELSE END-IF EVALUATE WHEN END-EVALUATE PERFORM UNTIL VARYING STOP RUN CALL GOBACK',
+  javascript: 'if else for while do switch case default break continue return throw try catch finally await yield',
+  typescript: 'if else for while do switch case default break continue return throw try catch finally await yield',
+  sql: 'CASE WHEN THEN ELSE END',
+};
+
+/** Languages whose identifiers are coloured (functions, types, variables), as VS Code does. */
+const WITH_IDENTIFIERS = new Set(['java', 'python', 'javascript', 'typescript']);
+/** Languages with `@decorators` / `@Annotations`. */
+const WITH_ANNOTATIONS = new Set(['java', 'python', 'typescript']);
+
 const C_COMMENTS = String.raw`\/\/[^\n]*|\/\*[\s\S]*?\*\/`;
 
 const COMMENTS = {
@@ -55,7 +72,12 @@ const COMMENTS = {
 const STRING = String.raw`"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'`;
 // Python docstrings and multi-line f-strings (tried before the single-line forms)
 const TRIPLE_STRING = String.raw`[fFrRbB]?(?:"""[\s\S]*?"""|'''[\s\S]*?''')`;
-const NUMBER = String.raw`\b\d+(?:\.\d+)?\b`;
+// Not part of a name: COBOL paragraphs such as 100-INICIALIZAR stay whole
+const NUMBER = String.raw`(?<![\w-])\d+(?:\.\d+)?(?![\w-])`;
+const ANNOTATION = String.raw`@[A-Za-z_]\w*`;
+const FUNCTION = String.raw`\b[A-Za-z_]\w*(?=\s*\()`;
+const TYPE = String.raw`\b[A-Z][a-z0-9]\w*\b`;
+const VARIABLE = String.raw`\b[a-z_]\w*\b`;
 
 /** Grammars matched case-insensitively. */
 const CASE_INSENSITIVE = new Set(['cobol', 'sql', 'html']);
@@ -71,19 +93,31 @@ const patterns = new Map();
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+/** @param {string} list  whitespace-separated words */
+const toAlternation = (list) => list.trim().split(/\s+/).filter(Boolean).map(escapeRegExp).join('|');
+
+/** A whole word (COBOL names contain hyphens, so a hyphen does not end a word). */
+const wholeWord = (alternation) => String.raw`(?<![\w-])(?:${alternation})(?![\w-])`;
+
 /** @param {string} language */
 function getPattern(language) {
   if (!patterns.has(language)) {
-    const words = KEYWORDS[language].trim().split(/\s+/).map(escapeRegExp).join('|');
-    const flags = CASE_INSENSITIVE.has(language) ? 'gim' : 'gm';
+    const control = toAlternation(CONTROL[language] ?? '');
     const string = language === 'python' ? `${TRIPLE_STRING}|${STRING}` : STRING;
-    patterns.set(
-      language,
-      new RegExp(
-        `(?<comment>${COMMENTS[language]})|(?<string>${string})|(?<keyword>(?<![\\w-])(?:${words})(?![\\w-]))|(?<number>${NUMBER})`,
-        flags,
-      ),
-    );
+    // Order matters: the first group that matches wins
+    const groups = [
+      `(?<comment>${COMMENTS[language]})`,
+      `(?<string>${string})`,
+      WITH_ANNOTATIONS.has(language) ? `(?<annotation>${ANNOTATION})` : '',
+      control ? `(?<control>${wholeWord(control)})` : '',
+      `(?<keyword>${wholeWord(toAlternation(KEYWORDS[language]))})`,
+      WITH_IDENTIFIERS.has(language)
+        ? `(?<function>${FUNCTION})|(?<type>${TYPE})|(?<variable>${VARIABLE})`
+        : '',
+      `(?<number>${NUMBER})`,
+    ].filter(Boolean);
+    const flags = CASE_INSENSITIVE.has(language) ? 'gim' : 'gm';
+    patterns.set(language, new RegExp(groups.join('|'), flags));
   }
   return /** @type {RegExp} */ (patterns.get(language));
 }
@@ -109,4 +143,20 @@ export function highlightCode(code, stack, language) {
 
   fragment.append(code.slice(cursor));
   return fragment;
+}
+
+/** A line that is blank or starts with a fixed-format COBOL sequence number (columns 1 to 6). */
+const SEQUENCE_NUMBERED = /^\s*$|^\d{6}/;
+
+/**
+ * Line numbers for an editor gutter ("1\n2\n3…"), aligned with the code's own lines.
+ * Returns null when the code numbers its own lines (fixed-format COBOL), so nothing doubles up.
+ * Decorative: the caller marks the gutter aria-hidden.
+ * @param {string} code
+ * @returns {string | null}
+ */
+export function lineNumbers(code) {
+  const lines = code.split('\n');
+  if (lines.every((line) => SEQUENCE_NUMBERED.test(line))) return null;
+  return lines.map((_, index) => index + 1).join('\n');
 }

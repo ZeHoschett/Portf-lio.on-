@@ -59,7 +59,9 @@ No máximo **três superfícies com desfoque** ficam visíveis ao mesmo tempo, p
 que o cartão de projeto é sólido, e não vidro.
 
 A cor existe só como luz fora de foco (`.page-bloom` e a luz de cada seção), feita de gradientes
-radiais, sem imagem de fundo. Na área de projetos, a luz troca junto com a aba: âmbar no Java,
+radiais, sem imagem de fundo. A única exceção é o **código**: onde há código, ele aparece numa tela
+de editor no tema VS Code Dark+ (aba com o nome do arquivo, números de linha e cores de sintaxe),
+todas as cores com contraste AA. Na área de projetos, a luz troca junto com a aba: âmbar no Java,
 azul no Python, verde no COBOL e violeta na Web. Texto, borda, ícone, botão e estado são sempre
 branco sobre preto.
 

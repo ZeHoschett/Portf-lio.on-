@@ -77,6 +77,25 @@
       radial-gradient(50% 44% at 58% 96%, rgba(var(--bloom-neutro), calc(var(--bloom-amount) * 0.3)), transparent 72%);
     --page-bloom-bleed: -25%; /* oversized so the fixed light never shows an edge */
 
+    /* ---------- Code editor (VS Code Dark+) ---------- */
+    /* The one place where colour touches text, by José's choice (2026-10-07): code reads as code.
+       Contrast on --code-bg, all AA for small text. */
+    --code-bg: #1e1e1e;
+    --code-chrome: #252526; /* tab strip */
+    --code-line: #3c3c3c; /* borders inside the editor */
+    --code-fg: #d4d4d4; /* 11.25:1 */
+    --code-tab-fg: #ffffff; /* active tab */
+    --code-gutter: #858585; /* line numbers, 4.52:1 */
+    --code-keyword: #569cd6; /* 5.65:1 */
+    --code-control: #c586c0; /* 5.99:1 */
+    --code-string: #ce9178; /* 6.31:1 */
+    --code-number: #b5cea8; /* 9.81:1 */
+    --code-comment: #6a9955; /* 5.00:1 */
+    --code-type: #4ec9b0; /* 8.18:1 */
+    --code-function: #dcdcaa; /* 11.80:1 */
+    --code-variable: #9cdcfe; /* 11.18:1 */
+    --code-tab-h: 2.25rem;
+
     /* ---------- Focus ---------- */
     --focus-ring: #ffffff;
 

@@ -16,6 +16,7 @@ import { renderProjects } from './modules/render-projects.js';
 import { initReveal } from './modules/reveal.js';
 import { initScrollProgress } from './modules/scroll-progress.js';
 import { initSpecular } from './modules/specular.js';
+import { initStaticCode } from './modules/static-code.js';
 import { initWhatsappFloat } from './modules/whatsapp-float.js';
 
 /**
@@ -48,6 +49,7 @@ safeInit('education', () => renderEducation());
 safeInit('certificates', () => renderCertificates());
 safeInit('projects-tabs', initProjectsTabs);
 safeInit('rails', initRails);
+safeInit('static-code', initStaticCode);
 safeInit('specular', initSpecular);
 safeInit('reveal', initReveal);
 safeInit('marquee', initMarquee);
