@@ -29,9 +29,26 @@ services:
       - path: /*
         name: X-Frame-Options
         value: DENY
-      # Caching. File names are not fingerprinted, so assets get one day (a replaced image shows
+      # Caching. File names are not fingerprinted. CSS and JS must always match the HTML, so they
+      # are revalidated on every visit (a cheap 304 via ETag when unchanged); a day of stale CSS or
+      # JS under a new index.html would break the page. Media keeps one day (a replaced image shows
       # up the next day at the latest) and the HTML is always revalidated.
-      - path: /assets/*
+      - path: /assets/css/*
+        name: Cache-Control
+        value: no-cache
+      - path: /assets/js/*
+        name: Cache-Control
+        value: no-cache
+      - path: /assets/img/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /assets/video/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /assets/icons/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /assets/docs/*
         name: Cache-Control
         value: public, max-age=86400
       - path: /
