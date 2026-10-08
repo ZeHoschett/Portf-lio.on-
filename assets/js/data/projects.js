@@ -991,7 +991,7 @@ if (is401 && !config?._refreshRetry && config) {
       {
         title: 'API',
         description:
-          'FastAPI servindo o próprio front-end como arquivos estáticos. POST /api/leads valida com Pydantic e grava; GET /leads-semanais exige HTTP Basic e devolve a tabela dos leads da semana.',
+          'FastAPI servindo o próprio front-end como arquivos estáticos. POST /api/leads valida com Pydantic e grava; uma página interna, protegida por HTTP Basic, devolve a tabela dos leads da semana.',
       },
       {
         title: 'Dados',
@@ -1089,7 +1089,7 @@ if (is401 && !config?._refreshRetry && config) {
       {
         fileName: 'main.py',
         caption:
-          'Cadastro do lead com WhatsApp normalizado e duplicidade tratada como sucesso; o painel semanal exige HTTP Basic com comparação em tempo constante.',
+          'Cadastro do lead com WhatsApp normalizado e duplicidade tratada como sucesso.',
         code: `
 class LeadSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -1141,37 +1141,6 @@ def create_lead(lead: LeadSchema) -> dict[str, Any]:
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="Não foi possível salvar o lead.",
         ) from error
-
-
-# ...
-
-
-def authenticate(credentials: HTTPBasicCredentials = Depends(security)) -> str:
-    valid_username = secrets.compare_digest(credentials.username, ADMIN_USERNAME)
-    valid_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
-
-    if not valid_username or not valid_password:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciais inválidas.",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-
-    return credentials.username
-
-
-@app.get("/leads-semanais", response_class=HTMLResponse)
-def weekly_leads(_: str = Depends(authenticate)) -> HTMLResponse:
-    cutoff = datetime.now(timezone.utc) - timedelta(days=7)
-
-    try:
-        result = (
-            supabase.table("leads")
-            .select("id,nome,whatsapp,respostas,created_at")
-            .gte("created_at", cutoff.isoformat())
-            .order("created_at", desc=True)
-            .execute()
-        )
 `,
       },
       {
