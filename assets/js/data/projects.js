@@ -585,6 +585,7 @@ void roundtripComp3() {
       'TypeScript',
       'Tailwind CSS',
       'Docker',
+      'Render',
     ],
     stats: [
       { value: '3', label: 'portais: cliente, administrador e profissional' },
@@ -621,7 +622,7 @@ void roundtripComp3() {
       {
         title: 'Infraestrutura',
         description:
-          'Docker Compose com Nginx como proxy reverso na frente da API e do front-end, Redis em contêiner e APScheduler para os jobs em segundo plano.',
+          'Publicado no Render em um único contêiner Docker com o front-end e a API, PostgreSQL no Supabase e Redis no Render Key Value; o APScheduler roda os jobs em segundo plano. O Docker Compose com Nginx como proxy reverso fica pronto para um servidor próprio.',
       },
     ],
     challenges: [
@@ -949,7 +950,7 @@ if (is401 && !config?._refreshRetry && config) {
       },
     ],
     repo: 'https://github.com/ZeHoschett/AgendaFlow',
-    demo: '', // TODO(jose): link quando o deploy estiver no ar
+    demo: 'https://agendaflow-xdsq.onrender.com/nano-banana',
     year: 2026,
     featured: true,
   },
