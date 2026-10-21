@@ -646,6 +646,11 @@ void roundtripComp3() {
         solution:
           'O job usa pg_try_advisory_lock: só o worker que obtém o lock executa a rodada e os demais a ignoram. Um UPDATE com CTE conclui os atendimentos e dá baixa no estoque na mesma instrução.',
       },
+      {
+        challenge: 'Deixar qualquer pessoa testar o painel sem senha sem que a demonstração fique suja ou desatualizada.',
+        solution:
+          'Uma barbearia fictícia é recriada uma vez por dia, no primeiro acesso, com quatro meses de histórico e três semanas de agenda gerados em volta da data de hoje. O acesso sem senha só entra nesse estabelecimento, como administrador ou profissional, e tem limite de tentativas por IP.',
+      },
     ],
     images: [
       {
@@ -950,7 +955,7 @@ if (is401 && !config?._refreshRetry && config) {
       },
     ],
     repo: 'https://github.com/ZeHoschett/AgendaFlow',
-    demo: 'https://agendaflow-xdsq.onrender.com/nano-banana',
+    demo: 'https://agendaflow-xdsq.onrender.com/demo',
     year: 2026,
     featured: true,
   },
