@@ -369,6 +369,22 @@ caso abrindo, foco visível em todos os controles e nenhuma falha de contraste. 
 
 ---
 
+## AgendaFlow no ar (21/10/2026)
+
+O AgendaFlow foi publicado no Render e o estudo de caso dele aponta para o sistema de verdade:
+
+| Mudança | O que foi feito |
+| --- | --- |
+| **Botão Demo** | Abre <https://agendaflow-xdsq.onrender.com/demo>, onde o recrutador escolhe entre agendar como cliente ou entrar no painel do administrador ou no portal do profissional, sem senha. A barra de endereço do mockup no card mostra esse endereço. |
+| **Dados da demo** | Barbearia fictícia recriada todo dia no primeiro acesso, com 4 meses de histórico e 3 semanas de agenda em volta da data de hoje. O que um visitante mudar some no dia seguinte. |
+| **Estudo de caso** | "Infraestrutura" descreve o deploy real (um contêiner Docker no Render, PostgreSQL no Supabase, Redis no Render Key Value), a tag "Render" entrou e há um desafio novo sobre a demonstração sem senha. |
+
+Se o AgendaFlow mudar de endereço, troque o `demo` da entrada `agendaflow` em `data/projects.js`.
+No plano free o servidor dorme depois de 15 minutos sem acesso: o primeiro visitante espera cerca
+de 1 minuto, e a página `/demo` avisa isso enquanto carrega.
+
+---
+
 ## Publicar
 
 Todos os caminhos são relativos, então o site funciona na raiz de um domínio ou em subpasta.
@@ -390,7 +406,8 @@ arquivos com compressão (gzip/brotli) e HTTPS.
    Instance** no menu lateral) → escolha o repositório → **Deploy Blueprint**. Não crie como
    *Web Service*: ele exige um comando de servidor que este site não tem, e o deploy falha.
 3. O site está no ar em <https://jose-hoschett-portfolio.onrender.com> (o nome sai de `name` no
-   `render.yaml`). Cada push na `main` publica de novo.
+   `render.yaml`). Com o **Auto-Deploy** ligado no painel, cada push na `main` publica de novo;
+   desligado, publique em **Manual Deploy → Deploy latest commit** e confira o commit em "Source".
 4. A URL final já está no `canonical`, `og:url`, `og:image`, `twitter:image` e JSON-LD do
    `index.html`, no `robots.txt` e no `sitemap.xml`. Se um dia mudar de domínio, troque nesses
    lugares.
@@ -454,7 +471,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | Pendência | Onde | O que precisa | Como está hoje |
 | --- | --- | --- | --- |
 | **Bio** | `config.js → bio` | 2 a 4 frases sobre você | texto genérico do `index.html` |
-| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: CB7 Bank (em destaque, com recomendação na aba Java), FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy |
+| **Projetos** | `data/projects.js` | links de `repo`/`demo` que faltam (ver `TODO(jose)`) e vídeos em `assets/video/projects/<id>/` | Java: FlowPay e CopyBridge · Python: AgendaFlow e Funil de Leads · COBOL: CB7 Bank (em destaque, com recomendação na aba Java), FLOWCNAB e 5 programas de estudo (validação de saldo, seguro, saldo da conta, empréstimo, juros simples) · Web: portfólio e AURA. Funil só com textos e prints, sem links (de propósito); AURA sem repo nem deploy; AgendaFlow com repo e demo sem senha |
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **Segunda foto** | `index.html` (`TODO(jose)` no Sobre) | uma foto diferente para o Sobre | a mesma foto do Início, num recorte mais fechado |
