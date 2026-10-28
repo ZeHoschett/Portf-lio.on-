@@ -361,11 +361,29 @@ caso abrindo, foco visível em todos os controles e nenhuma falha de contraste. 
 
 1. **Segunda foto do Sobre:** coloque a foto em `assets/img/` e troque o `src` do `.about__photo`
    no `index.html` (hoje é a mesma do Início, num recorte mais fechado).
-2. **Capturas em alta resolução dos projetos:** AgendaFlow, AURA e Funil têm prints de 1600px e
-   393px, abaixo do que o modal pede em telas de alta densidade. Tire novas capturas em densidade 2x
+2. **Capturas em alta resolução dos projetos:** AURA e Funil têm prints de 1600px e
+   393px, abaixo do que o modal pede em telas de alta densidade (o AgendaFlow já foi refeito em 28/10/2026). Tire novas capturas em densidade 2x
    (no DevTools, modo responsivo com DPR 2) e substitua os arquivos em `assets/img/projects/<id>/`,
    anotando `width`/`height` no dado.
 3. Os itens de "Falta preencher", mais abaixo (bio, links de projetos, frase de apoio).
+
+---
+
+## AgendaFlow atualizado (28/10/2026)
+
+O estudo de caso acompanha a versão de lançamento do AgendaFlow (visual novo, cadastro self-service,
+configuração rápida, links da equipe e auditoria de segurança):
+
+| Mudança | O que foi feito |
+| --- | --- |
+| **Capturas** | 9 de computador (2000×1250) e 12 de celular (780×1688), tiradas em densidade 2x do site publicado, na demonstração. Entraram a página inicial, o cadastro, Primeiros passos, Divulgar, Serviços prontos e os links da equipe. |
+| **Vídeos** | Os três vídeos (cliente, administrador, profissional) foram gravados de novo no visual novo, em 784×1696. O agendamento para no resumo: nada é gravado na demonstração. |
+| **Texto** | Resumo, descrição, funcionalidades, arquitetura e desafios reescritos; dois desafios novos (cadastro público tudo ou nada e sem robôs, horário duplicado). React Hook Form e Zod saíram da arquitetura porque o projeto não os usa mais. |
+| **Código** | `requer_role` e a consulta do CRM atualizados para o código atual; trecho novo do cadastro (`signup_router.py`) com a proteção contra robôs. |
+
+Para refazer as capturas: o AgendaFlow tem Playwright em `testes/` (Chromium em
+`%LOCALAPPDATA%\ms-playwright\chromium-1223`). Viewport 1440×900 e 390×844 com `deviceScaleFactor: 2`,
+entrando pela `/demo` (sem senha); nunca clicar em salvar ou confirmar.
 
 ---
 
@@ -475,7 +493,7 @@ Procure por `TODO(jose)` no projeto para ver todas as marcações no código.
 | **Frase de apoio** | `config.js → tagline` | revisar o texto atual | "Desenvolvedor COBOL para ambientes Mainframe e aplicações Java Backend." |
 | **og-image** | `assets/img/og-image.png` | opcional: arte final com a foto | arte genérica, gerada do SVG |
 | **Segunda foto** | `index.html` (`TODO(jose)` no Sobre) | uma foto diferente para o Sobre | a mesma foto do Início, num recorte mais fechado |
-| **Capturas 2x** | `assets/img/projects/<id>/` | prints novos em densidade 2x do AgendaFlow, da AURA e do Funil | 1600px no desktop e 393px no celular, com compressão alta |
+| **Capturas 2x** | `assets/img/projects/<id>/` | prints novos em densidade 2x da AURA e do Funil (AgendaFlow feito) | 1600px no desktop e 393px no celular, com compressão alta |
 
 ### Ordem sugerida
 

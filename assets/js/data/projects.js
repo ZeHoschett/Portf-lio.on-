@@ -571,10 +571,10 @@ void roundtripComp3() {
     stack: 'python',
     type: 'fullstack',
     summary:
-      'SaaS multi-tenant de agendamento online para barbearias, salões e clínicas: portal do cliente, painel administrativo com CRM e financeiro e portal do profissional.',
+      'SaaS multi-tenant de agendamento online para estabelecimentos de serviços: o dono cria a conta sozinho, configura em minutos e ganha portal do cliente, painel administrativo com CRM e financeiro e portal do profissional.',
     description: [
-      'O AgendaFlow dá a cada estabelecimento de serviços o seu próprio portal de agendamento. O cliente escolhe serviços, profissional, data e horário, recebe sugestões de produtos e confirma pelo celular. A equipe administra agenda, profissionais, serviços, produtos, financeiro e CRM em um painel próprio, e cada profissional acompanha a sua agenda e o seu desempenho.',
-      'O back-end é uma API em Python com FastAPI e PostgreSQL, em que cada estabelecimento recebe um schema isolado no banco, criado automaticamente no cadastro. O Redis guarda o cache de estabelecimentos e o controle de sessões, e um job em segundo plano atualiza o status dos atendimentos e dá baixa no estoque dos produtos vendidos. O front-end em Next.js e TypeScript é mobile-first, instalável como PWA e tem tema claro e escuro.',
+      'O AgendaFlow dá a cada estabelecimento de serviços o seu próprio portal de agendamento. O dono cria a conta sozinho em cinco telas curtas, passa por uma configuração guiada com serviços prontos para o seu segmento e recebe o link e o QR code para divulgar. O cliente escolhe serviços, profissional, data e horário, recebe sugestões de produtos e confirma pelo celular. A equipe administra agenda, profissionais, serviços, produtos, financeiro e CRM, e cada profissional acompanha a sua agenda, o seu desempenho e o seu próprio link de agendamento.',
+      'O back-end é uma API em Python com FastAPI e PostgreSQL, em que cada estabelecimento recebe um schema isolado no banco, criado junto com a conta do dono numa única transação. O Redis guarda o cache de estabelecimentos e o controle de sessões, e um job em segundo plano atualiza o status dos atendimentos e dá baixa no estoque dos produtos vendidos. O front-end em Next.js e TypeScript tem um sistema visual próprio, mobile-first, com tema claro e escuro, e é instalável como PWA. Antes de abrir o cadastro ao público, o sistema passou por uma auditoria de segurança do back-end, do front-end, das dependências e do deploy.',
     ],
     tags: [
       'Python',
@@ -589,47 +589,59 @@ void roundtripComp3() {
     ],
     stats: [
       { value: '3', label: 'portais: cliente, administrador e profissional' },
-      { value: '12', label: 'módulos de API em FastAPI' },
+      { value: '14', label: 'módulos de API em FastAPI' },
       { value: '1 schema', label: 'PostgreSQL isolado por estabelecimento' },
-      { value: '19 mil+', label: 'linhas de Python, TypeScript e CSS' },
+      { value: '18 mil+', label: 'linhas de Python, TypeScript e CSS' },
     ],
     highlights: [
-      'Agendamento online em etapas: serviços, profissional, data, horário, produtos sugeridos e confirmação.',
-      'Horários livres calculados pelo expediente, dias de funcionamento e datas bloqueadas, com sugestão de outro profissional quando o horário está ocupado.',
-      'Dashboard do administrador com faturamento líquido, comissões, ocupação, cancelamentos e gráfico de receita.',
-      'CRM de retenção que classifica os clientes em Frequente, Regular ou Em risco e exporta relatório em PDF.',
+      'Cadastro self-service em cinco telas: e-mail, senha com medidor de força, negócio com o link conferido na hora, dados e aceite dos termos e o Plano Fundador grátis. O dono já sai logado na configuração inicial.',
+      'Configuração rápida: serviços prontos por segmento (o dono marca, ajusta o nome e digita o preço), checklist "Primeiros passos" no dashboard e dicas na primeira visita a cada tela.',
+      'Tela Divulgar com o link do estabelecimento, QR code em cartaz para imprimir e textos prontos e editáveis para a bio e o status do WhatsApp.',
+      'Links da equipe: cada profissional recebe a mensagem de acesso pronta para enviar pelo WhatsApp e um link de agendamento próprio, que já abre com ele escolhido.',
+      'Agendamento online em etapas: serviços, profissional, data, horário, produtos sugeridos e confirmação, com os horários livres calculados pelo expediente, dias de funcionamento e datas bloqueadas.',
+      'Dashboard do administrador com faturamento líquido, comissões, ocupação, cancelamentos, ranking dos profissionais e gráfico de receita dos últimos seis meses.',
+      'CRM de retenção que classifica os clientes em Frequente, Regular ou Em risco, com filtros e relatório em PDF.',
       'Relatório financeiro por período, com totais por serviço, produto e profissional.',
-      'Portal do profissional com agenda do dia, comissão a receber e evolução do faturamento.',
-      'Onboarding obrigatório no primeiro acesso do administrador para configurar o estabelecimento.',
-      'PWA instalável na tela inicial, mobile-first, com tema claro e escuro.',
+      'Portal do profissional com agenda do dia, comissão a receber, evolução do faturamento e o próprio QR code para divulgar.',
+      'Sistema visual próprio, mobile-first, com tema claro e escuro; cadastro e configuração inicial em duas colunas no computador. PWA instalável na tela inicial.',
     ],
     architecture: [
       {
         title: 'Front-end',
         description:
-          'Next.js (App Router) com React, TypeScript e Tailwind CSS. Sessão com Zustand, formulários com React Hook Form e Zod, gráficos com Recharts e PDF com jsPDF. Rotas dinâmicas por estabelecimento: /[slug], /[slug]/admin e /[slug]/profissional.',
+          'Next.js (App Router) com React, TypeScript e Tailwind CSS, sobre uma biblioteca de componentes própria (botões, cartões, campos, janelas, etiquetas). Sessão com Zustand, gráficos com Recharts, PDF com jsPDF e QR codes com a biblioteca qrcode. Página inicial, cadastro e páginas legais públicas; rotas dinâmicas por estabelecimento: /[slug], /[slug]/admin e /[slug]/profissional.',
       },
       {
         title: 'API',
         description:
-          'FastAPI com SQLAlchemy e um router por domínio: autenticação, estabelecimentos, agendamentos, serviços, produtos, profissionais, dashboard, relatórios e CRM. Limite de tentativas no login com slowapi, logs em JSON com ID de correlação por requisição e trilha de auditoria.',
+          'FastAPI com SQLAlchemy e um router por domínio: cadastro, autenticação, estabelecimentos, agendamentos, serviços, produtos, profissionais, configurações, dashboard, relatórios, CRM e primeiros passos. Limite de tentativas com slowapi no login, no cadastro e nas rotas sensíveis, bloqueio da conta após 10 senhas erradas, validação de entrada com mensagens em português, logs em JSON com ID de correlação por requisição e trilha de auditoria.',
       },
       {
         title: 'Dados',
         description:
-          'PostgreSQL com um schema por estabelecimento (tenant_<slug>) e índices nas consultas de agenda; Alembic para as migrações do schema público. Redis para cache de estabelecimentos (5 min), blacklist de access tokens e whitelist de refresh tokens.',
+          'PostgreSQL com um schema por estabelecimento (tenant_<slug>) e índices nas consultas de agenda; Alembic para as migrações do schema público. Redis para cache de estabelecimentos (5 min), blacklist de access tokens e whitelist de refresh tokens. O aceite dos termos de uso fica gravado na auditoria com data, IP e versão do texto (LGPD).',
       },
       {
         title: 'Infraestrutura',
         description:
-          'Publicado no Render em um único contêiner Docker com o front-end e a API, PostgreSQL no Supabase e Redis no Render Key Value; o APScheduler roda os jobs em segundo plano. O Docker Compose com Nginx como proxy reverso fica pronto para um servidor próprio.',
+          'Publicado no Render em um único contêiner Docker com o front-end e a API, PostgreSQL no Supabase e Redis no Render Key Value; o APScheduler roda os jobs em segundo plano. As páginas saem com cabeçalhos de segurança (anti-clickjacking, nosniff, HSTS). O Docker Compose com Nginx como proxy reverso fica pronto para um servidor próprio.',
       },
     ],
     challenges: [
       {
         challenge: 'Isolar os dados de cada estabelecimento sem manter um banco por cliente.',
         solution:
-          'Cada estabelecimento ganha um schema PostgreSQL próprio, criado com todas as tabelas no cadastro. O token carrega o slug do estabelecimento e uma dependência do FastAPI o compara com o slug da URL, bloqueando o acesso cruzado mesmo com um token válido.',
+          'Cada estabelecimento ganha um schema PostgreSQL próprio, criado com todas as tabelas no cadastro. O token carrega o slug do estabelecimento e uma dependência do FastAPI o compara com o slug da URL, bloqueando o acesso cruzado mesmo com um token válido. Uma rota protegida sem o slug na URL é negada.',
+      },
+      {
+        challenge: 'Abrir o cadastro ao público sem deixar estabelecimentos pela metade e sem depender de captcha.',
+        solution:
+          'Estabelecimento, schema, tabelas e conta do dono são criados numa única transação: qualquer falha desfaz tudo, inclusive o schema. Contra robôs, sem serviço externo: limite de 5 contas por hora por IP, um campo armadilha invisível e uma ficha assinada pelo servidor que recusa envios feitos em menos de 3 segundos.',
+      },
+      {
+        challenge: 'Impedir que dois clientes reservem o mesmo horário ao mesmo tempo.',
+        solution:
+          'O agendamento público pega um lock de transação por estabelecimento, profissional e data (pg_advisory_xact_lock): pedidos simultâneos esperam um pelo outro e só o primeiro grava. Antes disso, o pedido é recusado se a data já passou, se o dia está fechado ou se o horário está fora do expediente.',
       },
       {
         challenge: 'Listar os clientes do CRM sem uma consulta extra por cliente (N+1).',
@@ -639,7 +651,7 @@ void roundtripComp3() {
       {
         challenge: 'Manter a sessão segura sem expor tokens ao JavaScript.',
         solution:
-          'Access e refresh tokens em cookies HttpOnly, refresh rotativo com whitelist no Redis e blacklist por JTI no logout. No front-end, um interceptor do Axios coloca em fila as requisições que recebem 401 enquanto um único refresh acontece.',
+          'Access e refresh tokens em cookies HttpOnly com SameSite=Lax, refresh rotativo com whitelist no Redis e blacklist por JTI no logout. No front-end, um interceptor do Axios coloca em fila as requisições que recebem 401 enquanto um único refresh acontece.',
       },
       {
         challenge: 'Executar o job de status uma única vez com vários workers do Uvicorn.',
@@ -655,107 +667,131 @@ void roundtripComp3() {
     images: [
       {
         src: `${AGENDAFLOW_IMG}/desktop-01-dashboard.webp`,
-        alt: 'Dashboard do administrador com faturamento líquido do mês, comissões, ocupação, agendamentos do dia e cancelamentos',
-        width: 1600,
-        height: 750,
+        alt: 'Dashboard do administrador com o checklist Primeiros passos, faturamento líquido do mês, ocupação, agendamentos do dia e cancelamentos',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-02-crm.webp`,
-        alt: 'CRM com total de clientes, grupos Frequentes, Regulares e Em risco, alerta de clientes em risco e distribuição da base',
-        width: 1600,
-        height: 742,
+        src: `${AGENDAFLOW_IMG}/desktop-02-inicio.webp`,
+        alt: 'Página inicial do AgendaFlow com os botões Começar grátis e Ver demonstração',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-03-financeiro.webp`,
-        alt: 'Relatório financeiro com faturamento por serviços e produtos, ticket médio, gráfico de faturamento diário e totais por serviço',
-        width: 1600,
-        height: 748,
+        src: `${AGENDAFLOW_IMG}/desktop-03-cadastro.webp`,
+        alt: 'Primeira tela do cadastro, com os benefícios do sistema à esquerda e o campo de e-mail à direita',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-04-desempenho.webp`,
-        alt: 'Portal do profissional com faturamento do mês, atendimentos, performance, comissão a receber e evolução do faturamento',
-        width: 1600,
-        height: 747,
+        src: `${AGENDAFLOW_IMG}/desktop-04-crm.webp`,
+        alt: 'CRM com total de clientes, grupos Frequentes, Regulares e Em risco, alerta de clientes sem agendar e distribuição da base',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-05-portal-cliente.webp`,
-        alt: 'Portal público da barbearia de teste com o botão Agendar agora, horário de funcionamento e endereço',
-        width: 1600,
-        height: 748,
+        src: `${AGENDAFLOW_IMG}/desktop-05-financeiro.webp`,
+        alt: 'Relatório financeiro do mês com faturamento por serviços e produtos, ticket médio e gráfico de faturamento por dia',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-06-resumo.webp`,
-        alt: 'Última etapa do agendamento: resumo com serviço, produtos, profissional, data, horário e total, e campos de nome e WhatsApp',
-        width: 1600,
-        height: 753,
+        src: `${AGENDAFLOW_IMG}/desktop-06-divulgar.webp`,
+        alt: 'Tela Divulgar com o link do estabelecimento, o QR code para imprimir e o link de acesso da equipe',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-07-confirmado.webp`,
-        alt: 'Agendamento confirmado com os detalhes do atendimento, atalhos para o mapa e o WhatsApp e formas de pagamento aceitas',
-        width: 1600,
-        height: 747,
+        src: `${AGENDAFLOW_IMG}/desktop-07-links-equipe.webp`,
+        alt: 'Janela de links de um profissional com a mensagem de acesso pronta para o WhatsApp e o link de agendamento dele',
+        width: 2000,
+        height: 1250,
       },
       {
-        src: `${AGENDAFLOW_IMG}/desktop-08-login.webp`,
-        alt: 'Login em etapas com a escolha entre acesso de administrador e de profissional',
-        width: 1600,
-        height: 737,
+        src: `${AGENDAFLOW_IMG}/desktop-08-servicos-prontos.webp`,
+        alt: 'Janela Serviços prontos com os serviços sugeridos para o segmento e os já cadastrados sinalizados',
+        width: 2000,
+        height: 1250,
+      },
+      {
+        src: `${AGENDAFLOW_IMG}/desktop-09-desempenho.webp`,
+        alt: 'Portal do profissional com faturamento do mês, comissão a receber, atendimentos e gráfico de faturamento por dia',
+        width: 2000,
+        height: 1250,
       },
     ],
     mobileImages: [
       {
-        src: `${AGENDAFLOW_IMG}/mobile-04-dashboard.webp`,
-        alt: 'Dashboard do administrador no celular',
-        width: 393,
-        height: 780,
+        src: `${AGENDAFLOW_IMG}/mobile-01-dashboard.webp`,
+        alt: 'Dashboard do administrador no celular, com o checklist Primeiros passos',
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-05-menu-admin.webp`,
+        src: `${AGENDAFLOW_IMG}/mobile-02-menu-admin.webp`,
         alt: 'Menu lateral do painel do administrador no celular',
-        width: 393,
-        height: 803,
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-06-crm.webp`,
+        src: `${AGENDAFLOW_IMG}/mobile-03-crm.webp`,
         alt: 'CRM no celular com os cartões de métricas e o alerta de clientes em risco',
-        width: 393,
-        height: 784,
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-07-financeiro.webp`,
+        src: `${AGENDAFLOW_IMG}/mobile-04-financeiro.webp`,
         alt: 'Relatório financeiro no celular',
-        width: 393,
-        height: 802,
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-08-desempenho.webp`,
+        src: `${AGENDAFLOW_IMG}/mobile-05-divulgar.webp`,
+        alt: 'Tela Divulgar no celular com o link e o QR code',
+        width: 780,
+        height: 1688,
+      },
+      {
+        src: `${AGENDAFLOW_IMG}/mobile-06-desempenho.webp`,
         alt: 'Desempenho do profissional no celular',
-        width: 393,
-        height: 799,
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-09-menu-profissional.webp`,
-        alt: 'Menu do portal do profissional no celular',
-        width: 393,
-        height: 805,
+        src: `${AGENDAFLOW_IMG}/mobile-07-agenda-profissional.webp`,
+        alt: 'Agenda do dia do profissional no celular, com o próximo atendimento',
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-01-portal-cliente.webp`,
-        alt: 'Portal público de agendamento no celular',
-        width: 393,
-        height: 796,
+        src: `${AGENDAFLOW_IMG}/mobile-08-inicio.webp`,
+        alt: 'Página inicial do AgendaFlow no celular',
+        width: 780,
+        height: 1688,
       },
       {
-        src: `${AGENDAFLOW_IMG}/mobile-02-resumo.webp`,
+        src: `${AGENDAFLOW_IMG}/mobile-09-cadastro.webp`,
+        alt: 'Primeira tela do cadastro no celular',
+        width: 780,
+        height: 1688,
+      },
+      {
+        src: `${AGENDAFLOW_IMG}/mobile-10-portal-cliente.webp`,
+        alt: 'Portal público da barbearia de demonstração no celular',
+        width: 780,
+        height: 1688,
+      },
+      {
+        src: `${AGENDAFLOW_IMG}/mobile-11-horario.webp`,
+        alt: 'Escolha do horário no agendamento, com os horários livres por período',
+        width: 780,
+        height: 1688,
+      },
+      {
+        src: `${AGENDAFLOW_IMG}/mobile-12-resumo.webp`,
         alt: 'Resumo do agendamento no celular, com o total e os dados do cliente',
-        width: 393,
-        height: 799,
-      },
-      {
-        src: `${AGENDAFLOW_IMG}/mobile-03-login.webp`,
-        alt: 'Login no celular com a escolha do perfil de acesso',
-        width: 393,
-        height: 792,
+        width: 780,
+        height: 1688,
       },
     ],
     videos: [
@@ -763,22 +799,22 @@ void roundtripComp3() {
         src: `${AGENDAFLOW_VIDEO}/agendamento-cliente.mp4`,
         poster: `${AGENDAFLOW_VIDEO}/agendamento-cliente-poster.webp`,
         title: 'Agendamento pelo cliente',
-        width: 392,
-        height: 848,
+        width: 784,
+        height: 1696,
       },
       {
         src: `${AGENDAFLOW_VIDEO}/painel-admin.mp4`,
         poster: `${AGENDAFLOW_VIDEO}/painel-admin-poster.webp`,
         title: 'Painel do administrador',
-        width: 392,
-        height: 848,
+        width: 784,
+        height: 1696,
       },
       {
         src: `${AGENDAFLOW_VIDEO}/portal-profissional.mp4`,
         poster: `${AGENDAFLOW_VIDEO}/portal-profissional-poster.webp`,
         title: 'Portal do profissional',
-        width: 392,
-        height: 848,
+        width: 784,
+        height: 1696,
       },
     ],
     codeSamples: [
@@ -799,9 +835,11 @@ def requer_role(roles: list):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Você não tem permissão para acessar esse recurso",
             )
-        # Impede que admin do tenant A acesse rotas do tenant B
+        # Impede que admin do tenant A acesse rotas do tenant B.
+        # Falha fechada: rota protegida sem {tenant_slug} na URL é negada,
+        # para que um parâmetro com outro nome nunca pule essa checagem.
         slug_na_url = request.path_params.get("tenant_slug")
-        if slug_na_url and usuario.get("tenant") != slug_na_url:
+        if not slug_na_url or usuario.get("tenant") != slug_na_url:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Acesso negado a este estabelecimento",
@@ -816,7 +854,6 @@ def requer_role(roles: list):
         caption:
           'Lista do CRM em uma única consulta: métricas e favoritos de cada cliente sem N+1.',
         code: `
--- Uma única query com CTE resolve serviço/profissional favoritos sem N+1
 WITH base AS (
     SELECT
         a.client_phone,
@@ -824,7 +861,9 @@ WITH base AS (
         COUNT(a.id)                                                           AS total_agendamentos,
         COUNT(CASE WHEN a.scheduled_date >= :noventa_dias_atras THEN 1 END)   AS agendamentos_90_dias,
         MAX(a.scheduled_date)                                                 AS ultimo_agendamento,
-        ROUND(AVG(s.price)::numeric, 2)                                       AS ticket_medio
+        MIN(a.scheduled_date)                                                 AS primeiro_agendamento,
+        ROUND(AVG(s.price)::numeric, 2)                                       AS ticket_medio,
+        COUNT(DISTINCT a.professional_id)                                     AS total_profissionais_distintos
     FROM "{schema}".appointments a
     JOIN "{schema}".services s ON s.id = a.service_id
     WHERE a.status != 'cancelled'
@@ -842,17 +881,86 @@ servico_fav AS (
 prof_fav AS (
     SELECT DISTINCT ON (a.client_phone)
         a.client_phone,
-        u.full_name AS profissional_favorito
+        u.full_name AS profissional_favorito,
+        u.id        AS profissional_favorito_id
     FROM "{schema}".appointments a
     JOIN "{schema}".users u ON u.id = a.professional_id
     WHERE a.status != 'cancelled'
     ORDER BY a.client_phone, COUNT(*) OVER (PARTITION BY a.client_phone, u.id) DESC
 )
-SELECT b.*, sf.servico_favorito, pf.profissional_favorito
+SELECT
+    b.*,
+    sf.servico_favorito,
+    pf.profissional_favorito,
+    pf.profissional_favorito_id::text
 FROM base b
 LEFT JOIN servico_fav sf ON sf.client_phone = b.client_phone
-LEFT JOIN prof_fav    pf ON pf.client_phone = b.client_phone
+LEFT JOIN prof_fav   pf ON pf.client_phone = b.client_phone
 ORDER BY b.ultimo_agendamento DESC
+`,
+      },
+      {
+        fileName: 'backend/app/tenants/signup_router.py',
+        caption:
+          'Cadastro público protegido contra robôs sem serviço externo: ficha assinada, tempo mínimo e campo armadilha.',
+        code: `
+# Ficha de início: tempo mínimo e máximo entre abrir o formulário e enviar
+TEMPO_MINIMO_SEGUNDOS = 3
+VALIDADE_FICHA_SEGUNDOS = 2 * 60 * 60
+
+
+def _assinar(valor: str) -> str:
+    return hmac.new(settings.SECRET_KEY.encode(), f"cadastro:{valor}".encode(), hashlib.sha256).hexdigest()[:32]
+
+
+def _gerar_ficha() -> str:
+    agora = str(int(time.time()))
+    return f"{agora}.{_assinar(agora)}"
+
+
+def _ficha_valida(ficha: str) -> bool:
+    """A ficha precisa ter sido emitida por este servidor há mais de 3 s e menos de 2 h."""
+    try:
+        emitida, assinatura = ficha.split(".", 1)
+        if not hmac.compare_digest(assinatura, _assinar(emitida)):
+            return False
+        idade = time.time() - int(emitida)
+        return TEMPO_MINIMO_SEGUNDOS <= idade <= VALIDADE_FICHA_SEGUNDOS
+    except (ValueError, AttributeError):
+        return False
+
+
+@router.post("", response_model=CadastroResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("5/hour")
+def criar_conta(
+    request: Request,
+    response: Response,
+    dados: CadastroRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Cria o estabelecimento + conta do dono (tudo ou nada), grava o aceite dos termos
+    e já deixa o dono logado (mesmos cookies HttpOnly do login).
+    """
+    ip = request.client.host if request.client else None
+
+    # Robô: preencheu o campo invisível ou enviou rápido demais / com ficha falsa
+    if dados.website.strip() or not _ficha_valida(dados.ficha):
+        logger.warning("cadastro_suspeito", extra={"ip": ip, "armadilha": bool(dados.website.strip())})
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=ERRO_GENERICO)
+
+    try:
+        tenant_service.criar_estabelecimento_completo(
+            db,
+            dados,
+            admin_nome=dados.admin_name,
+            admin_email=dados.admin_email,
+            admin_senha=dados.admin_password,
+            admin_telefone=dados.admin_phone,
+            admin_cargo=dados.admin_cargo,
+        )
+    except tenant_service.SlugEmUsoError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
 `,
       },
       {
