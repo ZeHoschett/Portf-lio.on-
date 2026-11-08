@@ -1,0 +1,1057 @@
+/* Components: buttons, tags, cards, mockups, modal, toast. */
+@layer components {
+  /* ============================== Stack identity ============================== */
+  /*
+   * Any element with data-stack exposes --stack-bloom: a bare RGB triplet for the out-of-focus
+   * light behind the glass. It is only ever used inside a background radial-gradient, never on
+   * text, borders, icons or states (the interface itself is black and white).
+   */
+  [data-stack='java'] {
+    --stack-bloom: var(--bloom-java);
+  }
+
+  [data-stack='python'] {
+    --stack-bloom: var(--bloom-python);
+  }
+
+  [data-stack='cobol'] {
+    --stack-bloom: var(--bloom-cobol);
+  }
+
+  [data-stack='web'] {
+    --stack-bloom: var(--bloom-web);
+  }
+
+  /* Editors and assistants: no stack of their own */
+  [data-stack='tools'] {
+    --stack-bloom: var(--bloom-neutro);
+  }
+
+  /* ============================== Surfaces ============================== */
+  /*
+   * Three materials, one rule:
+   * - glass: the element overlaps other content (header, modal, menu, hero and contact panels)
+   * - relief: it only rests on the page (stack groups, timeline items, empty states)
+   * - solid: it repeats many times per screen (project and certificate cards, mockups, code)
+   * At most three backdrop-filter surfaces may be visible at once.
+   * What sells the glass is the edge (light line on top, shade below) plus the specular.
+   */
+  .surface-glass {
+    position: relative;
+    background:
+      var(--texture-grain-glass) 0 0 / var(--grain-size),
+      linear-gradient(var(--glass), var(--glass)),
+      var(--glass-scrim);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--lift);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .surface-glass {
+      background: var(--glass-fallback);
+    }
+  }
+
+  .surface-relief {
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
+  }
+
+  .surface-solid {
+    position: relative;
+    background: var(--solid-bg);
+    border: var(--border-thin) solid var(--solid-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge);
+  }
+
+  /* Specular: --mx/--my come from modules/specular.js (fine pointer only) */
+  .surface-glass::after,
+  .surface-solid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      var(--specular-size) circle at var(--mx, 50%) var(--my, 0%),
+      var(--specular),
+      transparent 60%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .surface-glass:hover::after,
+    .surface-solid:hover::after {
+      opacity: 1;
+    }
+  }
+
+  /* ============================== Chips ============================== */
+  .chip-list,
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t2);
+    background: var(--glass);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
+  }
+
+  /* ============================== Tags ============================== */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-normal);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t2);
+    background: transparent;
+    border: var(--border-thin) solid var(--tag-line);
+    border-radius: var(--r-pill);
+  }
+
+  /* Technology marks inherit the tag colour (white, like everything else) */
+  .tag .icon {
+    --icon-size: var(--icon-scale);
+  }
+
+  /* ============================== Buttons ============================== */
+  .btn {
+    --btn-bg: transparent;
+    --btn-color: var(--t1);
+    --btn-border: transparent;
+    --btn-shadow: none;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-snug);
+    color: var(--btn-color);
+    text-decoration: none;
+    white-space: nowrap;
+    background: var(--btn-bg);
+    border: var(--border-thin) solid var(--btn-border);
+    border-radius: var(--r-pill);
+    box-shadow: var(--btn-shadow);
+    cursor: pointer;
+    translate: var(--magnet-x, 0) var(--magnet-y, 0); /* set by modules/magnetic.js */
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      translate var(--dur-slow) var(--ease-out-expo),
+      transform var(--dur-hover) var(--ease-out-expo),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart),
+      color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .btn .icon {
+    --icon-size: var(--icon-scale);
+  }
+
+  .btn:active {
+    transform: scale(var(--press-scale));
+  }
+
+  /* Solid white with near-black text: the strongest contrast replaces the old accent */
+  .btn--primary {
+    --btn-bg: var(--t1);
+    --btn-color: var(--ink);
+  }
+
+  /* Ghost: glass tint with the light edge. No backdrop-filter of its own: buttons sit on glass
+     panels already, and every extra blur counts against the three-surface budget. */
+  .btn--secondary,
+  .btn--icon {
+    --btn-bg: var(--glass);
+    --btn-border: var(--glass-line);
+    --btn-shadow: var(--edge);
+  }
+
+  .btn--sm {
+    padding-inline: var(--space-4);
+  }
+
+  /* Circular icon button (GitHub, close, arrows): label it with visually-hidden text */
+  .btn--icon {
+    width: var(--tap-min);
+    padding: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn--primary:hover {
+      --btn-bg: var(--btn-primary-hover);
+    }
+
+    .btn--secondary:hover,
+    .btn--icon:hover {
+      --btn-bg: var(--glass-strong);
+      --btn-border: var(--glass-line-hi);
+    }
+  }
+
+  .btn.is-disabled,
+  .btn[aria-disabled='true'] {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ============================== Project card ============================== */
+  /*
+   * Solid surface (.surface-solid on the same node: material, specular). Reading order: title,
+   * subtitle, summary, tags, mockup, footer. The footer's "Estudo de caso" button is the one
+   * main control; its ::after stretches over the whole card. The access icons sit above it.
+   */
+  .project-card {
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--space-3);
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    transition:
+      translate var(--dur-hover) var(--ease-out-expo),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .project-card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-2) var(--space-2);
+  }
+
+  .project-card__title {
+    font-size: var(--fs-h4);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-snug);
+  }
+
+  /* What the project is, on its own line under the name */
+  .project-card__subtitle {
+    margin-block-start: calc(var(--space-2) * -1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .project-card__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--fs-sm);
+    color: var(--t2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .project-card__body .tag-list {
+    margin-block-start: var(--space-1);
+  }
+
+  .project-card__media {
+    position: relative;
+    display: grid;
+    /* Definite track: lets the mockup's height: 100% resolve (auto rows would size to content) */
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    aspect-ratio: var(--card-media-ratio);
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  /* ---------- Footer: two levels of access ---------- */
+  .project-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-block-start: auto;
+    padding: var(--space-4) var(--space-2) var(--space-1);
+    border-top: var(--border-thin) solid var(--hairline);
+  }
+
+  .project-card__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 0;
+    font: inherit;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t1);
+    text-align: start;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .project-card__trigger::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-content);
+  }
+
+  .project-card__arrow {
+    --icon-size: var(--icon-scale);
+
+    transition: translate var(--dur-hover) var(--ease-out-expo);
+  }
+
+  .project-card__trigger:focus-visible {
+    outline: none;
+  }
+
+  .project-card:has(.project-card__trigger:focus-visible) {
+    outline: var(--focus-width) solid var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  @supports not selector(:has(*)) {
+    .project-card__trigger:focus-visible {
+      outline: var(--focus-width) solid var(--focus-ring);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  /* ---------- Recommendation (a project from another tab, see alsoIn) ---------- */
+  .project-card__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* Text link to the project's own tab, a pill like the access icons */
+  .project-card__home {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    padding-inline: var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t2);
+    text-decoration: none;
+    white-space: nowrap;
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    transition:
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-card__home:hover {
+      color: var(--t1);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
+    }
+  }
+
+  /* Secondary controls sit above the stretched trigger */
+  .project-card__links {
+    position: relative;
+    z-index: var(--z-front);
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .project-card__access {
+    display: grid;
+    place-items: center;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    color: var(--t2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    transition:
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .project-card__access .icon {
+    --icon-size: var(--icon-scale);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-card:hover {
+      border-color: var(--glass-line-hi);
+      translate: 0 var(--hover-lift);
+    }
+
+    .project-card:hover .project-card__arrow {
+      translate: var(--space-1) 0;
+    }
+
+    .project-card:hover .mockup__image {
+      scale: var(--card-image-zoom);
+    }
+
+    .project-card__access:hover {
+      color: var(--t1);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
+    }
+  }
+
+  /* Featured cards: text beside the mockup when their grid cell is wide enough */
+  @container (min-width: 40rem) {
+    .project-card {
+      display: grid;
+      grid-template: 'body media' 1fr 'footer footer' auto / minmax(0, 1fr) minmax(0, 1.25fr);
+      column-gap: var(--space-5);
+    }
+
+    .project-card__body {
+      grid-area: body;
+      align-content: center;
+    }
+
+    .project-card__media {
+      grid-area: media;
+      align-self: center;
+      margin-block: 0 var(--space-4);
+    }
+
+    .project-card__footer {
+      grid-area: footer;
+    }
+  }
+
+  /* ============================== Mockups ============================== */
+  .mockup {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .mockup__window {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--mockup-bg);
+    border: var(--border-thin) solid var(--mockup-line);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mockup__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    color: var(--t3);
+    background: transparent;
+    border-bottom: var(--border-thin) solid var(--hairline);
+  }
+
+  .mockup__dots {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--space-1);
+  }
+
+  .mockup__dot {
+    width: var(--mockup-dot);
+    height: var(--mockup-dot);
+    background: var(--mockup-dot-color);
+    border-radius: var(--r-pill);
+  }
+
+  .mockup__title,
+  .mockup__url {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mockup__url {
+    flex: 1;
+    padding: var(--space-1) var(--space-3);
+    text-align: center;
+    background: var(--glass);
+    border-radius: var(--r-pill);
+  }
+
+  .mockup__body {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .mockup__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: scale var(--dur-slow) var(--ease-out-expo);
+  }
+
+  /* ---------- Phone ---------- */
+  .mockup__device {
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: var(--phone-ratio);
+    padding: var(--phone-bezel);
+    background: var(--phone-frame);
+    border-radius: var(--phone-radius);
+    box-shadow:
+      inset 0 0 0 var(--border-thin) var(--glass-line),
+      var(--shadow-lg);
+  }
+
+  /* Volume (left) and power (right) buttons */
+  .mockup__device::before,
+  .mockup__device::after {
+    content: '';
+    position: absolute;
+    width: var(--phone-button-w);
+    background: var(--phone-button);
+  }
+
+  .mockup__device::before {
+    top: 20%;
+    left: calc(var(--phone-button-w) * -1);
+    height: 12%;
+    border-radius: var(--r-xs) 0 0 var(--r-xs);
+  }
+
+  .mockup__device::after {
+    top: 26%;
+    right: calc(var(--phone-button-w) * -1);
+    height: 16%;
+    border-radius: 0 var(--r-xs) var(--r-xs) 0;
+  }
+
+  .mockup__screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    border-radius: calc(var(--phone-radius) - var(--phone-bezel));
+  }
+
+  .mockup__screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--screen-reflection);
+    pointer-events: none;
+  }
+
+  .mockup__island {
+    position: absolute;
+    top: var(--phone-island-top);
+    left: 50%;
+    z-index: var(--z-raised);
+    width: var(--phone-island-w);
+    height: var(--phone-island-h);
+    background: var(--phone-island);
+    border-radius: var(--r-pill);
+    translate: -50% 0;
+  }
+
+  .mockup__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--bg);
+  }
+
+  /* ---------- Readout: a terminal without screenshots shows the project's numbers ---------- */
+  .mockup__readout {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-content: center;
+    gap: var(--space-3) var(--space-4);
+    height: 100%;
+    padding: var(--space-5);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    line-height: var(--lh-snug);
+  }
+
+  .mockup__readout-mark {
+    font-weight: var(--fw-medium);
+    color: var(--t1);
+    text-align: right;
+  }
+
+  .mockup__readout-text {
+    color: var(--t3);
+  }
+
+  /* ---------- Showcase (full-stack): browser with the phone version in front ---------- */
+  .mockup--showcase > .mockup,
+  .mockup--showcase > .mockup__device {
+    grid-area: 1 / 1;
+  }
+
+  /* On phones the device in front would be a thumbnail squeezed against the card edge: the card
+     shows the browser alone, like every other card. The phone version stays in the modal. */
+  .mockup--showcase > .mockup__device {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .mockup--showcase > .mockup {
+      place-self: start;
+      width: calc(100% - var(--showcase-inset-x));
+      height: calc(100% - var(--showcase-inset-y));
+    }
+
+    .mockup--showcase > .mockup__device {
+      display: block;
+      place-self: end;
+      height: var(--showcase-phone-h);
+    }
+
+    /* The phone covers the right side of the browser: keep the start of the screen visible */
+    .mockup--showcase .mockup--browser .mockup__image {
+      object-position: top left;
+    }
+  }
+
+  /* ---------- Code: a VS Code Dark+ editor screen ---------- */
+  /*
+   * Code is the one place where colour touches text (José's choice). Projects never show their
+   * source: the only code on the site is the COBOL panel's greeting program.
+   */
+  .code {
+    height: 100%;
+    margin: 0;
+    padding: var(--space-4);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--fs-code);
+    line-height: var(--lh-relaxed);
+    color: var(--code-fg);
+    white-space: pre;
+    tab-size: 2;
+    background: var(--code-bg);
+  }
+
+  .code:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1);
+  }
+
+  /* Line numbers: a column beside the code that stays put when the code scrolls sideways */
+  .code--numbered {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-4);
+    padding-inline-start: 0;
+  }
+
+  .code__gutter {
+    position: sticky;
+    left: 0;
+    padding-inline: var(--space-4) 0;
+    color: var(--code-gutter);
+    text-align: right;
+    user-select: none;
+    background: var(--code-bg);
+  }
+
+  .code__token--keyword {
+    color: var(--code-keyword);
+  }
+
+  .code__token--control {
+    color: var(--code-control);
+  }
+
+  .code__token--string {
+    color: var(--code-string);
+  }
+
+  .code__token--number {
+    color: var(--code-number);
+  }
+
+  .code__token--comment {
+    color: var(--code-comment);
+  }
+
+  .code__token--type {
+    color: var(--code-type);
+  }
+
+  .code__token--function,
+  .code__token--annotation {
+    color: var(--code-function);
+  }
+
+  .code__token--variable {
+    color: var(--code-variable);
+  }
+
+  /* ============================== Carousel ============================== */
+  .carousel {
+    position: relative;
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .carousel__viewport {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel__viewport:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1);
+  }
+
+  .carousel__slide {
+    flex: 0 0 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .carousel__controls {
+    position: absolute;
+    inset: auto 0 var(--space-3);
+    z-index: var(--z-front);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    pointer-events: none;
+  }
+
+  .carousel__button {
+    display: grid;
+    place-items: center;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    color: var(--t1);
+    background: var(--control-scrim);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
+    pointer-events: auto;
+    transition: border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .carousel__status {
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2xs);
+    color: var(--t1);
+    background: var(--control-scrim);
+    border-radius: var(--r-pill);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .carousel__button:hover {
+      border-color: var(--glass-line-hi);
+    }
+  }
+
+  /* Phone: controls on both sides of the device; the status stays for screen readers only */
+  .mockup--phone .carousel__controls {
+    inset: 50% 0 auto;
+    justify-content: space-between;
+    padding-inline: var(--space-1);
+    translate: 0 -50%;
+  }
+
+  .mockup--phone .carousel__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ============================== Tabs ============================== */
+  /* modules/tabs.js — the selected tab is solid white with dark text (state never by colour) */
+  .tabs {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .tabs__list {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2); /* room for the focus ring inside the scroll container */
+    margin: calc(var(--space-2) * -1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs__tab {
+    flex-shrink: 0;
+    min-height: var(--tap-min);
+    padding-inline: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t3);
+    white-space: nowrap;
+    background: transparent;
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition:
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .tabs__tab[aria-selected='true'] {
+    color: var(--ink);
+    background: var(--t1);
+    border-color: var(--t1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tabs__tab:hover:not([aria-selected='true']) {
+      color: var(--t1);
+    }
+  }
+
+  .tabs__panel[hidden] {
+    display: none;
+  }
+
+  /* ============================== Modal ============================== */
+  .modal {
+    width: min(100% - var(--space-gutter) * 2, var(--modal-max));
+    max-width: 100%;
+    max-height: calc(100dvh - var(--space-5) * 2);
+    margin: auto;
+    padding: 0;
+    overflow: visible;
+    color: var(--t1);
+    background: transparent;
+  }
+
+  /* The page behind goes out of focus (surface 1 of 2 while the modal is open) */
+  .modal::backdrop {
+    background: var(--modal-scrim);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  }
+
+  /* Glass panel (surface 2): darker than the other glass, it carries long reading */
+  .modal__panel {
+    position: relative;
+    max-height: inherit;
+    overflow: hidden;
+    background: var(--modal-glass);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-xl);
+    box-shadow: var(--edge), var(--lift);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .modal::backdrop {
+      background: var(--modal-scrim-solid);
+    }
+
+    .modal__panel {
+      background: var(--glass-fallback);
+    }
+  }
+
+  .modal[open] .modal__panel {
+    animation: modal-in var(--dur-slow) var(--ease-out-expo) both;
+  }
+
+  .modal__scroll {
+    max-height: calc(100dvh - var(--space-5) * 2);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Circular close button, aligned with the case study's top bar */
+  .modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: var(--z-front);
+  }
+
+  /* ============================== Icon-only link ============================== */
+  .icon-link {
+    display: grid;
+    place-items: center;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    color: var(--t2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    transition:
+      color var(--dur-hover) var(--ease-out-quart),
+      background-color var(--dur-hover) var(--ease-out-quart),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .icon-link .icon {
+    --icon-size: var(--icon-scale);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .icon-link:hover {
+      color: var(--t1);
+      background-color: var(--glass-strong);
+      border-color: var(--glass-line-hi);
+    }
+  }
+
+  /* ============================== Empty state ============================== */
+  /* Shared by the data-driven lists (education, certificates). Relief: it rests on the page. */
+  .empty-state {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    font-size: var(--fs-md);
+    color: var(--t2);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
+  }
+
+  .empty-state__icon {
+    --icon-size: var(--fs-2xl);
+
+    color: var(--t3);
+  }
+
+  /* ============================== Toast ============================== */
+  /*
+   * Live region (role="status" in the HTML): always present, announces whatever is put in it.
+   */
+  .toast-region {
+    position: fixed;
+    bottom: calc(var(--toast-offset) + env(safe-area-inset-bottom, 0));
+    left: var(--space-gutter);
+    z-index: var(--z-toast);
+    width: min(var(--toast-max), calc(100% - var(--space-gutter) * 2));
+    pointer-events: none;
+  }
+
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t1);
+    background: linear-gradient(var(--glass), var(--glass)), var(--glass-scrim);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge), var(--lift);
+    opacity: 0;
+    translate: 0 var(--space-4);
+    transition:
+      opacity var(--dur-base) var(--ease-out-quart),
+      translate var(--dur-base) var(--ease-out-expo);
+  }
+
+  .toast.is-visible {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .toast .icon {
+    --icon-size: var(--icon-scale);
+  }
+
+  /* Success and error differ by icon and text, never by colour */
+  .toast .icon {
+    color: var(--t1);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .toast {
+      background: var(--glass-fallback);
+    }
+  }
+}

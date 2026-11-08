@@ -1,0 +1,116 @@
+/*
+ * COBOL panel (#projetos-cobol): the mainframe flavour lives in the type, not in colour.
+ * ISPF/3270 panel rows, the PF-key footer and a terminal with the .CBL program, all monospace,
+ * white on black, with no monitor effects and no colour.
+ */
+@layer sections {
+  /* ---------- ISPF / 3270 panel ---------- */
+  .ispf,
+  .ispf__footer {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .ispf {
+    display: grid;
+    gap: var(--space-2);
+    padding-block-end: var(--space-3);
+    border-bottom: var(--border-thin) dashed var(--hairline);
+  }
+
+  .ispf__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .ispf__row:first-child {
+    color: var(--t2);
+  }
+
+  .ispf__input {
+    flex: 1;
+    min-width: var(--space-8);
+    height: 1em;
+    border-bottom: var(--border-thin) solid var(--glass-line);
+  }
+
+  .ispf__footer {
+    padding-block-start: var(--space-3);
+    border-top: var(--border-thin) dashed var(--hairline);
+  }
+
+  /* ---------- The .CBL program in a VS Code Dark+ editor screen ---------- */
+  .cobol-terminal {
+    overflow: hidden;
+    background: var(--code-bg);
+    border: var(--border-thin) solid var(--code-line);
+    border-radius: var(--r-md);
+    box-shadow: var(--edge);
+  }
+
+  /* Tab strip: the ISPF "EDIT" label is the active tab, the column ruler sits at the right */
+  .cobol-terminal__bar {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--code-tab-h);
+    padding-inline-end: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--code-gutter);
+    background: var(--code-chrome);
+  }
+
+  .cobol-terminal__bar span {
+    display: flex;
+    align-items: center;
+  }
+
+  .cobol-terminal__bar span:first-child {
+    padding-inline: var(--space-5);
+    color: var(--code-tab-fg);
+    background: var(--code-bg);
+  }
+
+  /* The column ruler is dropped on phones so the bar stays on one line */
+  .cobol-terminal__bar span + span {
+    display: none;
+  }
+
+  @media (min-width: 480px) {
+    .cobol-terminal__bar span + span {
+      display: flex;
+    }
+  }
+
+  /* Columns matter in COBOL: the program keeps its layout and scrolls inside its own box */
+  .cobol-terminal__code {
+    margin: 0;
+    padding: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-cobol-code);
+    line-height: var(--lh-relaxed);
+    white-space: pre;
+    color: var(--code-fg);
+  }
+
+  /* With the gutter (added by modules/static-code.js) the numbers take the left padding */
+  .cobol-terminal__code.code--numbered {
+    padding-inline-start: 0;
+  }
+
+  .cobol-terminal__code code {
+    font: inherit;
+  }
+}

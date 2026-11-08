@@ -1,0 +1,84 @@
+/*
+ * About (#sobre): two columns from 768px, portrait 4:5 on the left and the bio with the chips on
+ * the right. Stacked on phones with the text first (the hero already opens with the portrait).
+ */
+@layer sections {
+  .about__inner {
+    display: grid;
+    align-items: start;
+    gap: var(--space-stack);
+  }
+
+  /* ---------- Portrait: framed like the hero's, cropped tighter ---------- */
+  .about__media {
+    position: relative;
+    order: 1;
+    justify-self: center;
+    width: min(100%, var(--about-photo-max));
+    aspect-ratio: var(--hero-photo-ratio);
+    overflow: hidden;
+    background: var(--bg-2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--hero-photo-shadow);
+  }
+
+  /* Light edge over the picture */
+  .about__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--edge);
+    pointer-events: none;
+  }
+
+  /* Same photo as the hero, but a closer crop so the second portrait never repeats the first */
+  .about__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--about-photo-focus);
+    scale: var(--about-photo-zoom);
+    transform-origin: var(--about-photo-focus);
+  }
+
+  /* ---------- Text ---------- */
+  .about__content {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .about__content .section__header {
+    margin-block-end: 0;
+  }
+
+  /* One <p> per paragraph: the bio can be a single string or a list in config.js */
+  .about__bio {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure);
+    font-size: var(--fs-md);
+    line-height: var(--lh-normal);
+    color: var(--t2);
+  }
+
+  @media (min-width: 768px) {
+    .about__inner {
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: var(--space-7);
+    }
+
+    .about__media {
+      order: 0;
+      justify-self: stretch;
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about__inner {
+      gap: var(--space-9);
+    }
+  }
+}

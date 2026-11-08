@@ -1,0 +1,150 @@
+/*
+ * Contact (#contato): one glass panel with the headline and one clickable row per channel.
+ * The whole row is the link (its ::after covers the row); the e-mail row's copy button sits
+ * above that area, so copying never opens the mail client. Rows without a URL are removed by
+ * config-bindings.js.
+ */
+@layer sections {
+  .contact {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip; /* the light bleeds sideways on purpose; it must never widen the page */
+  }
+
+  /* Faint light behind the panel, so its glass has something to blur */
+  .contact::before {
+    content: '';
+    position: absolute;
+    inset: var(--contact-bloom-inset);
+    z-index: var(--z-below);
+    background: var(--contact-bloom);
+    pointer-events: none;
+  }
+
+  .contact__panel {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--hero-panel-pad);
+    border-radius: var(--r-xl);
+  }
+
+  .contact__header {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .contact__title {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
+  }
+
+  /* ============================== Rows ============================== */
+  .contact-list {
+    display: grid;
+    list-style: none;
+  }
+
+  .contact-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    border-bottom: var(--border-thin) solid var(--hairline);
+  }
+
+  .contact-row:last-child {
+    border-bottom: 0;
+  }
+
+  .contact-row__link {
+    display: grid;
+    flex: 1;
+    gap: var(--space-1);
+    min-width: 0;
+    min-height: var(--tap-min);
+    padding-block: var(--space-4);
+    color: var(--t1);
+    text-decoration: none;
+  }
+
+  .contact-row__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-content);
+  }
+
+  /* The ring goes on the whole row, like the cards */
+  .contact-row__link:focus-visible {
+    outline: none;
+  }
+
+  .contact-row:has(.contact-row__link:focus-visible) {
+    outline: var(--focus-width) solid var(--focus-ring);
+    outline-offset: var(--focus-offset);
+    border-radius: var(--r-sm);
+  }
+
+  @supports not selector(:has(*)) {
+    .contact-row__link:focus-visible {
+      outline: var(--focus-width) solid var(--focus-ring);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  .contact-row__label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* A long e-mail must never push the panel wider than the screen */
+  .contact-row__value {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--fs-md);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .contact-row__go {
+    --icon-size: var(--icon-scale);
+
+    flex-shrink: 0;
+    margin-inline-end: var(--space-3);
+    color: var(--t3);
+    transition: translate var(--dur-hover) var(--ease-out-expo);
+  }
+
+  /* Copy button: above the row's click area */
+  .contact-row__action {
+    position: relative;
+    z-index: var(--z-front);
+    flex-shrink: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contact-row:hover .contact-row__value {
+      color: var(--t2);
+    }
+
+    .contact-row:hover .contact-row__go {
+      color: var(--t1);
+      translate: var(--space-1) calc(var(--space-1) * -1);
+    }
+  }
+
+  /* Label beside the value from 768px */
+  @media (min-width: 768px) {
+    .contact-row__link {
+      grid-template-columns: var(--contact-label-w) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-5);
+    }
+  }
+}

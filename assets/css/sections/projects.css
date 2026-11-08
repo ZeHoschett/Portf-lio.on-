@@ -1,0 +1,442 @@
+/*
+ * Projects (#projetos): one area with tabs that filter in place (modules/projects-tabs.js), the
+ * four stack panels, the project grid, empty states and the project detail shown in the modal.
+ * The light behind the area follows the selected stack through data-stack → --stack-bloom.
+ */
+@layer sections {
+  .projects {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--space-section);
+    overflow-x: clip; /* the light bleeds sideways on purpose; it must never widen the page */
+  }
+
+  /* The selected stack's light, out of focus at the top of the area */
+  .projects::before {
+    content: '';
+    position: absolute;
+    inset: var(--projects-bloom-inset);
+    z-index: var(--z-below);
+    background: radial-gradient(
+      var(--projects-bloom-shape),
+      rgba(var(--stack-bloom), var(--projects-bloom-alpha)),
+      transparent var(--projects-bloom-fade)
+    );
+    pointer-events: none;
+  }
+
+  .projects__inner {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* `contents`: the tab bar must be a child of the whole area, or `sticky` would stop at the
+     end of this short wrapper */
+  .projects__head {
+    display: contents;
+  }
+
+  .projects__head .section__header {
+    margin-block-end: 0;
+  }
+
+  /* ============================== Tabs (glass, sticky) ============================== */
+  /* Glass: the tab bar stays over the cards while they scroll underneath */
+  .projects-tabs {
+    position: sticky;
+    top: calc(var(--header-h) + env(safe-area-inset-top, 0) + var(--space-3));
+    z-index: var(--z-sticky);
+    display: flex;
+    gap: var(--space-1);
+    justify-self: start;
+    max-width: 100%;
+    padding: var(--space-1);
+    overflow-x: auto;
+    background: linear-gradient(var(--glass), var(--glass)), var(--glass-scrim-bar);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--edge);
+    scrollbar-width: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .projects-tabs {
+      background: var(--glass-fallback);
+    }
+  }
+
+  .projects-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Inside the pill the tabs need no outline of their own; the selected one is solid white */
+  .projects-tabs__tab:not([aria-selected='true']) {
+    border-color: transparent;
+  }
+
+  .projects-tabs__tab:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1 - var(--space-px));
+  }
+
+  /* ============================== Stack panels ============================== */
+  .project-stack {
+    display: grid;
+    gap: var(--space-stack);
+    /* A link to #projetos-<stack> lands below the header and the sticky tab bar */
+    scroll-margin-top: calc(var(--header-h) + var(--tabs-h) + var(--space-5));
+  }
+
+  .project-stack[hidden] {
+    display: none;
+  }
+
+  .project-stack__header {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--container-narrow);
+  }
+
+  .project-stack__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .project-stack__title {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
+  }
+
+  .project-stack__lead {
+    font-size: var(--fs-md);
+    color: var(--t2);
+  }
+
+  /* ============================== Grid ============================== */
+  /* dense: a featured card that does not fit beside another one never leaves an empty cell */
+  .project-grid {
+    display: grid;
+    grid-auto-flow: dense;
+    gap: var(--space-4);
+    list-style: none;
+  }
+
+  .project-grid__item {
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-grid__item--featured {
+      grid-column: span 2;
+    }
+
+    /* Recommendation of a project from another tab: closes the grid on its own row */
+    .project-grid__item--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .project-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* ============================== Empty states (relief) ============================== */
+  .project-empty {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    font-size: var(--fs-md);
+    color: var(--t2);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
+  }
+
+  .project-empty__icon {
+    --icon-size: var(--fs-2xl);
+
+    color: var(--t3);
+  }
+
+  /* COBOL: a terminal message, white on black, with a static block cursor */
+  .project-empty--terminal {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    background: var(--bg-2);
+    border-color: var(--hairline);
+    box-shadow: var(--edge);
+  }
+
+  .project-empty__cursor {
+    flex-shrink: 0;
+    width: 0.6em;
+    height: 1.1em;
+    background: currentColor;
+  }
+
+  /* ============================== Project detail (inside the modal) ============================== */
+  /* Case study on the glass panel. Every block renders only when its field exists in the data. */
+  .project-detail {
+    display: grid;
+  }
+
+  /* ---------- Top bar: stack, type and year; the close button (modal.js) sits at its right ---------- */
+  .project-detail__bar {
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--tap-min) + var(--space-4) * 2);
+    padding: var(--space-4) calc(var(--tap-min) + var(--space-6)) var(--space-4) var(--space-5);
+  }
+
+  .project-detail__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* ---------- Media ---------- */
+  .project-detail__media {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    /* Explicit width: with width:auto the max-height would be transferred through the
+       aspect-ratio and shrink the box horizontally */
+    width: calc(100% - var(--space-5) * 2);
+    aspect-ratio: var(--modal-media-ratio);
+    max-height: var(--detail-media-max-h); /* keep the title in view on short screens */
+    margin-inline: auto;
+  }
+
+  /* ---------- Two columns: main reading + supporting column ---------- */
+  .project-detail__body {
+    display: grid;
+    gap: var(--space-7);
+    padding: var(--space-6) var(--space-5) var(--space-7);
+  }
+
+  .project-detail__main {
+    display: grid;
+    align-content: start;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .project-detail__header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .project-detail__title {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-h2);
+  }
+
+  .project-detail__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* Measured numbers: the value reads first, the label (dt) stays first in the DOM */
+  .project-detail__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-6);
+    padding-block: var(--space-4);
+    border-block: var(--border-thin) solid var(--hairline);
+  }
+
+  .project-detail__stat {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: var(--space-1);
+  }
+
+  .project-detail__stat dd {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .project-detail__stat dt {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .project-detail__prose {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-detail__description {
+    max-width: var(--measure);
+    color: var(--t2);
+  }
+
+  .project-detail__section {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .project-detail__section-title {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .project-detail__highlights {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .project-detail__highlights li {
+    position: relative;
+    padding-inline-start: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--t2);
+  }
+
+  .project-detail__highlights li::before {
+    content: '';
+    position: absolute;
+    top: calc(1lh / 2);
+    left: var(--space-1);
+    width: var(--detail-marker);
+    height: var(--detail-marker);
+    background: var(--t3);
+    border-radius: var(--r-pill);
+    translate: 0 -50%;
+  }
+
+  /* Architecture and challenges: hairline-divided rows, the name in white, the text in t2 */
+  .project-detail__architecture,
+  .project-detail__challenges {
+    display: grid;
+  }
+
+  .project-detail__layer,
+  .project-detail__challenge {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-3);
+    font-size: var(--fs-sm);
+    border-bottom: var(--border-thin) solid var(--hairline);
+  }
+
+  .project-detail__layer:last-child,
+  .project-detail__challenge:last-child {
+    border-bottom: 0;
+  }
+
+  .project-detail__layer dt,
+  .project-detail__challenge dt {
+    font-weight: var(--fw-semibold);
+    color: var(--t1);
+  }
+
+  .project-detail__layer dd,
+  .project-detail__challenge dd {
+    color: var(--t2);
+  }
+
+  /* ---------- Supporting column ---------- */
+  .project-detail__aside {
+    display: grid;
+    align-content: start;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .project-detail__links {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .project-detail__links .btn {
+    justify-content: flex-start;
+  }
+
+  .project-detail__phone {
+    height: var(--detail-phone-h);
+  }
+
+  /* ---------- Full width: videos ---------- */
+  .project-detail__videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--detail-video-min)), 1fr));
+    gap: var(--space-6);
+    list-style: none;
+  }
+
+  .project-detail__video {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+  }
+
+  .project-detail__video .mockup {
+    height: var(--detail-video-h);
+  }
+
+  .project-detail__video-caption {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t2);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .project-detail__bar {
+      padding-inline-start: var(--space-7);
+    }
+
+    .project-detail__media {
+      width: calc(100% - var(--space-7) * 2);
+    }
+
+    .project-detail__body {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+      column-gap: var(--space-8);
+      padding: var(--space-7);
+    }
+
+    .project-detail__section--wide {
+      grid-column: 1 / -1;
+    }
+  }
+}

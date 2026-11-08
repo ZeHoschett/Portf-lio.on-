@@ -1,0 +1,12 @@
+# Keep LF line endings in the repo and working tree on every OS (matches .editorconfig)
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.pdf binary
+*.mp4 binary
+*.woff2 binary
+*.docx binary

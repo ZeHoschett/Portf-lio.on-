@@ -1,0 +1,349 @@
+/*
+ * Design tokens — the only place where raw values live.
+ * Breakpoints (media queries cannot read custom properties):
+ *   sm 480px · md 768px · lg 1024px · xl 1280px · 2xl 1536px
+ *
+ * Glass system: the interface is black and white. Colour exists only out of focus, as the
+ * bloom behind the glass, and never touches text, borders, icons, buttons or states.
+ */
+@layer tokens {
+  :root {
+    color-scheme: dark;
+
+    /* ---------- Floor ---------- */
+    --bg: #050506;
+    --bg-2: #0a0a0c;
+    --ink: #0a0a0c; /* text on white fills */
+
+    /* ---------- Glass ---------- */
+    --glass: rgba(255, 255, 255, 0.045);
+    --glass-strong: rgba(255, 255, 255, 0.075);
+    --glass-line: rgba(255, 255, 255, 0.12);
+    --glass-line-hi: rgba(255, 255, 255, 0.22);
+    --glass-blur: 28px;
+    /* Dark film under the glass: keeps --t3 small text at AA over the brightest light (measured
+       on real pixels). Panels need a little; bars that pass over photos and white buttons more. */
+    --glass-scrim: rgba(5, 5, 6, 0.3);
+    --glass-scrim-bar: rgba(5, 5, 6, 0.55);
+    --glass-saturation: 150%;
+    --glass-fallback: rgba(18, 18, 22, 0.88); /* no backdrop-filter support */
+
+    /* ---------- Relief & solid surfaces ---------- */
+    --relief-bg: linear-gradient(145deg, #0e0e12 0%, #08080a 100%);
+    --relief-line: rgba(255, 255, 255, 0.05);
+    --solid-bg: rgba(16, 16, 19, 0.86);
+    --solid-line: rgba(255, 255, 255, 0.08);
+    --hairline: rgba(255, 255, 255, 0.07); /* dividers inside surfaces */
+    --tag-line: rgba(255, 255, 255, 0.14);
+    --mockup-bg: rgba(12, 12, 15, 0.9);
+    --mockup-line: rgba(255, 255, 255, 0.1);
+    --mockup-dot-color: rgba(255, 255, 255, 0.22);
+    --btn-primary-hover: #e9e9ec;
+    --hover-lift: -2px;
+
+    /* ---------- Text (contrast on --bg) ---------- */
+    --t1: #ffffff;
+    --t2: rgba(255, 255, 255, 0.72); /* 9.4:1 */
+    --t3: rgba(255, 255, 255, 0.55); /* 6.5:1, floor for small text */
+    --t4: rgba(255, 255, 255, 0.26); /* large decorative type only */
+
+    /* ---------- Radii ---------- */
+    --r-xs: 0.375rem; /* tiny details, e.g. the phone mockup's side buttons */
+    --r-sm: 12px;
+    --r-md: 18px;
+    --r-lg: 28px;
+    --r-xl: 36px;
+    --r-pill: 999px;
+
+    /* ---------- Edges, elevation, relief ---------- */
+    --edge: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+    --lift: 0 32px 80px -28px rgba(0, 0, 0, 0.95);
+    --relief: 10px 10px 24px rgba(0, 0, 0, 0.55), -8px -8px 22px rgba(255, 255, 255, 0.028);
+    --relief-in: inset 6px 6px 14px rgba(0, 0, 0, 0.6), inset -6px -6px 14px rgba(255, 255, 255, 0.03);
+    --specular: rgba(255, 255, 255, 0.1);
+    --specular-size: 260px;
+
+    /* ---------- Bloom: bare RGB per stack, used ONLY inside background radial-gradients ---------- */
+    --bloom-java: 218, 150, 74;
+    --bloom-python: 72, 122, 200;
+    --bloom-cobol: 86, 176, 118;
+    --bloom-web: 138, 124, 214;
+    --bloom-neutro: 190, 198, 214;
+    --bloom-amount: 0.32;
+    --bloom-amount-mobile: 0.22; /* phones: the text sits right over the light */
+    --page-bloom:
+      radial-gradient(42% 38% at 22% 18%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 0.9)), transparent 70%),
+      radial-gradient(38% 34% at 78% 62%, rgba(var(--bloom-java), calc(var(--bloom-amount) * 0.7)), transparent 70%),
+      radial-gradient(50% 44% at 58% 96%, rgba(var(--bloom-neutro), calc(var(--bloom-amount) * 0.3)), transparent 72%);
+    --page-bloom-bleed: -25%; /* oversized so the fixed light never shows an edge */
+
+    /* ---------- Code editor (VS Code Dark+) ---------- */
+    /* The one place where colour touches text, by José's choice (2026-10-07): code reads as code.
+       Contrast on --code-bg, all AA for small text. */
+    --code-bg: #1e1e1e;
+    --code-chrome: #252526; /* tab strip */
+    --code-line: #3c3c3c; /* borders inside the editor */
+    --code-fg: #d4d4d4; /* 11.25:1 */
+    --code-tab-fg: #ffffff; /* active tab */
+    --code-gutter: #858585; /* line numbers, 4.52:1 */
+    --code-keyword: #569cd6; /* 5.65:1 */
+    --code-control: #c586c0; /* 5.99:1 */
+    --code-string: #ce9178; /* 6.31:1 */
+    --code-number: #b5cea8; /* 9.81:1 */
+    --code-comment: #6a9955; /* 5.00:1 */
+    --code-type: #4ec9b0; /* 8.18:1 */
+    --code-function: #dcdcaa; /* 11.80:1 */
+    --code-variable: #9cdcfe; /* 11.18:1 */
+    --code-tab-h: 2.25rem;
+
+    /* ---------- Focus ---------- */
+    --focus-ring: #ffffff;
+
+    /* ---------- Scrims ---------- */
+    --control-scrim: rgba(5, 5, 6, 0.6); /* controls laid over media (carousel) */
+    --modal-scrim-solid: rgba(5, 5, 6, 0.72); /* modal backdrop without backdrop-filter */
+
+    /* ---------- Typography ---------- */
+    --font-display: 'Inter Tight', 'Helvetica Neue', Arial, system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+
+    --fs-2xs: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
+    --fs-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+    --fs-sm: clamp(0.875rem, 0.84rem + 0.18vw, 0.9375rem);
+    --fs-base: 1rem; /* 16 */
+    --fs-md: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+    --fs-lg: clamp(1.25rem, 1.12rem + 0.6vw, 1.5rem);
+    --fs-xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+    --fs-2xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+    --fs-3xl: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+    --fs-display: clamp(3rem, 1.2rem + 8vw, 6.5rem); /* up to 104 */
+
+    /* Glass type scale */
+    --fs-h2: clamp(2rem, 1.35rem + 2.9vw, 3.5rem); /* up to 56 */
+    --fs-h3: 1.75rem; /* 28 */
+    --fs-h4: 1.0625rem; /* 17 */
+    --fs-label: clamp(0.625rem, 0.6rem + 0.12vw, 0.6875rem); /* 10 to 11, mono uppercase */
+    --fs-code: clamp(0.625rem, 0.58rem + 0.25vw, 0.71875rem); /* 10 to 11.5 */
+    --lh-display: 0.92;
+    --ls-display: -0.05em;
+    --ls-h2: -0.035em;
+    --ls-label: 0.18em;
+    --ls-tag: 0.1em;
+
+    --lh-none: 0.9;
+    --lh-tight: 1.05;
+    --lh-snug: 1.2;
+    --lh-normal: 1.6;
+    --lh-relaxed: 1.75;
+
+    --ls-tighter: -0.05em;
+    --ls-tight: -0.03em;
+    --ls-snug: -0.015em;
+    --ls-normal: 0;
+    --ls-wide: 0.08em;
+    --ls-wider: 0.2em;
+
+    --measure: 65ch;
+    --measure-narrow: 45ch;
+
+    /* ---------- Spacing (4/8 scale) ---------- */
+    --space-px: 1px;
+    --space-1: 0.25rem; /* 4 */
+    --space-2: 0.5rem; /* 8 */
+    --space-3: 0.75rem; /* 12 */
+    --space-4: 1rem; /* 16 */
+    --space-5: 1.5rem; /* 24 */
+    --space-6: 2rem; /* 32 */
+    --space-7: 3rem; /* 48 */
+    --space-8: 4rem; /* 64 */
+    --space-9: 6rem; /* 96 */
+
+    --space-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+    --space-section: clamp(5rem, 3rem + 8vw, 10rem);
+    --space-stack: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+
+    /* ---------- Layout ---------- */
+    --container-max: 80rem; /* 1280 */
+    --container-wide: 96rem; /* 1536 */
+    --container-narrow: 48rem; /* 768 */
+    --header-h: 4.5rem;
+    --tabs-h: 3.5rem;
+    --tap-min: 2.75rem; /* 44px touch target */
+    --eyebrow-line: 2rem;
+    --progress-h: 2px;
+    --toggle-line-w: 1.125rem;
+    --menu-bg: rgba(5, 5, 6, 0.62); /* mobile overlay tint over the blur */
+    --nav-pill-bg: rgba(255, 255, 255, 0.08);
+    --nav-pill-inset: 0.375rem; /* active pill is 32px tall inside the 44px hit area */
+    --nav-link-pad: var(--space-2); /* desktop bar, 1024 to 1279px */
+    --fs-nav: var(--fs-xs);
+    --toggle-icon-h: 0.5rem;
+    --icon-scale: 1.125em;
+
+    /* ---------- Hero ---------- */
+    --hero-panel-pad: clamp(1.375rem, 0.9rem + 2.4vw, 2.375rem); /* 22 to 38 */
+    --hero-meta-gap: clamp(2.25rem, 1.4rem + 4vw, 4rem); /* the large interval under the corners */
+    --hero-panel-min-h: calc(100svh - var(--header-h) - var(--space-5) - var(--space-6));
+    --hero-first-scale: 0.42em; /* "José" relative to "Hoschett" */
+    --hero-photo-max: 22rem;
+    --hero-photo-ratio: 4 / 5;
+    --hero-photo-shadow: 0 24px 60px -30px #000000;
+    --hero-bloom-bleed: -10% -20%;
+    /* The strongest light of the page: it sits behind the hero's glass panel */
+    --hero-bloom:
+      radial-gradient(36% 42% at 24% 18%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 1.05)), transparent 70%),
+      radial-gradient(32% 36% at 80% 82%, rgba(var(--bloom-java), calc(var(--bloom-amount) * 0.7)), transparent 70%);
+    --photo-img-scale: 1.06;
+    --rise-scale: 1.04;
+    --char-rise: 0.35em;
+    --char-rotate: 6deg;
+    --hero-delay: 150ms;
+    --char-stagger: 35ms;
+    --hero-meta-delay: 550ms;
+
+    /* ---------- About ---------- */
+    --about-photo-max: 26rem;
+    --about-photo-zoom: 1.18; /* closer crop than the hero */
+    --about-photo-focus: 50% 28%; /* keeps the face in frame while zoomed */
+
+    /* ---------- Stack: marquee, chips, tags ---------- */
+    --fs-marquee: clamp(2.5rem, 1.4rem + 5vw, 7rem);
+    --marquee-gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+    --marquee-mask: linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    --marquee-ink: rgba(255, 255, 255, 0.36); /* decorative, but kept at 3:1 (large text) on --bg */
+    --marquee-ink-faint: rgba(255, 255, 255, 0.12);
+    --marquee-duration-default: 40s;
+
+    /* ---------- Reveal ---------- */
+    --reveal-distance: 1rem; /* 16px rise, no blur: blur plus backdrop-filter smears and stutters */
+
+    /* ---------- Projects: cards, mockups, code, modal ---------- */
+    --card-media-ratio: 16 / 11;
+    --card-image-zoom: 1.04;
+    --mockup-dot: 0.5rem;
+    --phone-ratio: 9 / 19.5;
+    --phone-bezel: 0.4rem;
+    --phone-radius: 1.6rem;
+    --phone-frame: linear-gradient(145deg, #2b2b3a 0%, #0d0d13 100%);
+    --phone-button: #23232f;
+    --phone-button-w: 0.2rem;
+    --phone-island: #000000;
+    --phone-island-w: 34%;
+    --phone-island-h: 0.8rem;
+    --phone-island-top: 0.45rem;
+    --screen-reflection: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, transparent 38%);
+    --modal-max: 64rem;
+    --modal-glass: rgba(14, 14, 18, 0.78); /* glass dark enough for long reading */
+    --modal-scrim: rgba(5, 5, 6, 0.5);
+    --detail-media-max-h: 60dvh;
+    --detail-marker: 0.3125rem; /* highlight bullet */
+    --modal-media-ratio: 16 / 9;
+    --modal-enter-scale: 0.97;
+    /* Full-stack cover: the browser leaves room at the bottom-right for the phone in front */
+    --showcase-inset-x: 14%;
+    --showcase-inset-y: 10%;
+    --showcase-phone-h: 72%;
+    /* Case-study modal */
+    --detail-phone-h: 32rem;
+    --detail-video-min: 12rem;
+    --detail-video-h: 28rem;
+
+    /* ---------- Projects area ---------- */
+    /* The selected stack's light at the top of the area. Only the parts that do not depend on
+       the stack live here: a var(--stack-bloom) inside a :root token would be resolved at :root,
+       where no stack is set, and the whole gradient would silently drop. */
+    --projects-bloom-shape: 52% 60% at 50% 0%;
+    --projects-bloom-alpha: calc(var(--bloom-amount) * 0.95);
+    --projects-bloom-fade: 72%;
+    --projects-bloom-inset: -6% -14% 35%;
+    --fs-cobol-code: clamp(0.75rem, 0.62rem + 0.6vw, 1.0625rem); /* the .CBL program, monospace */
+
+    /* ---------- Education timeline ---------- */
+    --timeline-gutter: 2.5rem; /* space reserved for the line and its marker */
+    --timeline-marker: 1rem;
+    --timeline-marker-top: 2.3rem; /* aligns the marker with the card's first line (period + status pill) */
+    --timeline-ring: 4px;
+
+    /* ---------- Certificates rail ---------- */
+    --rail-gap: var(--space-4);
+    --rail-visible: 1; /* whole cards per view on phones, then md / lg / xl */
+    --rail-visible-md: 2;
+    --rail-visible-lg: 3;
+    --rail-visible-xl: 4;
+    --rail-peek: 0.5; /* plus half a card, always cut at the right edge */
+    --rail-fade: linear-gradient(90deg, #000000 82%, transparent 100%);
+    --cert-ratio: 1.4 / 1;
+    --lightbox-image-max-h: 70dvh;
+
+    /* ---------- Contact ---------- */
+    --contact-label-w: 8.5rem;
+    --contact-bloom-inset: -10% -20%;
+    --contact-bloom:
+      radial-gradient(40% 50% at 18% 30%, rgba(var(--bloom-python), calc(var(--bloom-amount) * 0.55)), transparent 70%),
+      radial-gradient(36% 46% at 86% 78%, rgba(var(--bloom-neutro), calc(var(--bloom-amount) * 0.35)), transparent 70%);
+
+    /* ---------- Toast ---------- */
+    --toast-max: 24rem;
+    --toast-offset: var(--space-5);
+
+
+    /* ---------- Borders ---------- */
+    --border-thin: 1px;
+    --border-thick: 2px;
+
+    /* ---------- Shadows ---------- */
+    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+
+    /* ---------- Focus ---------- */
+    --focus-width: 2px;
+    --focus-offset: 3px;
+
+    /* ---------- Effects ---------- */
+    --opacity-disabled: 0.5;
+    --press-scale: 0.985;
+    --grain-opacity: 0.05;
+    --grain-size: 200px;
+    /* The same noise at 5% baked into the image: used as a background layer on top of the glass,
+       where the backdrop blur has smoothed the page grain away and the light would band */
+    --texture-grain-glass: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+    --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    /* ---------- Z-index ---------- */
+    --z-below: -1;
+    --z-raised: 1;
+    --z-content: 2;
+    --z-front: 3;
+    --z-sticky: 100;
+    --z-header: 200;
+    --z-progress: 250;
+    --z-toast: 600;
+    --z-skip: 900;
+
+    /* ---------- Motion ---------- */
+    --dur-fast: 150ms;
+    --dur-hover: 180ms;
+    --dur-base: 300ms;
+    --dur-slow: 600ms;
+    --dur-slower: 900ms;
+    --dur-intro: 1100ms;
+
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --stagger-step: 60ms;
+  }
+
+  /* Below md the copy runs straight over the light: keep it dimmer */
+  @media (max-width: 767px) {
+    :root {
+      --bloom-amount: var(--bloom-amount-mobile);
+    }
+  }
+}

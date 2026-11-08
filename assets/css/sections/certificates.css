@@ -1,0 +1,287 @@
+/*
+ * Certificates (#certificados): a horizontal rail rendered from data/certificates.js and driven
+ * by modules/rail.js. The section height never grows with the count.
+ * Card width is derived from the viewport so that N cards and a half always show: the last one
+ * is cut at the right edge (with a fade), which is what tells people there is more to drag.
+ * Cards with an image open it enlarged in the shared modal (variant "lightbox"); the title is the
+ * single main control and its ::after covers the card.
+ */
+@layer sections {
+  /* ============================== Rail ============================== */
+  .rail {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .rail__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .rail__count {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .rail__nav {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  /*
+   * The scroller. `position: relative` makes it the offsetParent rail.js measures cards against;
+   * the padding leaves room for the cards' focus ring inside the clipped box.
+   */
+  .rail__viewport {
+    position: relative;
+    container-type: inline-size;
+    padding: var(--space-2);
+    margin: calc(var(--space-2) * -1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--space-2);
+    scrollbar-width: none;
+    -webkit-mask-image: var(--rail-fade);
+    mask-image: var(--rail-fade);
+  }
+
+  .rail__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* At the end there is nothing more to hint at: show the last card whole */
+  .rail.is-at-end .rail__viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .rail__viewport:focus-visible {
+    outline-offset: calc(var(--focus-width) * -1);
+    border-radius: var(--r-lg);
+  }
+
+  .rail__track {
+    display: flex;
+    gap: var(--rail-gap);
+    list-style: none;
+  }
+
+  /* N cards and a half per view, whatever the width */
+  .rail__item {
+    flex: 0 0
+      calc((100cqi - var(--space-2) * 2 - var(--rail-gap) * var(--rail-visible)) / (var(--rail-visible) + var(--rail-peek)));
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .rail__track > .empty-state {
+    flex: 1;
+  }
+
+  @media (min-width: 768px) {
+    .rail {
+      --rail-visible: var(--rail-visible-md);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rail {
+      --rail-visible: var(--rail-visible-lg);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .rail {
+      --rail-visible: var(--rail-visible-xl);
+    }
+  }
+
+  /* ============================== Card (solid) ============================== */
+  .cert-card {
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: var(--space-4);
+    height: 100%;
+    padding: var(--space-3);
+    overflow: hidden;
+    transition:
+      translate var(--dur-hover) var(--ease-out-expo),
+      border-color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  .cert-card__media {
+    display: grid;
+    place-items: center;
+    aspect-ratio: var(--cert-ratio);
+    overflow: hidden;
+    background: var(--bg-2);
+    border: var(--border-thin) solid var(--hairline);
+    border-radius: var(--r-md);
+  }
+
+  .cert-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: scale var(--dur-slow) var(--ease-out-expo);
+  }
+
+  /* No image: neutral award mark instead of a broken frame */
+  .cert-card__placeholder {
+    --icon-size: var(--fs-3xl);
+
+    color: var(--t4);
+  }
+
+  .cert-card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: 0 var(--space-1) var(--space-1);
+  }
+
+  .cert-card__name {
+    font-size: var(--fs-h4);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-snug);
+  }
+
+  .cert-card__trigger {
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    color: inherit;
+  }
+
+  .cert-card__trigger::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-content);
+  }
+
+  .cert-card__trigger:focus-visible {
+    outline: none;
+  }
+
+  .cert-card:has(.cert-card__trigger:focus-visible) {
+    outline: var(--focus-width) solid var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  @supports not selector(:has(*)) {
+    .cert-card__trigger:focus-visible {
+      outline: var(--focus-width) solid var(--focus-ring);
+      outline-offset: var(--focus-offset);
+    }
+  }
+
+  .cert-card__issuer,
+  .cert-card__date {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-tag);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .cert-card__text {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-block-start: var(--space-1);
+    font-size: var(--fs-sm);
+    color: var(--t2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  /* Above the stretched trigger */
+  .cert-card__link {
+    position: relative;
+    z-index: var(--z-front);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--t1);
+    text-decoration: none;
+    justify-self: start;
+    transition: color var(--dur-hover) var(--ease-out-quart);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cert-card:hover {
+      border-color: var(--glass-line-hi);
+    }
+
+    .cert-card:hover .cert-card__image {
+      scale: var(--card-image-zoom);
+    }
+
+    .cert-card__link:hover {
+      color: var(--t2);
+    }
+  }
+
+  /* ============================== Lightbox (inside the modal) ============================== */
+  .lightbox {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    /* The top band holds the close button, so it never sits on the certificate */
+    padding: calc(var(--tap-min) + var(--space-4) * 2) var(--space-5) var(--space-6);
+  }
+
+  .lightbox__image {
+    width: 100%;
+    max-height: var(--lightbox-image-max-h);
+    object-fit: contain;
+    background: var(--bg-2);
+    border: var(--border-thin) solid var(--hairline);
+    border-radius: var(--r-md);
+  }
+
+  .lightbox__caption {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .lightbox__title {
+    font-size: var(--fs-h3);
+    letter-spacing: var(--ls-h2);
+  }
+
+  .lightbox__text {
+    max-width: var(--measure-narrow);
+    font-size: var(--fs-sm);
+    color: var(--t2);
+  }
+
+  .lightbox__meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  @media (min-width: 768px) {
+    .lightbox {
+      padding-inline: var(--space-7);
+    }
+  }
+}

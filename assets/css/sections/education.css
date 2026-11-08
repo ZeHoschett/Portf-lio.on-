@@ -1,0 +1,104 @@
+/*
+ * Education (#formacao): vertical timeline rendered from data/education.js, in relief.
+ * Each item draws its own line segment (::before) and marker (::after), so the line ends with
+ * the last item and an empty list simply has no line at all.
+ */
+@layer sections {
+  .timeline {
+    display: grid;
+    gap: var(--space-5);
+    list-style: none;
+  }
+
+  .timeline__item {
+    position: relative;
+    padding-inline-start: var(--timeline-gutter);
+  }
+
+  /* Line segment: spans the item and continues into the gap towards the next one */
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    top: var(--timeline-marker-top);
+    left: calc((var(--timeline-marker) - var(--border-thin)) / 2);
+    width: var(--border-thin);
+    height: calc(100% - var(--timeline-marker-top) + var(--space-5));
+    background: var(--glass-line);
+  }
+
+  .timeline__item:last-child::before {
+    display: none;
+  }
+
+  /* Marker: a white dot with a faint ring */
+  .timeline__item::after {
+    content: '';
+    position: absolute;
+    top: var(--timeline-marker-top);
+    left: 0;
+    width: var(--timeline-marker);
+    height: var(--timeline-marker);
+    background: var(--t1);
+    border-radius: var(--r-pill);
+    box-shadow: 0 0 0 var(--timeline-ring) var(--glass-strong);
+    translate: 0 -50%;
+  }
+
+  .timeline__card {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--relief-bg);
+    border: var(--border-thin) solid var(--relief-line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--relief);
+  }
+
+  .timeline__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  /* Status reads by its text and outline, never by colour */
+  .timeline__status {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    letter-spacing: var(--ls-tag);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-pill);
+  }
+
+  .timeline__status[data-status='in-progress'] {
+    color: var(--t1);
+    border-color: var(--glass-line-hi);
+  }
+
+  .timeline__course {
+    font-size: var(--fs-lg);
+    letter-spacing: var(--ls-tight);
+  }
+
+  .timeline__institution {
+    font-weight: var(--fw-medium);
+    color: var(--t1);
+  }
+
+  .timeline__degree,
+  .timeline__description {
+    font-size: var(--fs-sm);
+    color: var(--t2);
+  }
+
+  .timeline__description {
+    max-width: var(--measure);
+  }
+}

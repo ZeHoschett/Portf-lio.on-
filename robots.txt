@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jose-hoschett-portfolio.onrender.com/sitemap.xml

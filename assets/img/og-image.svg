@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!--
+    Source of og-image.png (1200×630). To regenerate the PNG, open this file in a
+    browser at 1200×630 and take a screenshot (see README.md → "Imagem de compartilhamento").
+    Black and white, like the site: the light behind the glass panel is neutral here.
+    TODO(jose): quando houver foto/print, considere uma arte final com sua foto.
+  -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&amp;family=JetBrains+Mono:wght@500&amp;display=block');
+    .display { font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+    .mono { font-family: 'JetBrains Mono', Consolas, monospace; font-weight: 500; letter-spacing: .2em; }
+  </style>
+  <defs>
+    <radialGradient id="light-a" cx="0.24" cy="0.18" r="0.55">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="light-b" cx="0.82" cy="0.86" r="0.5">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".08"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#050506"/>
+  <rect width="1200" height="630" fill="url(#light-a)"/>
+  <rect width="1200" height="630" fill="url(#light-b)"/>
+  <!-- Glass panel with its light edge -->
+  <rect x="40" y="40" width="1120" height="550" rx="36" fill="#FFFFFF" fill-opacity=".045" stroke="url(#edge)" stroke-width="2"/>
+  <text x="96" y="112" class="mono" font-size="16" fill="#FFFFFF" fill-opacity=".55">PORTFÓLIO · 2026</text>
+  <text x="1104" y="112" class="mono" font-size="16" fill="#FFFFFF" fill-opacity=".55" text-anchor="end">COBOL · JAVA</text>
+  <text x="92" y="352" class="display" font-size="60" letter-spacing="-1" fill="#FFFFFF" fill-opacity=".55">José</text>
+  <text x="84" y="482" class="display" font-size="168" letter-spacing="-8" fill="#FFFFFF">Hoschett</text>
+  <text x="96" y="546" class="mono" font-size="20" fill="#FFFFFF" fill-opacity=".72">DESENVOLVEDOR COBOL · JAVA</text>
+</svg>

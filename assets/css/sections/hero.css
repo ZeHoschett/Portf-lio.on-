@@ -1,0 +1,196 @@
+/*
+ * Hero (#inicio): one glass panel, the only large glass surface of the site and the place where
+ * the background light is strongest. Mono metadata in the top corners, then two columns: name,
+ * role, tagline and buttons on the left, the framed portrait on the right. Mobile-first.
+ */
+@layer sections {
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip; /* the light bleeds sideways on purpose; it must never widen the page */
+    padding-block: calc(var(--header-h) + var(--space-5)) var(--space-6);
+  }
+
+  /* Extra light behind the panel, so its glass has something to blur */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: var(--hero-bloom-bleed);
+    z-index: var(--z-below);
+    background: var(--hero-bloom);
+    pointer-events: none;
+  }
+
+  /* ============================== Panel ============================== */
+  .hero__panel {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--hero-panel-pad);
+    border-radius: var(--r-xl);
+  }
+
+  /* ============================== Metadata ============================== */
+  .hero__corners,
+  .hero__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t3);
+  }
+
+  .hero__corners {
+    margin-block-end: var(--hero-meta-gap);
+    list-style: none;
+  }
+
+  .hero__footer {
+    padding-block-start: var(--space-4);
+    border-top: var(--border-thin) solid var(--hairline);
+  }
+
+  /* ============================== Composition ============================== */
+  .hero__grid {
+    display: grid;
+    gap: var(--space-6);
+    align-items: end;
+  }
+
+  .hero__content {
+    display: grid;
+    gap: var(--space-5);
+    min-width: 0;
+  }
+
+  /* ============================== Name ============================== */
+  /* "José" small in --t3 over "Hoschett" large in solid white */
+  .hero__title {
+    display: grid;
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
+    white-space: nowrap;
+  }
+
+  .hero__title-first {
+    justify-self: start;
+    margin-block-end: var(--space-2);
+    font-size: var(--hero-first-scale);
+    letter-spacing: var(--ls-tight);
+    color: var(--t3);
+  }
+
+  .hero__title-last {
+    --line-offset: 4; /* starts after the 4 letters of "José" */
+
+    color: var(--t1);
+  }
+
+  /* Letter-by-letter entrance (pre-split in the HTML: no JS, no flash of unanimated text) */
+  .hero__title .char {
+    display: inline-block;
+    animation: char-rise var(--dur-slow) var(--ease-out-expo) both;
+    animation-delay: calc(
+      var(--hero-delay) + (var(--line-offset, 0) + var(--i, 0)) * var(--char-stagger)
+    );
+  }
+
+  .hero__title .char:nth-child(2) { --i: 1; }
+  .hero__title .char:nth-child(3) { --i: 2; }
+  .hero__title .char:nth-child(4) { --i: 3; }
+  .hero__title .char:nth-child(5) { --i: 4; }
+  .hero__title .char:nth-child(6) { --i: 5; }
+  .hero__title .char:nth-child(7) { --i: 6; }
+  .hero__title .char:nth-child(8) { --i: 7; }
+
+  /* ============================== Role, tagline, buttons ============================== */
+  .hero__intro {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .hero__intro,
+  .hero__actions {
+    animation: fade-up var(--dur-slow) var(--ease-out-expo) both;
+    animation-delay: var(--hero-meta-delay);
+  }
+
+  .hero__actions {
+    --cluster-gap: var(--space-3);
+
+    animation-delay: calc(var(--hero-meta-delay) + var(--stagger-step));
+  }
+
+  .hero__role {
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t2);
+  }
+
+  .hero__tagline {
+    max-width: var(--measure-narrow);
+    font-size: var(--fs-base);
+    color: var(--t2);
+  }
+
+  /* ============================== Portrait ============================== */
+  /* No opacity in the entrance: the portrait may be the LCP element */
+  .hero__photo {
+    position: relative;
+    justify-self: center;
+    width: min(100%, var(--hero-photo-max));
+    aspect-ratio: var(--hero-photo-ratio);
+    overflow: hidden;
+    background: var(--bg-2);
+    border: var(--border-thin) solid var(--glass-line);
+    border-radius: var(--r-md);
+    box-shadow: var(--edge), var(--hero-photo-shadow);
+    animation: rise-in var(--dur-intro) var(--ease-out-expo) both;
+  }
+
+  /* The light edge drawn over the photo, so it frames the picture instead of hiding under it */
+  .hero__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--edge);
+    pointer-events: none;
+  }
+
+  .hero__photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: var(--photo-img-scale); /* room for the mouse parallax */
+  }
+
+  /* ============================== Tablet ============================== */
+  @media (min-width: 768px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
+    }
+
+    .hero__photo {
+      justify-self: end;
+    }
+  }
+
+  /* ============================== Desktop ============================== */
+  @media (min-width: 1024px) {
+    .hero__panel {
+      align-content: space-between;
+      min-height: var(--hero-panel-min-h);
+    }
+  }
+}
